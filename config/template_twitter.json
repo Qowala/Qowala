@@ -1,0 +1,7 @@
+// Add here your credentials 
+{
+	"consumerKey" : "",
+	"consumerSecret" : "",
+	"accessToken" : "",
+	"accessTokenSecret" : ""
+} 
