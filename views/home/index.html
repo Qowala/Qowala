@@ -1,0 +1,17 @@
+<p>You are following:
+<ul>
+    <% for(var i=0; i<tags.length; i++) {%>
+       <li><button onclick="removeTag(<%= userId %>, '<%= tags[i] %>')"><%= tags[i] %> X</button></li>
+    <% } %> 
+</ul>
+</p>
+
+<form action="/tag" method="post">
+	
+    <input type="text" name="tag" placeholder="Tag to listen"/>
+    <input type="hidden" value="<%= userId %>" />
+    <input type="submit" />
+</form>
+
+<ul id="tweets">
+</ul>
