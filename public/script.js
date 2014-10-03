@@ -15,15 +15,20 @@
 	var tagElements = document.getElementsByClassName('tag');
 
 	for (var i = 0; i < tagElements.length; i++) {
+		console.log('tagElements: ', tagElements);
 		var element = tagElements[i];
-		element.onclick = function(){
+		console.log('element: ', element);
+
+		element.addEventListener('click', function(event){
 			console.log('this.innerHTML', this.innerHTML);
 			var tag = this.innerHTML;
 			// Remove the # from the tag name
 			tag = tag.slice(1,tag.length);
 			socket.emit('remove tag', {tag:tag, userId:userId});
-			element.parentNode.removeChild(element);
-		};
+			// Remove the li containing the tag
+			event.explicitOriginalTarget.parentNode.parentNode.removeChild(event.explicitOriginalTarget.parentNode);
+			console.log('event: ', event);
+		});
 	};
 	
 
