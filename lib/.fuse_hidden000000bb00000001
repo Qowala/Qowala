@@ -1,5 +1,4 @@
 var tagsModel = require('../model/tagsModel');
-var twitterAgent = require('../lib/twitter');
 // var usersModel = require('../model/usersModel');
 
 var ids = 0;
@@ -30,7 +29,6 @@ var users = {
     // Ajoute le tag à suivre à un utilisateur
     addTag: function(userId, tag){
         tagsModel.pushTag(userId, tag.toLowerCase());
-        twitterAgent.initStream();
     },
 
     // Transmettre les tweets aux utilisateurs selon leurs tags

@@ -94,7 +94,8 @@ exports.getAllTags = function(cb){
 	});
 };
 
-exports.removeUserFromTag = function(userId, receivedTag, cb){			
+exports.removeUserFromTag = function(userId, receivedTag){
+	console.log('In mongo, remove: ', userId, ' and tag: ', receivedTag);			
 	Tag.update({text: receivedTag}, { $pull: {users: userId} }, { upsert: true }, function(err, updatedTag) {
 	    if (err) return [500, err];
 	    console.log('Removed user from: ', updatedTag);

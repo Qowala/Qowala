@@ -1,4 +1,4 @@
-var configTv = require('../config/tv');
+//var configTv = require('../config/tv');
 var users = require('../lib/users');
 
 exports.getIndex = function(req, res) {
@@ -16,7 +16,7 @@ exports.getIndex = function(req, res) {
 	users.getTags(userId, function(tags){
 		// Fait un rendu de la page index .html
 	    res.render('home/index', {
-	        tv : configTv,
+	        // tv : configTv,
 	        userId : userId,
 	        tags : tags	
 	    });

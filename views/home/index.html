@@ -1,7 +1,7 @@
 <p>You are following:
 <ul>
     <% for(var i=0; i<tags.length; i++) {%>
-       <li><button onclick="removeTag(<%= userId %>, '<%= tags[i] %>')"><%= tags[i] %> X</button></li>
+       <li><button class="tag"><%= tags[i] %></button></li>
     <% } %> 
 </ul>
 </p>
