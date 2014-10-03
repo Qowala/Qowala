@@ -26,8 +26,9 @@
 			tag = tag.slice(1,tag.length);
 			socket.emit('remove tag', {tag:tag, userId:userId});
 			// Remove the li containing the tag
-			event.explicitOriginalTarget.parentNode.parentNode.removeChild(event.explicitOriginalTarget.parentNode);
 			console.log('event: ', event);
+			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+			
 		});
 	};
 	

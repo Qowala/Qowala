@@ -45,6 +45,9 @@ exports.pushTag = function(userId, receivedTag, cb){
 						cb(tag);
 					});
 				}
+				else{
+					cb(tag);
+				}
 			}
 		}
 	});
