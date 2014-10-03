@@ -8,8 +8,13 @@ var tagSchema = mongoose.Schema({
 });
 
 var Tag = mongoose.model('Tag', tagSchema);
-
-exports.pushTag = function(userId, receivedTag){
+/**
+ * Add a new tag to listen and assign it to user. Update the tag if another user listen a tag that already exist.
+ * @param  {Number}   userId      The user id created with the session
+ * @param  {String}   receivedTag The tag to be listened
+ * @param  {Function} cb          Callback returning the added tag
+ */
+exports.pushTag = function(userId, receivedTag, cb){
 	Tag.findOne({text: receivedTag}).exec(function(err, tag) {
 		if (err) {
 			return ['error', {status: 500}];
@@ -18,10 +23,11 @@ exports.pushTag = function(userId, receivedTag){
 			if(tag == null){
 				var tag = new Tag({text: receivedTag, users: [userId]});
 				tag.save(function(err) {
-					if (err) return [500, err];
-					return tag;
+					if (err) return handleError(err);
+					console.log('Saved: ', tag);
+					cb(tag);
 				});
-				console.log('Saved: ', tag);
+				
 			}
 			else{
 				var existingUser = false;
@@ -36,15 +42,13 @@ exports.pushTag = function(userId, receivedTag){
 					    if (err) return [500, err];
 					    console.log('Update successful');
 					    console.log('Updated: ', updatedTag);
-					    return updatedTag;
+						cb(tag);
 					});
 				}
-				else{
-					return tag;	
-				}	
 			}
 		}
 	});
+	
 };
 
 exports.getUserTags = function(userId, cb){
@@ -64,7 +68,6 @@ exports.getUsersFollowingTags = function(tags, cb){
 	for (var i = 0; i < tags.length; i++) {
 		tagsArray.push(tags[i].text.toLowerCase());
 	};
-	console.log('tagsArray: ', tagsArray);
 
 	Tag.where('text').in(tagsArray)
 	.exec(function(err, tagsFounded) {
@@ -76,7 +79,6 @@ exports.getUsersFollowingTags = function(tags, cb){
 					usersFollowingTags = usersFollowingTags.concat(tagsFounded[i].users);
 				};
 				
-				console.log('Here usersFollowingTags: ', usersFollowingTags);
 				cb(usersFollowingTags);
 			}
 			
@@ -98,7 +100,6 @@ exports.removeUserFromTag = function(userId, receivedTag){
 	console.log('In mongo, remove: ', userId, ' and tag: ', receivedTag);			
 	Tag.update({text: receivedTag}, { $pull: {users: userId} }, { upsert: true }, function(err, updatedTag) {
 	    if (err) return [500, err];
-	    console.log('Removed user from: ', updatedTag);
 	    return updatedTag;
 	});
 };
