@@ -5,6 +5,11 @@
 	var statistics = {};
 	var table = document.getElementById('statistics');
 
+	// Restores the content
+	if (localStorage.getItem('data')){
+		table.innerHTML = localStorage.getItem('data');
+	}
+
 	/**
 	 * Rewrites the statistics table in HTML
 	 */
@@ -13,6 +18,7 @@
 		for(tag in statistics){
 			table.innerHTML += statistics[tag];
 		}
+		localStorage.setItem('data', table.innerHTML);
 	}
 
 	/**
@@ -25,8 +31,6 @@
 		var dom = '<ul>';
 		for(lang in tagLanguages){
 			total += tagLanguages[lang];
-			console.log('lang: ', lang);
-			console.log('total: ', total);
 		}
 		for(lang in tagLanguages){
 			dom += "<li>" + lang + ": " + Math.round(tagLanguages[lang] / total * 100) + "% </li>";
@@ -68,7 +72,6 @@
 
 			socket.emit('remove tag', {tag:tag, userId:userId});
 			// Remove the li containing the tag
-			console.log('event: ', event);
 			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
 			
 		});
