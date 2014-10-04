@@ -1,29 +1,47 @@
 (function() {
 	var socket = io();
 
-	socket.emit('auth', userId);
-	socket.on('tweet', function(tweet){
-		console.log(tweet);
-		var tweetsDisplay = document.getElementById('tweets');
-		tweets.innerHTML += '<li>' + tweet.user.name + ' : ' + tweet.text + '</li>'; 
-	});
+	var FollowedTags = [];
+	var statistics = {};
+	var table = document.getElementById('statistics');
 
-	function removeTag(userId, tag){
-		socket.emit('remove tag', {tag:tag, userId:userId});
+	function writeStatistics(){
+		table.innerHTML = "";
+		for(tag in statistics){
+			table.innerHTML += statistics[tag];
+		}
 	}
+
+	socket.emit('auth', userId);
+	socket.on('tweet', function(tweetObject){
+		var tweetsDisplay = document.getElementById('tweets');
+		tweetsDisplay.innerHTML += '<li>' + tweetObject.tweet.user.name + ' : ' + tweetObject.tweet.text + '</li>'; 
+		for (var i = 0; i < tweetObject.updatedTags.length; i++) {
+			for (var j = 0; j < FollowedTags.length; j++) {
+				tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
+				if(FollowedTags[j] === tweetObject.updatedTags[i]){
+					statistics[tweetObject.updatedTags[i]] = '<tr><td>' + tweetObject.updatedTags[i] + '</td><td>'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td></tr>';
+				}
+			};
+		};
+		writeStatistics();
+	});
 
 	var tagElements = document.getElementsByClassName('tag');
 
 	for (var i = 0; i < tagElements.length; i++) {
-		console.log('tagElements: ', tagElements);
 		var element = tagElements[i];
-		console.log('element: ', element);
+		FollowedTags.push(element.innerHTML.slice(1, element.length));
 
 		element.addEventListener('click', function(event){
-			console.log('this.innerHTML', this.innerHTML);
 			var tag = this.innerHTML;
 			// Remove the # from the tag name
 			tag = tag.slice(1,tag.length);
+
+			// Remove the tag from the statistics table
+			delete statistics[tag];
+			writeStatistics();
+
 			socket.emit('remove tag', {tag:tag, userId:userId});
 			// Remove the li containing the tag
 			console.log('event: ', event);

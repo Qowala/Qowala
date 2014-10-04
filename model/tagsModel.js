@@ -68,6 +68,7 @@ exports.getUsersFollowingTags = function(tags, cb){
 	var usersFollowingTags = [];
 	var tagsArray = [];
 
+	console.log('going to get the users tags');
 	for (var i = 0; i < tags.length; i++) {
 		tagsArray.push(tags[i].text.toLowerCase());
 	};
@@ -83,6 +84,10 @@ exports.getUsersFollowingTags = function(tags, cb){
 				};
 				
 				cb(usersFollowingTags);
+			}
+			else{
+				console.log('no one follows');
+				cb(null);
 			}
 			
 		}
