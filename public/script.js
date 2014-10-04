@@ -92,7 +92,7 @@
 	socket.emit('auth', userId);
 	socket.on('tweet', function(tweetObject){
 		writeTweets(tweetObject);
-		cdisplayStats(tweetObject);
+		displayStats(tweetObject);
 		writeStatistics();
 	});
 
