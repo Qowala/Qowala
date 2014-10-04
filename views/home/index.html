@@ -3,11 +3,11 @@
         
         <input type="text" name="tag" placeholder="Tag to listen"/>
         <input type="hidden" value="<%= userId %>" />
-        <input type="submit" />
+        <input type="submit" value="Track" />
     </form>
 
     <p>You are following:
-    <ul>
+    <ul id="tags">
         <% for(var i=0; i<tags.length; i++) {%>
            <li><button class="tag"><%= tags[i] %></button></li>
         <% } %> 

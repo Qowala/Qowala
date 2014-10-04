@@ -44,7 +44,8 @@
 		 }
 
 		if(tweetObject){
-			tweets[0] ='<li>[' + tweetObject.tweet.created_at + '] ' + tweetObject.tweet.user.name + ' : ' + tweetObject.tweet.text + '</li>'; 
+			var date = tweetObject.tweet.created_at.slice(0, -11);
+			tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetObject.tweet.text + '</span></li>'; 
 		}
 
 		tweetsToPrint = "";
@@ -83,7 +84,7 @@
 				tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
 				if(FollowedTags[j] === tweetObject.updatedTags[i]){
 					var languages = calculateLangStats(tweetObject.tagsStats[tweetObject.updatedTags[i]].lang);
-					statistics[tweetObject.updatedTags[i]] = '<tr><td>' + tweetObject.updatedTags[i] + '</td><td>'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td><td>' + languages + '</td></tr>';
+					statistics[tweetObject.updatedTags[i]] = '<tr><td class="tagname">' + tweetObject.updatedTags[i] + '</td><td class="tagfrequency">'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td><td class="taglang">' + languages + '</td></tr>';
 				}
 			};
 		};

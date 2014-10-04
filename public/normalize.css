@@ -1,0 +1,421 @@
+/** Uniformisation des styles navigateurs
+ *  @lastmodified  2012-08-03
+ *
+ *  Version personnalisée de normalize.css
+ *  @see  http://necolas.github.com/normalize.css
+ * 
+ *  Les valeurs prises en références sont celles recommandées par le WHATWG
+ *  @see  http://www.iecss.com/whatwg.css
+ */
+
+
+
+/** --- = @section BASE --- */
+
+/** Rend le zoom texte fonctionnel lorsque la police est définie en 'em' sur <body>.
+ *  @bugfix * @affected  IE 6, IE 7
+ *  @see      http://fvsch.com/code/bugs/ie-em-bug/ */
+html {
+	font-size: 100%;
+}
+
+
+/** Supprime les marges externes. */
+body {
+	margin: 0;
+}
+
+
+
+
+/** --- = @section TITRES --- */
+
+/** Applique les marges externes et taille de caractères recommandées.
+ *  @css-for  IE 6, IE 7 */
+h1 {
+	margin: 0.67em 0;
+	font-size: 2em;
+}
+
+h2 {
+	margin: 0.83em 0;
+	font-size: 1.5em;
+}
+
+h3 {
+	margin: 1em 0;
+	font-size: 1.17em;
+}
+
+h4 {
+	margin: 1.33em 0;
+	font-size: 1em;
+}
+
+h5 {
+	margin: 1.67em 0;
+	font-size: 0.83em;
+}
+
+h6 {
+	margin: 2.33em 0;
+	font-size: 0.67em;
+}
+
+
+
+
+/** --- = @section LISTES --- */
+
+/** Applique les marges recommandées.
+ *  @css-for  IE 6, IE 7 */
+dl,
+ol, ul {
+	margin: 1em 0;
+}
+
+ol, ul {
+	padding: 0 0 0 40px;
+}
+
+dd {
+	margin: 0 0 0 40px;
+}
+
+
+
+
+/** --- = @section TABLEAUX --- */
+
+/** Supprime l'espace entre les cellules et fusionne les bordures. */
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+
+
+
+/** --- = @section FORMULAIRES --- */
+
+/** Applique les marges externes recommandées.
+ *  @css-for  IE 6, IE 7 */
+form {
+	margin: 0;
+}
+
+
+/** 1. Applique les marges recommandées.
+       @css-for  IE 6, IE 7
+ *  2. Uniformise la bordure. */
+fieldset {
+	margin: 0 2px;  /** 1 */
+	border: 1px solid #828282;  /** 2 */
+	padding: 0.35em 0.625em 0.75em;  /** 1 */
+}
+
+
+/** 1. Rétablit l'héritage de la propriété 'color'.
+ *     @bugfix * @affected  Internet Explorer
+ *  2. Uniformise les marges internes.
+ *  3. Permet au texte de revenir à la ligne du texte.
+ *     @bugfix * @affected  FF 3.6
+ *     @see      http://stackoverflow.com/questions/6133571/how-can-i-make-legend-text-wrap
+ *     @note     IE 6 et IE 7 nécessitent une solution de contournement alternative. */
+legend {
+	border: 0;  /** 1 */
+	padding: 0;  /** 2 */
+	white-space: normal;  /** 3 */
+}
+
+
+/** Supprime les marges externes.
+ *  Uniformise l'alignement vertical.
+ *  Rétablit l'héritage de la taille de police.
+ *  Uniformise la famille de police utilisée. */
+button,
+input, select, textarea {
+	margin: 0;
+	vertical-align: baseline;
+	font-size: 100%;
+	font-family: sans-serif;
+}
+
+
+/** Uniformise la hauteur des champs texte.
+ *  @see  http://www.456bereastreet.com/archive/201108/line-height_in_input_fields/ */
+input[type="text"] {
+	border: 1px solid #ddd;
+	padding: 2px;
+	height: 1.2em;
+	font-size: 1em
+	line-height: 1.2;
+}
+
+
+/** 1. Modifie l’apparence du curseur sur certains éléments de formulaire.
+ *     @note  Ne fonctionne pas sur IE 6
+ *  2. Permet de rendre les labels fonctionnels.
+ *     @bugfix * @affected iOS
+ *     @see      http://twitter.com/sorccu/status/211364032098213888 */
+label,
+button, input[type="button"],
+input[type="checkbox"], input[type="radio"],
+input[type="reset"], input[type="submit"] {
+	cursor: pointer;
+}
+
+
+/** Rétablit le curseur par défaut.
+*   @note  Ne fonctionne pas sur IE 6, IE 7 et IE 8 */
+button[disabled], input[disabled] {
+	cursor: default;
+}
+
+
+/** Supprime les marges internes incompressibles.
+ *  @css-for  Firefox
+ *  @see      http://www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/ */
+button::-moz-focus-inner, input::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+
+/** Normalise le modèle de boîte et supprime les marges internes.
+ *  @css-for IE 8, IE 9 */
+input[type="checkbox"], input[type="radio"] {
+	box-sizing: border-box;
+	padding: 0;
+}
+
+
+/** 1. Uniformise l'alignement vertical.
+ *  2. Masque la barre de défilement présente par défaut.
+ *     @css-for  Internet Explorer
+ *  3. Autorise le redimensionnement vertical du champs
+ *     @note Ne fonctionne pas sur Internet Explorer. */
+textarea {
+	vertical-align: top;  /** 1 */
+	overflow: auto;  /** 2 */
+	resize: vertical;  /** 3 */
+}
+
+
+
+
+/** --- = @section AUTRES COMPOSANTS --- */
+
+/** Applique les marges recommandées.
+ *  @css-for  IE 6, IE 7 */
+blockquote {
+	margin: 1em 40px;
+}
+
+
+/** Applique les marges recommandées.
+ *  @css-for  IE 6, IE 7 */
+p,
+pre {
+	margin: 1em 0;
+}
+
+
+/** Améliore la lisibilité de l'élément. */
+pre {
+	white-space: pre;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+
+/** Uniformise l'aspect du texte. */
+code, pre,
+kbd, samp {
+	font-family: monospace, serif;
+	font-size: 1em;
+}
+
+
+/** Uniformise le contour.
+ *  @css-for  Chrome, Safari */
+a:focus {
+	outline: thin dotted;
+}
+
+
+/** Améliore la lisibilité au survol et à la prise de focus.
+ *  @see  people.opera.com/patrickl/experiments/keyboard/test */
+a:active, a:hover {
+	outline: 0;
+}
+
+
+/** Ajoute la bordure recommandée.
+ *  @css-for  Internet Explorer, Chrome, Safari */
+abbr[title] {
+	border-bottom: 1px dotted;
+}
+
+
+/** Applique la graisse recommandée.
+ *  @css-for  Firefox */
+b, strong {
+	font-weight: bold;
+}
+
+
+/** Uniformise la taille de l'élément. */
+small {
+	font-size: 75%;
+}
+
+
+/** Empêche les éléments 'sub' et 'sup' d'affecter l'interlignage du parent.
+ *  @see  gist.github.com/413930 */
+sub, sup {
+	position: relative;
+	vertical-align: baseline;
+	font-size: 75%;
+	line-height: 0;
+}
+
+sup {
+	top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+
+/** Supprime les guillemets automatiques.
+ *  @css-for  IE 6, IE 7 */
+q {
+	quotes: none;
+}
+
+/** Supprime les guillemets automatiques.
+ *  @css-for  Chrome, Safari
+ *  @see      http://www.paulchaplin.com/blog/css-reset-and-quirky-quotes */
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+
+
+/** 1. Supprime la bordure des imags se trouvant dans un lien.
+ *     @css-for  Internet Explorer, FF3.6
+ *  2. Supprime l'espace indésirable appraissant sous les images
+ *     @see http://www.alsacreations.com/astuce/lire/52-espaces-sous-les-images.html */
+img {
+	border: 0;  /** 1 */
+	vertical-align: middle;  /** 2 */
+}
+
+
+/** Supprime l'ombre portée du texte lors de sa sélection.
+ *  @see   h5bp.com/
+ *  @note  Les couleurs de texte et d'arrière-plan doivent être rédéfinies pour que l'instruction soit appliquée.*/
+::selection {
+	text-shadow: none;
+	color: #000;
+	background-color: #abcaff;
+}
+
+
+/** Supprime l'ombre portée du texte lors de sa sélection.
+ *  @css-for  Firefox */
+::-moz-selection {
+	text-shadow: none;
+	color: #000;
+	background-color: #abcaff;
+}
+
+
+
+
+/** --- = @section IE --- */
+
+/** Corrige le problème de marge externe gauche incompressible.
+ *  @bugfix * @affected  IE 6, IE 7
+ *  @see      http://jamesfrank.info/2011/06/18/fieldset-legends-ie7/ */
+.ie6 legend, .ie7 legend {
+	margin-left: -7px;
+}
+
+
+/** Uniformise l'alignement vertical.
+ *  @css-for  IE 6, IE 7 */
+.ie6 button, .ie6 input, .ie6 select, .ie6 textarea,
+.ie7 button, .ie7 input, .ie7 select, .ie7 textarea {
+	vertical-align: middle;
+}
+
+
+/** Supprime la marge interne incompressible.
+ *  bugfix * @affected IE 7
+ *  @see     http://www.brownbatterystudios.com/sixthings/2006/02/14/
+ *  @note    Ne fonctionne pas sur IE 6 */
+.ie7 button,
+.ie7 input[type="button"], .ie7 input[type="reset"], .ie7 input[type="submit"] {
+	overflow: visible;
+}
+
+.ie7 table button,
+.ie7 table input[type="button"], .ie7 table input[type="reset"], .ie7 table input[type="submit"] {
+	overflow: auto;
+}
+
+
+/** Supprime la marge interne des éléments.
+ *  @bugfix * @affected  IE 7
+ *  @note     Ne fonctionne pas sur IE 6 */
+.ie7 input[type="checkbox"], .ie7 input[type="radio"] {
+	height: 13px;
+	width: 13px;
+}
+
+
+/** Remplace la police 'monospace' par 'courrier new' dont le rendu est meilleur.
+ *  @bugfix * @affected  IE 6
+ *  @see      en.wikipedia.org/wiki/User:Davidgothberg/Test59 */
+.ie6 code, .ie6 pre,
+.ie6 kbd, .ie6 samp {
+	font-family: 'courier new', monospace;
+}
+
+
+/** Améliore la qualité des images redimensionnée
+ *  @css-for  IE 7
+ *  @see      http://code.flickr.com/blog/2008/11/12/
+ *  @note     Ne fonctionne pas sur IE 6 */
+.ie7 img {
+	-ms-interpolation-mode: bicubic;
+}
+
+
+
+/** --- = @section MOBILES --- */
+
+/** Empêche le redimensionnement du texte au changement d'orientation du terminal.
+ *  1. @bugfix * @affected iOS
+ *     @see      http://filamentgroup.com/examples/iosScaleBug/
+ *     @note     Cette instruction préserve la fonction de zoom utilisateur */
+html {
+	-webkit-text-size-adjust: 100%;
+			-ms-text-size-adjust: 100%;  /** 1 */
+}
+
+
+/** 1. Évite que l'instruction 2 ne casse les contrôles natifs des éléments 'audio' et 'video'.
+ *     @bugfix * @affected Webkit in Android 4.0.*
+ *  2. Autorise la personnalisation des éléments.
+ *     @bugfix * @affected iOS
+ */
+button,
+html input[type="button"], /** 1 */
+input[type="reset"], input[type="submit"] {
+	-webkit-appearance: button; /** 2 */
+}

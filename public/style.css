@@ -1,9 +1,119 @@
+html{
+	font-family: 'Open Sans', sans-serif;
+}
+
 #sidebar{
+	background-color: #5072b2;
+	margin-top: -16px;
+    padding: 30px 10px 10px;
+    color: white;
+    width: 290px;
+    position: fixed;
+    bottom: 0;
+    top:0;
+}
+
+#tags{
+	list-style-type: none;
+}
+
+#tags li+li{
+	margin-top: 5px;
+}
+
+.tag:after{
+	content: " x";
+}
+
+#tweets {
+    position: relative;
+    right: -300px;
+    width: calc(100% - 350px);
+}
+
+#tweets li{
+	list-style-type: none;
+	/*background-color: #5072b2;
+	color: white;*/
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+.tweetdate{
+	font-style: italic;
+	font-size: 0.85em;
+	display: block;
+}
+
+.tweettext{
+	font-size: 0.9em;
+}
+
+.tweetauthorname{
+	font-weight: bold;
+}
+
+#statistics tbody{
+	display: block;
+    margin-bottom: 55px;
+}
+
+#statistics tbody+tbody{
+	border-top: solid 1px white; 
+}
+
+#statistics tr{
+	position: relative;
+	display:block;
+	/*top:30px;
+	margin-bottom: 150px;*/
+}
+
+#statistics td+td{
+	padding-left: 40px;
+}
+
+#statistics td+td+td{
+	position: absolute;
+	left: 0;
+	top: 20px;
+
+	/*-moz-column-count: 4;
+    -moz-column-gap: 0;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 0;*/
+
+    top: 30px;
+    padding: 0;
+}
+
+#statistics td+td+td ul{
+	list-style-type: none;
+	display: flex;
+	flex-flow: row-wrap;
+	margin: 0;
+	padding: 0;
+	width: 270px;
+}
+
+#statistics td+td+td li{
+	margin-right: 10px;
 	float: left;
 }
 
-#tweets{
-	display: flex;
-	flex-direction: column;
-	/*flex-direction: column-reverse;*/
+.tagname{
+	font-weight: bold;
+	font-size: 0.9em;
+}
+
+.tagfrequency{
+	font-style: italic;
+	font-size: 0.9em
+}
+
+.taglang li+li{
+	margin-left: 20px;
+}
+input[type="text"] {
+    width: 180px;
 }
