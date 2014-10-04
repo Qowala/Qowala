@@ -4,26 +4,60 @@
 	var FollowedTags = [];
 	var statistics = {};
 	var table = document.getElementById('statistics');
+	var tweetsDisplay = document.getElementById('tweets');
+	// var tweetCount = 0;
+	var tweets = [];
+	var tweetsToPrint = "";
 
 	// Restores the content
-	if (localStorage.getItem('data')){
-		table.innerHTML = localStorage.getItem('data');
+	if (localStorage.getItem('data_statistics')){
+		table.innerHTML = localStorage.getItem('data_statistics');
+	}
+	if (localStorage.getItem('data_tweets')){
+		tweets = localStorage.getItem('data_tweets');
+		tweets = JSON.parse(tweets || "null");
 	}
 
+	writeTweets();
+
 	/**
-	 * Rewrites the statistics table in HTML
+	 * Rewrites the statistics table in HTML. Saves the data in localStorage.
 	 */
 	function writeStatistics(){
 		table.innerHTML = "";
 		for(tag in statistics){
 			table.innerHTML += statistics[tag];
 		}
-		localStorage.setItem('data', table.innerHTML);
+		localStorage.setItem('data_statistics', table.innerHTML);		
+	}
+
+	/**
+	 * Displays the tweets in a limited number and saves them into localStorage
+	 * @param  {Object} tweetObject An object containing the tweet object
+	 */
+	function writeTweets(tweetObject){
+		var i = 50;
+		while(i--) { 
+			if(tweets[i]){
+				tweets[i+1] = tweets[i];
+			}
+		 }
+
+		if(tweetObject){
+			tweets[0] ='<li>[' + tweetObject.tweet.created_at + '] ' + tweetObject.tweet.user.name + ' : ' + tweetObject.tweet.text + '</li>'; 
+		}
+
+		tweetsToPrint = "";
+		for (var i = 0; i < tweets.length; i++) {
+		 	tweetsToPrint += tweets[i];
+		}; 
+		tweetsDisplay.innerHTML = tweetsToPrint;
+		localStorage.setItem('data_tweets', JSON.stringify(tweets));
 	}
 
 	/**
 	 * Calculate percentage for each language from a tweet
-	 * @param  {Objecy} tagLanguages Languages from the tweet and their count
+	 * @param  {Object} tagLanguages Languages from the tweet and their count
 	 * @return {String}              DOM with the languages statistics
 	 */
 	function calculateLangStats(tagLanguages){
@@ -39,10 +73,11 @@
 		return dom;
 	}
 
-	socket.emit('auth', userId);
-	socket.on('tweet', function(tweetObject){
-		var tweetsDisplay = document.getElementById('tweets');
-		tweetsDisplay.innerHTML += '<li>' + tweetObject.tweet.user.name + ' : ' + tweetObject.tweet.text + '</li>'; 
+	/**
+	 * Displays the tweets stats
+	 * @param  {Object} tweetObject Object containing the stats with the tweets
+	 */
+	function displayStats(tweetObject){
 		for (var i = 0; i < tweetObject.updatedTags.length; i++) {
 			for (var j = 0; j < FollowedTags.length; j++) {
 				tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
@@ -52,6 +87,12 @@
 				}
 			};
 		};
+	}
+
+	socket.emit('auth', userId);
+	socket.on('tweet', function(tweetObject){
+		writeTweets(tweetObject);
+		cdisplayStats(tweetObject);
 		writeStatistics();
 	});
 
@@ -76,7 +117,4 @@
 			
 		});
 	};
-	
-
-	// });
 })();
