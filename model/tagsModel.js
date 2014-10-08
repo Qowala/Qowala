@@ -53,7 +53,11 @@ exports.pushTag = function(userId, receivedTag, cb){
 	});
 	
 };
-
+/**
+ * Get the tags that a user susbscribed to
+ * @param  {Number}   userId The users ID to search
+ * @param  {Function} cb     Callback returning the users tag
+ */
 exports.getUserTags = function(userId, cb){
 	Tag.find({users: userId}).exec(function(err, tags) {
 		if (err) {
@@ -64,6 +68,11 @@ exports.getUserTags = function(userId, cb){
 	});
 };
 
+/**
+ * Get the users following defined tags
+ * @param  {Array}   tags  List of tags to search the corresponding users
+ * @param  {Function} cb   Callback returning the list of users following the tags
+ */
 exports.getUsersFollowingTags = function(tags, cb){
 	var usersFollowingTags = [];
 	var tagsArray = [];
@@ -94,6 +103,10 @@ exports.getUsersFollowingTags = function(tags, cb){
 	});
 };
 
+/**
+ * Get all the tags entered by all users
+ * @param  {Function} cb Callback returning the list of tags
+ */
 exports.getAllTags = function(cb){
 	Tag.find().exec(function(err, tags) {
 		if (err) {
@@ -104,8 +117,13 @@ exports.getAllTags = function(cb){
 	});
 };
 
+/**
+ * Unsubscribe a user from a tag
+ * @param  {Number} userId      The users ID to unsubscribe
+ * @param  {String} receivedTag The tag to unsubscribe from
+ * @return {String}             The same tag when unsubscribed
+ */
 exports.removeUserFromTag = function(userId, receivedTag){
-	console.log('In mongo, remove: ', userId, ' and tag: ', receivedTag);			
 	Tag.update({text: receivedTag}, { $pull: {users: userId} }, { upsert: true }, function(err, updatedTag) {
 	    if (err) return [500, err];
 	    return updatedTag;

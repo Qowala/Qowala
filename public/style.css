@@ -65,8 +65,6 @@ html{
 #statistics tr{
 	position: relative;
 	display:block;
-	/*top:30px;
-	margin-bottom: 150px;*/
 }
 
 #statistics td+td{
@@ -77,12 +75,6 @@ html{
 	position: absolute;
 	left: 0;
 	top: 20px;
-
-	/*-moz-column-count: 4;
-    -moz-column-gap: 0;
-    -webkit-column-count: 4;
-    -webkit-column-gap: 0;*/
-
     top: 30px;
     padding: 0;
 }
@@ -112,7 +104,7 @@ html{
 }
 
 .taglang li+li{
-	margin-left: 20px;
+	margin-left: 30px;
 }
 input[type="text"] {
     width: 180px;

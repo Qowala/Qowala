@@ -7,6 +7,12 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema);
 
+/**
+ * Create a new user. If already existing, updating his socket. 
+ * @param  {Number} userId The users ID to create
+ * @param  {Object} socket The users socket
+ * @return {Object}        The user once created
+ */
 exports.pushUser = function(userId, socket){
 	User.findOne({user: userId}).exec(function(err, user) {
 		if (err) {
@@ -32,6 +38,11 @@ exports.pushUser = function(userId, socket){
 	});
 };
 
+/**
+ * Get the socket from a user
+ * @param  {Number}   userId The users ID to get the socket from
+ * @param  {Function} cb     Callback returning the socket
+ */
 exports.getUserSocket = function (userId, cb){
 	User.findOne({user: userId}).exec(function(err, user) {
 		if (err) {

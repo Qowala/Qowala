@@ -1,4 +1,3 @@
-//var configTv = require('../config/tv');
 var users = require('../lib/users');
 
 exports.getIndex = function(req, res) {
@@ -12,11 +11,10 @@ exports.getIndex = function(req, res) {
 		userId = req.session.userId = users.addUser();
 	}
 
-	// Renvoie les tags suivis par l'utilisateur
+	// Return the tags the user follows
 	users.getTags(userId, function(tags){
-		// Fait un rendu de la page index .html
+		// Renders the index.html page
 	    res.render('home/index', {
-	        // tv : configTv,
 	        userId : userId,
 	        tags : tags	
 	    });
@@ -28,6 +26,6 @@ exports.getIndex = function(req, res) {
 
 exports.postTag = function(req, res) {
 	users.addTag(req.session.userId, req.body.tag);
-    // Redirige vers la Homepage
+    // Redirect to homepage
     res.redirect('/');
 };
