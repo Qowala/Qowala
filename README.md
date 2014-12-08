@@ -17,6 +17,7 @@ Make sure that **MongoDB** and **NodeJS** are installed.
 Then run
 
     cd /vagrant/
+    npm install
     node app.js
     
 You will then be able to access the client in your browser at **http://192.168.12.34:8080/**
