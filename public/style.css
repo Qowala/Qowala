@@ -19,6 +19,7 @@ button {
     border-radius: 5px;
     box-shadow: 0 0 4px 2px #395384;
     color: white;
+    padding: 2px 8px;
 }
 
 #tags{
@@ -123,4 +124,5 @@ input[type="submit"] {
     border-radius: 5px;
     box-shadow: 0 0 4px 2px #395384;
     color: white;
+    padding: 2px 8px;
 }
