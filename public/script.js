@@ -170,15 +170,24 @@
 		}
 		workingText.push(originText);
 
+		// Search the strings and replace them by links
 		function linkify(text, urlObject){
-		 	beginningText = text.substring(0, urlObject.indices[0]);
-		 	finishingText = text.substring(urlObject.indices[1]); 
-		 	workingText.push('<a href="' + urlObject.url + '">' + urlObject.url + '</a>' + finishingText) ;
-		 	// workingText += beginningText + '<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>';
-		 	return beginningText ;	
-		 	// return beginningText + '<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText;	
+			// Special condition because Twitter media tells it uses only one character when they are more
+			if(urlObject.indices[0] == 139){
+			 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
+			 	finishingText = text.substring(urlObject.indices[1]); 
+			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText) ;
+			 	return beginningText ;	
+			}
+			else{
+			 	beginningText = text.substring(0, urlObject.indices[0]);
+			 	finishingText = text.substring(urlObject.indices[1]); 
+			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText) ;
+			 	return beginningText ;
+			}
 		}
 
+		// Reverse the text stack if they were links
 	 	var newTweetText = "";
 	 	if(workingText != []){
 		 	for (var i = workingText.length - 1; i >= 0; i--) {
