@@ -46,21 +46,9 @@
 		if(tweetObject){
 			var date = tweetObject.tweet.created_at.slice(0, -11);
 
-			if(tweetObject.tweet.entities.urls){
-				for (var i = 0; i < tweetObject.tweet.entities.urls.length; i++) {
-					console.log('url: ', tweetObject.tweet.entities.urls[i].url, 'expanded url: ', tweetObject.tweet.entities.urls[i].expanded_url, 'display_url : ', tweetObject.tweet.entities.urls[i].display_url);
-					var tweetText = urlify(tweetObject.tweet.text, tweetObject.tweet.entities.urls[i].expanded_url, tweetObject.tweet.entities.urls[i].indices, tweetObject.tweet.entities.urls[i].url);
-					console.log('extracted url : ', tweetObject.tweet.text.substring(tweetObject.tweet.entities.urls[i].indices[0], tweetObject.tweet.entities.urls[i].indices[1] ));
-					
-					tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetText  + '</span></li>'; 
-				}; 
-			}
-			else{
-				var tweetText = tweetObject.tweet.text;
-				
-				tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetText  + '</span></li>'; 
-			}
+			var tweetText = urlify(tweetObject.tweet);
 
+			tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetText  + '</span></li>'; 
 		}
 
 		tweetsToPrint = "";
@@ -134,16 +122,74 @@
 		});
 	};
 
-	function urlify(text, expanded_url, urls_indices, url) {
-	    // var urlRegex = /(https?:\/\/[^\s]+)/g;
-	    // return text.replace(urlRegex, function(url) {
-	    //     return '<a href="' + expanded_url + '">' + url + '</a>';
-	    // });
-	    // 
-	 	text.substring(urls_indices[0], urls_indices[1]);
-	 	beginningText = text.substring(0, urls_indices[0]);
-	 	finishingText = text.substring(urls_indices[1]); 
-	 	return beginningText + '<a href="' + expanded_url + '">' + url + '</a>' + finishingText;	
+	function urlify(tweet) {
+
+		var urls_indices = [];
+
+		var tweetText = tweet.text;
+
+		if(tweet.entities.urls) {
+			for (var i = 0; i < tweet.entities.urls.length; i++) {
+				console.log('url: ', tweet.entities.urls[i].url, 'expanded url: ', tweet.entities.urls[i].expanded_url, 'display_url : ', tweet.entities.urls[i].display_url);
+				console.log('tweetObject: ', tweet);
+				urlIndice = {
+					expanded_url: tweet.entities.urls[i].expanded_url, 
+					url: tweet.entities.urls[i].url, 
+					indices: tweet.entities.urls[i].indices
+				};
+				urls_indices.push(urlIndice);
+			}
+		}
+		if(tweet.entities.media) {
+			for (var i = 0; i < tweet.entities.media.length; i++) {
+				console.log('media: ', tweet.entities.media[i]);
+				urlIndice = {
+					expanded_url: tweet.entities.media[i].expanded_url, 
+					url: tweet.entities.media[i].url, 
+					indices: tweet.entities.media[i].indices
+				};
+				urls_indices.push(urlIndice);
+			}; 
+		}
+
+		function compareIndicesInversed(a, b){
+			return  b.indices[0] - a.indices[0];
+		}
+
+		urls_indices.sort(compareIndicesInversed);
+
+		console.log(urls_indices);
+		var originText = tweetText;
+		var workingText = [];
+		for(var i = 0; i < urls_indices.length; i++){
+			if(originText != ""){
+				originText = linkify(originText, urls_indices[i]);
+				console.log('workingText : ', workingText);
+				console.log('originText: ', originText);
+			}
+		}
+		workingText.push(originText);
+
+		function linkify(text, urlObject){
+		 	beginningText = text.substring(0, urlObject.indices[0]);
+		 	finishingText = text.substring(urlObject.indices[1]); 
+		 	workingText.push('<a href="' + urlObject.url + '">' + urlObject.url + '</a>' + finishingText) ;
+		 	// workingText += beginningText + '<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>';
+		 	return beginningText ;	
+		 	// return beginningText + '<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText;	
+		}
+
+	 	var newTweetText = "";
+	 	if(workingText != []){
+		 	for (var i = workingText.length - 1; i >= 0; i--) {
+		 		newTweetText += workingText[i];
+		 	};
+	 	}
+	 	else{
+	 		newTweetText = tweetText;
+	 	}
+
+	 	return newTweetText;
 	}
 
 })();
