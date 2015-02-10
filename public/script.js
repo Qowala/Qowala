@@ -45,7 +45,8 @@
 
 		if(tweetObject){
 			var date = tweetObject.tweet.created_at.slice(0, -11);
-			tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetObject.tweet.text + '</span></li>'; 
+			var tweetText = urlify(tweetObject.tweet.text);
+			tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetText  + '</span></li>'; 
 		}
 
 		tweetsToPrint = "";
@@ -118,4 +119,10 @@
 			
 		});
 	};
+
+	function urlify(text) {
+	    var urlRegex = /(https?:\/\/[^\s]+)/g;
+	    return text.replace(urlRegex, '<a href="$1">$1</a>')
+	}
+
 })();
