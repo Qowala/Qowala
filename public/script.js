@@ -5,7 +5,7 @@
 	var statistics = {};
 	var table = document.getElementById('statistics');
 	var tweetsDisplay = document.getElementById('tweets');
-	// var tweetCount = 0;
+	var toggleButton = document.getElementById('toggleButton');
 	var tweets = [];
 	var tweetsToPrint = "";
 
@@ -94,34 +94,6 @@
 		};
 	}
 
-	socket.emit('auth', userId);
-	socket.on('tweet', function(tweetObject){
-		writeTweets(tweetObject);
-		displayStats(tweetObject);
-		writeStatistics();
-	});
-
-	var tagElements = document.getElementsByClassName('tag');
-
-	for (var i = 0; i < tagElements.length; i++) {
-		var element = tagElements[i];
-		FollowedTags.push(element.innerHTML.slice(1, element.length));
-
-		element.addEventListener('click', function(event){
-			var tag = this.innerHTML;
-			// Remove the # from the tag name
-			tag = tag.slice(1,tag.length);
-
-			// Remove the tag from the statistics table
-			delete statistics[tag];
-			writeStatistics();
-
-			socket.emit('remove tag', {tag:tag, userId:userId});
-			// Remove the li containing the tag
-			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
-			
-		});
-	};
 	/**
 	 * Replace all URLs in the tweets by clickable links
 	 * @param  {Object} tweet [Tweet to be processed]
@@ -149,7 +121,6 @@
 		// Parse all media URLs from the Tweet object to be sort in a array
 		if(tweet.entities.media) {
 			for (var i = 0; i < tweet.entities.media.length; i++) {
-				console.log('media: ', tweet.entities.media[i]);
 				urlIndice = {
 					expanded_url: tweet.entities.media[i].expanded_url, 
 					url: tweet.entities.media[i].url, 
@@ -217,5 +188,42 @@
 
 	 	return newTweetText;
 	}
+
+	socket.emit('auth', userId);
+	socket.on('tweet', function(tweetObject){
+		writeTweets(tweetObject);
+		displayStats(tweetObject);
+		writeStatistics();
+	});
+
+	var tagElements = document.getElementsByClassName('tag');
+
+	for (var i = 0; i < tagElements.length; i++) {
+		var element = tagElements[i];
+		FollowedTags.push(element.innerHTML.slice(1, element.length));
+
+		element.addEventListener('click', function(event){
+			var tag = this.innerHTML;
+			// Remove the # from the tag name
+			tag = tag.slice(1,tag.length);
+
+			// Remove the tag from the statistics table
+			delete statistics[tag];
+			writeStatistics();
+
+			socket.emit('remove tag', {tag:tag, userId:userId});
+			// Remove the li containing the tag
+			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+			
+		});
+	};
+
+	// Sends the pause request when button clicked
+	var toggleBool = false;
+	toggleButton.addEventListener('click', function(){
+		socket.emit('toggle pause', userId);
+		toggleBool ? toggleButton.innerHTML = "Stop" : toggleButton.innerHTML = "Play";
+		toggleBool = !toggleBool;
+	});
 
 })();

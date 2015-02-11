@@ -21,6 +21,11 @@ button {
     color: white;
     padding: 2px 8px;
 }
+#toggleButton {
+    display: block;
+    margin: 20px auto 0;
+    width: 100px;
+}
 
 #tags{
 	list-style-type: none;
