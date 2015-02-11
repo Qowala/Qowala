@@ -46,6 +46,7 @@
 		if(tweetObject){
 			var date = tweetObject.tweet.created_at.slice(0, -11);
 
+			// Replace all URLs of the tweet by clickable links
 			var tweetText = urlify(tweetObject.tweet);
 
 			tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetText  + '</span></li>'; 
@@ -121,17 +122,22 @@
 			
 		});
 	};
-
+	/**
+	 * Replace all URLs in the tweets by clickable links
+	 * @param  {Object} tweet [Tweet to be processed]
+	 * @return {String}       [Text of the tweet with clickable links]
+	 */
 	function urlify(tweet) {
 
+		// Array where to store all URLs of the tweet
 		var urls_indices = [];
 
+		// Copy of the original text
 		var tweetText = tweet.text;
 
+		// Parse all URLs from the Tweet object to be sort in a array
 		if(tweet.entities.urls) {
 			for (var i = 0; i < tweet.entities.urls.length; i++) {
-				console.log('url: ', tweet.entities.urls[i].url, 'expanded url: ', tweet.entities.urls[i].expanded_url, 'display_url : ', tweet.entities.urls[i].display_url);
-				console.log('tweetObject: ', tweet);
 				urlIndice = {
 					expanded_url: tweet.entities.urls[i].expanded_url, 
 					url: tweet.entities.urls[i].url, 
@@ -140,6 +146,7 @@
 				urls_indices.push(urlIndice);
 			}
 		}
+		// Parse all media URLs from the Tweet object to be sort in a array
 		if(tweet.entities.media) {
 			for (var i = 0; i < tweet.entities.media.length; i++) {
 				console.log('media: ', tweet.entities.media[i]);
@@ -152,33 +159,42 @@
 			}; 
 		}
 
+		/**
+		 * Compare the indices from bigger to smaller
+		 * @param  {Array} a [Indices of first element]
+		 * @param  {Array} b [Indices of first element]
+		 * @return {Integer}   [Comparison result]
+		 */
 		function compareIndicesInversed(a, b){
 			return  b.indices[0] - a.indices[0];
 		}
 
+		// Sort the indices from bigger to smaller
 		urls_indices.sort(compareIndicesInversed);
 
-		console.log(urls_indices);
+		// Copy of the orignal text to be then modified
 		var originText = tweetText;
+		// Array that will store parts of the tweet text being processed
 		var workingText = [];
+		// For every URL of the tweet, linkify it
 		for(var i = 0; i < urls_indices.length; i++){
 			if(originText != ""){
 				originText = linkify(originText, urls_indices[i]);
-				console.log('workingText : ', workingText);
-				console.log('originText: ', originText);
 			}
 		}
+		// If no more URL, push the rest of the tweet text at the end of the processed text
 		workingText.push(originText);
 
 		// Search the strings and replace them by links
 		function linkify(text, urlObject){
-			// Special condition because Twitter media tells it uses only one character when they are more
+			// Special condition to fix because Twitter media tells it uses only one character when they are more
 			if(urlObject.indices[0] == 139){
 			 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
 			 	finishingText = text.substring(urlObject.indices[1]); 
 			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText) ;
 			 	return beginningText ;	
 			}
+			// Replaces the URL by a clickable link and returns the rest of the text to be transformed
 			else{
 			 	beginningText = text.substring(0, urlObject.indices[0]);
 			 	finishingText = text.substring(urlObject.indices[1]); 
@@ -194,6 +210,7 @@
 		 		newTweetText += workingText[i];
 		 	};
 	 	}
+	 	// If they were no links, just a copy
 	 	else{
 	 		newTweetText = tweetText;
 	 	}
