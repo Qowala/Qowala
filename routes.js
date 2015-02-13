@@ -3,6 +3,8 @@ var passport = require('passport');
 
 function routes (app){
     app.get('/', home.getIndex);
+
+    app.get('/dashboard', home.getDashboard);
     
     app.post('/tag', ensureAuthenticated, home.postTag);
 
@@ -17,8 +19,8 @@ function routes (app){
 	// authentication has failed.
 	app.get('/auth/twitter/callback', 
 		passport.authenticate('twitter', { 
-			successRedirect: '/',
- 			failureRedirect: '/login' 
+			successRedirect: '/dashboard',
+ 			failureRedirect: '/' 
 		}));
 
 	// Simple route middleware to ensure user is authenticated.

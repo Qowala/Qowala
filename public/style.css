@@ -131,3 +131,15 @@ input[type="submit"] {
     color: white;
     padding: 2px 8px;
 }
+
+/********************/
+/*    Index.html    */
+/********************/
+
+#welcome-block {
+	text-align: center;
+}
+
+#welcome-block a {
+	font-size: 2em;
+}
