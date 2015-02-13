@@ -1,3 +1,5 @@
+var configTwitter = require('./config/twitter');
+
 var express = require('express');
 var routes = require('./routes');
 var expressLayouts = require('express-ejs-layouts');
@@ -66,16 +68,15 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new TwitterStrategy({
-    consumerKey: 'msm0fDeVdFzgR1uucQksA3uJz',
-    consumerSecret: 'AvWFjmQI3IyiiZL2IpmsCcZqZUPycUwdrE3fNTlJIE6ntJfz67',
-    callbackURL: "http://192.168.12.34:8080/auth/twitter/callback"
+    consumerKey: configTwitter.consumerKey,
+    consumerSecret: configTwitter.consumerSecret,
+    callbackURL: configTwitter.callbackURL
   },
   function(token, tokenSecret, profile, done) {
     // User.findOrCreate({ username: username }, function(err, user) {
     //   if (err) { return done(err); }
     //   done(null, user);
     // });
-    console.log('Autenticated with : ', done);
 
     done(null, profile);
     // console.log('Autenticated with : ', token, tokenSecret, profile, done);
