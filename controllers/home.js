@@ -11,12 +11,15 @@ exports.getIndex = function(req, res) {
 		userId = req.session.userId = users.addUser();
 	}
 
+	var user = req.user;
+
 	// Return the tags the user follows
 	users.getTags(userId, function(tags){
 		// Renders the index.html page
 	    res.render('home/index', {
 	        userId : userId,
-	        tags : tags	
+	        tags : tags,
+	        user: user	
 	    });
 	});
 

@@ -13,6 +13,8 @@
     "mongoose": "^3.8.5",
     "redis": "^0.12.1",
     "socket.io": "^1.1.0",
-    "twit": "^1.1.18"
+    "twit": "^1.1.18",
+    "passport-twitter": "~1.0.2",
+    "passport": "~0.2.1"
   }
 }

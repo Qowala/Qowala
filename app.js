@@ -7,6 +7,9 @@ var mongoose = require('mongoose');
 
 var app = express();
 
+var passport = require('passport')
+  , TwitterStrategy = require('passport-twitter').Strategy;
+
 // Fichiers de configuration de la BDD
 var dbconfig = require('./config/db');
 
@@ -43,9 +46,42 @@ app.set('layout', 'layout');
 // On lui indique où se trouve les vues
 app.set('views', __dirname + '/views');
 
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(expressLayouts);
 
 routes(app);
+
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+
+	done(null, id);
+  // User.findById(id, function (err, user) {
+  //   done(err, user);
+  // });
+});
+
+passport.use(new TwitterStrategy({
+    consumerKey: 'msm0fDeVdFzgR1uucQksA3uJz',
+    consumerSecret: 'AvWFjmQI3IyiiZL2IpmsCcZqZUPycUwdrE3fNTlJIE6ntJfz67',
+    callbackURL: "http://192.168.12.34:8080/auth/twitter/callback"
+  },
+  function(token, tokenSecret, profile, done) {
+    // User.findOrCreate({ username: username }, function(err, user) {
+    //   if (err) { return done(err); }
+    //   done(null, user);
+    // });
+    console.log('Autenticated with : ', done);
+
+    done(null, profile);
+    // console.log('Autenticated with : ', token, tokenSecret, profile, done);
+  }
+));
+
 
 // Express écoute le port 8080
 var server = app.listen(8080);
