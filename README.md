@@ -4,7 +4,7 @@ KoalasLiveTweet
 KoalasLiveTweet is a Twitter client to track tweets with specified hashtags. You can get the frequency of each hashtags and the percentage of languages using the hashtags.
 
 ## How to use 
-To use the KoalasLiveTweet, rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website*).
+To use the KoalasLiveTweet, rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website*). For the callback URL you have to put the domain name where the app will be hosted + '/auth/twitter/callback'.
 
 The recommanded way to launch the app is to use **Vagrant**.
 
