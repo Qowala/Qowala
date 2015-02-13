@@ -2,7 +2,7 @@ var home = require('./controllers/home');
 var passport = require('passport');
 
 function routes (app){
-    app.get('/', home.getIndex);
+    app.get('/', ensureAuthenticated, home.getIndex);
     
     app.post('/tag', home.postTag);
 
@@ -26,7 +26,7 @@ function routes (app){
 	// login page.
 	function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
-	res.redirect('/login')
+	res.redirect('auth/twitter');
 	}
 }
 
