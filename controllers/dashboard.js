@@ -2,16 +2,13 @@ var users = require('../lib/users');
 
 exports.getDashboard = function(req, res) {
 
-	var userId;
-
-	if (req.session.userId){
-		userId = req.session.userId;
+	if (req.user){
+		var userId = req.user;
+		users.addUser(userId);
 	}
 	else{
-		userId = req.session.userId = users.addUser();
+    	res.redirect('/');
 	}
-
-	var user = req.user;
 
 	// Return the tags the user follows
 	users.getTags(userId, function(tags){
@@ -19,7 +16,6 @@ exports.getDashboard = function(req, res) {
 	    res.render('home/dashboard', {
 	        userId : userId,
 	        tags : tags,
-	        user: user	
 	    });
 	});
 
@@ -28,7 +24,7 @@ exports.getDashboard = function(req, res) {
 };
 
 exports.postTag = function(req, res) {
-	users.addTag(req.session.userId, req.body.tag);
-    // Redirect to homepage
+	users.addTag(req.user, req.body.tag);
+    // Redirect to dashboard
     res.redirect('/dashboard');
 };

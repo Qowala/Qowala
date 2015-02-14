@@ -5,19 +5,13 @@ exports.getIndex = function(req, res) {
 
 	var userId;
 
-	if (req.session.userId){
-		userId = req.session.userId;
+	if (req.user){
+		userId = req.user;
 	}
-	else{
-		userId = req.session.userId = users.addUser();
-	}
-
-	var user = req.user;
 
 	// Renders the index.html page
     res.render('home/index', {
         userId : userId,
-        user: user	
     });
 
 	console.log(req.session);

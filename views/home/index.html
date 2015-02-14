@@ -7,7 +7,14 @@
 <div id="welcome-block">
     <h1>Welcome to KoalasLiveTweet !</h1>
     <p>It is an open source Twitter Dashboard that allows you to follow tweets according to hashtags.</p>
-    <p>To use it, please sign in your Twitter account !</p>
+
+    <%if (!userId) { %>
+    	<p>To use it, please sign in your Twitter account !</p>
         <a href="/auth/twitter">Sign in with Twitter</a>
+	<% }
+	else { %>
+		<p>Hello ! </p>
+        <a href="/dashboard">Enter the dashboard</a>
+	<% } %>
 
 </div>
