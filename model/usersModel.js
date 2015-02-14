@@ -71,7 +71,12 @@ exports.getUserName = function (userId, cb){
 			return ['error', {status: 500}];
 		} 
 		else {
-			cb(user.name);
+			if(user.name){
+				cb(user.name);
+			}
+			else{
+				cb('NONAME');
+			}
 		}
 	});
 };
