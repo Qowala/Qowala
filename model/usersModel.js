@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 
 var userSchema = mongoose.Schema({
-	user: Number
+	user: Number,
+	token: String,
+	tokenSecret: String
 	// socket: Object, --REMOVED--
 	// pause: Boolean  --REMOVED--
 });
@@ -15,14 +17,14 @@ var User = mongoose.model('User', userSchema);
  * @param  {Boolean} pause  Users pause status     --REMOVED--
  * @return {Object}         The user once created
  */
-exports.pushUser = function(userId){
+exports.pushUser = function(userId, token, tokenSecret){
 	User.findOne({user: userId}).exec(function(err, user) {
 		if (err) {
 			return ['error', {status: 500}];
 		} 
 		else {
 			if(user == null){
-				var user = new User({user: userId});
+				var user = new User({user: userId, token:token, tokenSecret: tokenSecret});
 				user.save(function(err) {
 					if (err) return [500, err];
 					return user;
@@ -30,8 +32,9 @@ exports.pushUser = function(userId){
 				console.log('Saved: ', user);
 			}
 			else{
-				User.update({user: userId}, {}, {}, function(err, updatedUser) {
+				User.update({user: userId}, {token:token, tokenSecret: tokenSecret}, {}, function(err, updatedUser) {
 				    if (err) return [500, err];
+				    console.log(' updatedUser : ', updatedUser);
 				    return updatedUser;
 				});
 				
