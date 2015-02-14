@@ -1,18 +1,13 @@
-var configTwitter = require('./config/twitter');
-
 var express = require('express');
 var routes = require('./routes');
 var expressLayouts = require('express-ejs-layouts');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-
+var passportAuthentication = require('./lib/passport');
 var app = express();
 
-var passport = require('passport')
-  , TwitterStrategy = require('passport-twitter').Strategy;
-
-// Fichiers de configuration de la BDD
+// Configuration file for the DB
 var dbconfig = require('./config/db');
 
 var mongoUri = process.env.MONGOLAB_URI ||
@@ -23,74 +18,48 @@ mongoose.connect(mongoUri, function(err, dbconfig) {
   if(!err) {
     console.log("We are connected to mongoDB");
   }
-}); // connect to our mongoDB database (commented out after you enter in your own credentials)
+}); // Connect to our mongoDB database (commented out after you enter in your own credentials)
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-// Definit des sessions
+// Setup sessions
 app.use(session({
-	secret: 'this is a super secret keyword'
+	secret: 'this1337is42a1337super42secret1337keyword'
 }));
 
-// Configuration du body parser
+// Configuration of body parser
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
-// Configuration du public
+// Configuration of public directory
 app.use(express.static(__dirname + '/public'));
 
-// On définit le moteur de template pour les fichiers .html
+// Declare the engine to render the html files
 app.engine('html', require('ejs').__express);
-// On dit à express d'utiliser le moteur défini précédemment
+// Set Express render engine
 app.set('view engine', 'html');
 app.set('layout', 'layout');
-// On lui indique où se trouve les vues
+// Views location
 app.set('views', __dirname + '/views');
 
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(expressLayouts);
 
+// Initalize the passport authentication
+passportAuthentication(app);
+
+// Setup the routes
 routes(app);
 
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-
-	done(null, id);
-  // User.findById(id, function (err, user) {
-  //   done(err, user);
-  // });
-});
-
-passport.use(new TwitterStrategy({
-    consumerKey: configTwitter.consumerKey,
-    consumerSecret: configTwitter.consumerSecret,
-    callbackURL: configTwitter.callbackURL
-  },
-  function(token, tokenSecret, profile, done) {
-    // User.findOrCreate({ username: username }, function(err, user) {
-    //   if (err) { return done(err); }
-    //   done(null, user);
-    // });
-
-    done(null, profile);
-    // console.log('Autenticated with : ', token, tokenSecret, profile, done);
-  }
-));
-
-
-// Express écoute le port 8080
+// Express listen at port 8080
 var server = app.listen(8080);
 console.log('Listening at 8080');
 
-// Socket.io écoute le port 8080
+// Socket.io listen at port 8080
 var io = require('socket.io').listen(server);
-// Utilise socket en lui donnant io
+
+// Give io to the socket
 require('./lib/socket')(io);
 
+// Launch the twitter app
 require('./lib/twitter');

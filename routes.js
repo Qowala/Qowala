@@ -1,12 +1,13 @@
 var home = require('./controllers/home');
+var dashboard = require('./controllers/dashboard');
 var passport = require('passport');
 
 function routes (app){
     app.get('/', home.getIndex);
 
-    app.get('/dashboard', home.getDashboard);
+    app.get('/dashboard', ensureAuthenticated, dashboard.getDashboard);
     
-    app.post('/tag', ensureAuthenticated, home.postTag);
+    app.post('/tag', ensureAuthenticated, dashboard.postTag);
 
     // Redirect the user to Twitter for authentication.  When complete, Twitter
 	// will redirect the user back to the application at
