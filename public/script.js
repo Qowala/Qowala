@@ -11,7 +11,8 @@
 
 	// Restores the content
 	if (localStorage.getItem('data_statistics')){
-		table.innerHTML = localStorage.getItem('data_statistics');
+		statistics = localStorage.getItem('data_statistics');
+		statistics = JSON.parse(statistics || "null");
 	}
 	if (localStorage.getItem('data_tweets')){
 		tweets = localStorage.getItem('data_tweets');
@@ -19,6 +20,7 @@
 	}
 
 	writeTweets();
+	writeStatistics();
 
 	/**
 	 * Rewrites the statistics table in HTML. Saves the data in localStorage.
@@ -28,7 +30,7 @@
 		for(tag in statistics){
 			table.innerHTML += statistics[tag];
 		}
-		localStorage.setItem('data_statistics', table.innerHTML);		
+		localStorage.setItem('data_statistics', JSON.stringify(statistics));		
 	}
 
 	/**
@@ -36,14 +38,15 @@
 	 * @param  {Object} tweetObject An object containing the tweet object
 	 */
 	function writeTweets(tweetObject){
-		var i = 50;
-		while(i--) { 
-			if(tweets[i]){
-				tweets[i+1] = tweets[i];
-			}
-		 }
 
 		if(tweetObject){
+			var i = 50;
+			while(i--) { 
+				if(tweets[i]){
+					tweets[i+1] = tweets[i];
+				}
+			 }
+			 
 			var date = tweetObject.tweet.created_at.slice(0, -11);
 
 			// Replace all URLs of the tweet by clickable links
