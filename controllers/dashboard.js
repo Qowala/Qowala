@@ -10,13 +10,16 @@ exports.getDashboard = function(req, res) {
     	res.redirect('/');
 	}
 
-	// Return the tags the user follows
-	users.getTags(userId, function(tags){
-		// Renders the dashboard.html page
-	    res.render('home/dashboard', {
-	        userId : userId,
-	        tags : tags,
-	    });
+	users.getUserName(userId, function(username){
+		// Return the tags the user follows
+		users.getTags(userId, function(tags){
+			// Renders the dashboard.html page
+		    res.render('home/dashboard', {
+		        userId : userId,
+		        tags : tags,
+		        username: username
+		    });
+		});
 	});
 
 	console.log(req.session);

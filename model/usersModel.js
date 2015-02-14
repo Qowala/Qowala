@@ -61,6 +61,22 @@ exports.getUserSocket = function (userId, cb){
 };
 
 /**
+ * Get username
+ * @param  {Number}   userId The users ID 
+ * @param  {Function} cb     Callback returning the username
+ */
+exports.getUserName = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			cb(user.name);
+		}
+	});
+};
+
+/**
  * Get all users
  * @param  {Function} cb     Callback returning the socket
  */

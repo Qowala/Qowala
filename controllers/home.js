@@ -7,12 +7,23 @@ exports.getIndex = function(req, res) {
 
 	if (req.user){
 		userId = req.user;
+		users.getUserName(userId, function(username){
+			// Renders the index.html page
+		    res.render('home/index', {
+		        userId : userId,
+		        username: username
+		    });	
+		});
+	}
+	else{
+		// Renders the index.html page
+	    res.render('home/index', {
+	        userId : userId,
+	        username: null
+	    });	
 	}
 
-	// Renders the index.html page
-    res.render('home/index', {
-        userId : userId,
-    });
+
 
 	console.log(req.session);
     
