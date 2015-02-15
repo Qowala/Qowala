@@ -93,13 +93,13 @@ button {
     padding: 0;
 }
 
-#statistics td+td+td ul{
-	list-style-type: none;
-	display: flex;
-	flex-flow: row-wrap;
-	margin: 0;
-	padding: 0;
-	width: 270px;
+#statistics td + td + td ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 254px;
 }
 
 #statistics td+td+td li{
