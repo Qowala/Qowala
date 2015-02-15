@@ -165,14 +165,14 @@
 			if(urlObject.indices[0] == 139){
 			 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.expanded_url + '</a>' + finishingText) ;
 			 	return beginningText ;	
 			}
 			// Replaces the URL by a clickable link and returns the rest of the text to be transformed
 			else{
 			 	beginningText = text.substring(0, urlObject.indices[0]);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.url + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.expanded_url + '</a>' + finishingText) ;
 			 	return beginningText ;
 			}
 		}
