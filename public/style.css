@@ -27,16 +27,15 @@ html{
     width: 290px;
 }
 
-button {
+#toggleButton {
     background-color: #dddddd;
     border: 1px solid #dddddd;
-    border-radius: 5px;
     color: #676767;
     font-family: "Open Sans",sans-serif;
     padding: 4px 15px;
 }
 
-button:hover{
+#toggleButton:hover{
 	background-color: #F5F5F5;
 }
 
@@ -54,10 +53,22 @@ button:hover{
 	margin-top: 5px;
 }
 
+.tag {
+    background-color: #dddddd;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    color: #676767;
+    font-family: "Open Sans",sans-serif;
+    padding: 4px 15px;
+}
+
+.tag:hover{
+	background-color: #F5F5F5;
+}
+
 .tag:hover:after{
 	content: " x";
 }
-
 /** TWEETS **/
 
 #tweets {
@@ -92,6 +103,7 @@ button:hover{
     margin-right: 10px;
     margin-top: 6px;
     width: 30px;
+    background-color: gray;
 }
 
 .tweet-authorname{
@@ -100,6 +112,11 @@ button:hover{
 
 .tweet-url{
 	color: #0084b4;
+	text-decoration: none;
+}
+
+.tweet-url:hover{
+	text-decoration: underline;
 }
 
 /** STATISTICS **/
