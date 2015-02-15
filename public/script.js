@@ -161,18 +161,26 @@
 
 		// Search the strings and replace them by links
 		function linkify(text, urlObject){
+			if(urlObject.expanded_url.length > 35){
+				displayUrl = urlObject.expanded_url.slice(0, 32);
+				displayUrl += '...';
+			}
+			else {
+				displayUrl = urlObject.expanded_url;
+			}
+
 			// Special condition to fix because Twitter media tells it uses only one character when they are more
 			if(urlObject.indices[0] == 139){
 			 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + urlObject.expanded_url + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + displayUrl + '</a>' + finishingText) ;
 			 	return beginningText ;	
 			}
 			// Replaces the URL by a clickable link and returns the rest of the text to be transformed
 			else{
 			 	beginningText = text.substring(0, urlObject.indices[0]);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + urlObject.expanded_url + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + displayUrl + '</a>' + finishingText) ;
 			 	return beginningText ;
 			}
 		}

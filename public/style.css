@@ -14,14 +14,32 @@ html{
     overflow-y: scroll;
 }
 
-button {
-    background-color: #5072b2;
-    border: 1px solid white;
-    border-radius: 5px;
-    box-shadow: 0 0 4px 2px #395384;
+
+#sidebar {
+    background-color: #333333;
+    bottom: 0;
     color: white;
-    padding: 2px 8px;
+    margin-top: -16px;
+    overflow-y: scroll;
+    padding: 30px 10px 10px;
+    position: fixed;
+    top: 0;
+    width: 290px;
 }
+
+button {
+    background-color: #dddddd;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    color: #676767;
+    font-family: "Open Sans",sans-serif;
+    padding: 4px 15px;
+}
+
+button:hover{
+	background-color: #F5F5F5;
+}
+
 #toggleButton {
     display: block;
     margin: 20px auto 0;
@@ -69,10 +87,11 @@ button {
 }
 
 .tweet-profile {
-	width: 48px;
-	height: 48px;
-	float: left;
-	margin-right: 10px;
+    float: left;
+    height: 30px;
+    margin-right: 10px;
+    margin-top: 6px;
+    width: 30px;
 }
 
 .tweet-authorname{
@@ -139,14 +158,19 @@ button {
 }
 input[type="text"] {
     width: 180px;
+    height: 22px;
 }
+
 input[type="submit"] {
-    background-color: #5072b2;
-    border: 1px solid white;
+    background-color: #ddd;
+    border: medium none;
     border-radius: 5px;
-    box-shadow: 0 0 4px 2px #395384;
-    color: white;
-    padding: 2px 8px;
+    color: #676767;
+    padding: 5px 10px;
+}
+
+input[type="submit"]:hover {
+	background-color: #F5F5F5;	
 }
 
 /********************/
