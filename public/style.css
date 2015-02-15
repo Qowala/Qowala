@@ -196,8 +196,60 @@ input[type="submit"]:hover {
 
 #welcome-block {
 	text-align: center;
+	margin-top: 10%;
 }
 
 #welcome-block a {
 	font-size: 2em;
+}
+
+#welcome-block p + p{
+	font-size: 1.2em;
+	font-style: italic;
+	margin-top: 50px;
+}
+#welcome-button {
+	background-color: #dddddd;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    color: #676767;
+    font-family: "Open Sans",sans-serif;
+    padding: 4px 15px;
+    text-decoration: none;
+}
+
+#welcome-button:hover{
+	background-color: #F5F5F5;
+}
+
+ul#about-informations {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#about-informations a{
+	color: white;
+	text-decoration: none;
+	padding-left: 15px;
+	font-size: 2em;
+}
+
+#about-informations li {
+	margin-bottom: 10px;
+}
+
+#about-informations li + li a{
+	font-size: 1em;
+}
+
+#about-informations a img{
+	/*width: 20px;*/
+	position: relative;
+	bottom: 2px;
+	padding-right: 10px;
+}
+
+#about-informations a:hover{
+	text-decoration: underline;
 }
