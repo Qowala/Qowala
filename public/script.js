@@ -47,12 +47,12 @@
 				}
 			 }
 			 
-			var date = tweetObject.tweet.created_at.slice(0, -11);
+			var date = tweetObject.tweet.created_at.slice(0, -5);
 
 			// Replace all URLs of the tweet by clickable links
 			var tweetText = urlify(tweetObject.tweet);
 
-			tweets[0] ='<li><span class="tweetdate">' + date + '</span><span class="tweetauthorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweettext">' + tweetText  + '</span></li>'; 
+			tweets[0] ='<li><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /><span class="tweet-date">' + date + '</span><span class="tweet-authorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 		}
 
 		tweetsToPrint = "";
@@ -91,7 +91,7 @@
 				tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
 				if(FollowedTags[j] === tweetObject.updatedTags[i]){
 					var languages = calculateLangStats(tweetObject.tagsStats[tweetObject.updatedTags[i]].lang);
-					statistics[tweetObject.updatedTags[i]] = '<tr><td class="tagname">' + tweetObject.updatedTags[i] + '</td><td class="tagfrequency">'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td><td class="taglang">' + languages + '</td></tr>';
+					statistics[tweetObject.updatedTags[i]] = '<tr><td class="tag-name">' + tweetObject.updatedTags[i] + '</td><td class="tag-frequency">'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td><td class="tag-lang">' + languages + '</td></tr>';
 				}
 			};
 		};
@@ -165,14 +165,14 @@
 			if(urlObject.indices[0] == 139){
 			 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.expanded_url + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + urlObject.expanded_url + '</a>' + finishingText) ;
 			 	return beginningText ;	
 			}
 			// Replaces the URL by a clickable link and returns the rest of the text to be transformed
 			else{
 			 	beginningText = text.substring(0, urlObject.indices[0]);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '">' + urlObject.expanded_url + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + urlObject.expanded_url + '</a>' + finishingText) ;
 			 	return beginningText ;
 			}
 		}

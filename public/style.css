@@ -53,22 +53,34 @@ button {
 	list-style-type: none;
 	/*background-color: #5072b2;
 	color: white;*/
-	padding: 5px;
-	margin-bottom: 10px;
+	min-height: 48px;
+	padding: 10px;
+	border-bottom: 1px dotted gray;
 }
 
-.tweetdate{
+.tweet-date{
 	font-style: italic;
 	font-size: 0.85em;
 	display: block;
 }
 
-.tweettext{
+.tweet-text{
 	font-size: 0.9em;
 }
 
-.tweetauthorname{
-	font-weight: bold;
+.tweet-profile {
+	width: 48px;
+	height: 48px;
+	float: left;
+	margin-right: 10px;
+}
+
+.tweet-authorname{
+	font-weight: 600;
+}
+
+.tweet-url{
+	color: #0084b4;
 }
 
 /** STATISTICS **/
@@ -84,23 +96,21 @@ button {
 
 #statistics tr {
     display: block;
-    height: 35px;
+    height: 50px;
     position: relative;
 }
 
-#statistics td + td {
+#statistics .tag-frequency {
     position: absolute;
-    top: 20px;
+    width: 120px;
+    top: 25px;
 }
 
-#statistics td + td + td {
-    left: 0;
-    padding: 0;
-    position: absolute;
-    top: 38px;
+#statistics .tag-lang {
+    padding: 25px 0;
 }
 
-#statistics td + td + td ul {
+#statistics .tag-lang ul {
     display: flex;
     list-style-type: none;
     margin: 0;
@@ -109,22 +119,22 @@ button {
     width: 254px;
 }
 
-#statistics td+td+td li{
+#statistics .tag-lang li{
 	margin-right: 10px;
 	float: left;
 }
 
-.tagname{
+.tag-name{
 	font-weight: bold;
 	font-size: 0.9em;
 }
 
-.tagfrequency{
+.tag-frequency{
 	font-style: italic;
 	font-size: 0.9em
 }
 
-.taglang li+li{
+.tag-lang li+li{
 	margin-left: 30px;
 }
 input[type="text"] {
