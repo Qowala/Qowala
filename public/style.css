@@ -11,6 +11,7 @@ html{
     position: fixed;
     bottom: 0;
     top:0;
+    overflow-y: scroll;
 }
 
 button {
@@ -39,10 +40,13 @@ button {
 	content: " x";
 }
 
+/** TWEETS **/
+
 #tweets {
     position: relative;
-    right: -300px;
+	right: -340px;
     width: calc(100% - 350px);
+    padding: 0;
 }
 
 #tweets li{
@@ -67,6 +71,8 @@ button {
 	font-weight: bold;
 }
 
+/** STATISTICS **/
+
 #statistics tbody{
 	display: block;
     margin-bottom: 55px;
@@ -76,21 +82,22 @@ button {
 	border-top: solid 1px white; 
 }
 
-#statistics tr{
-	position: relative;
-	display:block;
+#statistics tr {
+    display: block;
+    height: 35px;
+    position: relative;
 }
 
-#statistics td+td{
-	padding-left: 40px;
+#statistics td + td {
+    position: absolute;
+    top: 20px;
 }
 
-#statistics td+td+td{
-	position: absolute;
-	left: 0;
-	top: 20px;
-    top: 30px;
+#statistics td + td + td {
+    left: 0;
     padding: 0;
+    position: absolute;
+    top: 38px;
 }
 
 #statistics td + td + td ul {
