@@ -5,6 +5,7 @@ KoalasLiveTweet is a Twitter client to track tweets with specified hashtags. You
 
 ### KoalasLiveTweet v0.2 functionalities:
 
+- Multi-client with Twitter authentication
 - Track tweets according hashtags
 - See tweets statistics : number of tweets per min and proportion of tweets languages
 - Stop and play the stream
