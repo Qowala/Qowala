@@ -4,7 +4,6 @@ exports.getDashboard = function(req, res) {
 
 	if (req.user){
 		var userId = req.user;
-		users.addUser(userId);
 	}
 	else{
     	res.redirect('/');
