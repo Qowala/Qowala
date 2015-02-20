@@ -123,9 +123,9 @@ exports.getAllTags = function(cb){
  * @param  {String} receivedTag The tag to unsubscribe from
  * @return {String}             The same tag when unsubscribed
  */
-exports.removeUserFromTag = function(userId, receivedTag){
+exports.removeUserFromTag = function(userId, receivedTag, cb){
 	Tag.update({text: receivedTag}, { $pull: {users: userId} }, { upsert: true }, function(err, updatedTag) {
 	    if (err) return [500, err];
-	    return updatedTag;
+	    cb();
 	});
 };
