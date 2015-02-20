@@ -22,23 +22,7 @@ exports.getIndex = function(req, res) {
 	        username: null
 	    });	
 	}
-
-
-
+	
 	console.log(req.session);
     
 };
-
-// exports.getAuthenticated = function(req, res, next) {
-// 	console.log('Got here getAuthenticated');
-// 	passport.authenticate('twitter');
-// };
-
-// exports.getAuthenticationResponse = function(req, res) {
-
-// 	console.log('Got here getAuthenticatedResponse');
-// 	passport.authenticate('twitter', { 
-// 		successRedirect: '/dashboard',
-// 			failureRedirect: '/' 
-// 	});
-// };
