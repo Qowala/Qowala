@@ -26,7 +26,6 @@
 	// Default actions at page loading
 	writeTweets();
 	writeStatistics();
-	removeTagMonitor();
 
 	// Emit a message to connect to the server
 	socket.emit('auth', userId);
@@ -39,10 +38,13 @@
 	});
 
 	// Monitor the tracked tags list if user wants to remove one of them
-	function removeTagMonitor(){
+	function removeTagMonitor(tags){
+		for (var i = 0; i < tags.length; i++) {
+			FollowedTags.push(tags[i].text);
+		}
+
 		for (var i = 0; i < tagElements.length; i++) {
 			var element = tagElements[i];
-			FollowedTags.push(element.innerHTML);
 
 			element.addEventListener('click', function(event){
 				var tag = this.innerHTML;
@@ -103,7 +105,7 @@
 			tagList.innerHTML  += '<li><button class="tag">' + tags[i].text + '</button></li>';
 		}
 		var tagElements = document.getElementsByClassName('tag');
-		removeTagMonitor();
+		removeTagMonitor(tags);
 	}
 
 	/**

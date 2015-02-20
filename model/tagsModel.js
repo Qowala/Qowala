@@ -24,7 +24,6 @@ exports.pushTag = function(userId, receivedTag, cb){
 				var tag = new Tag({text: receivedTag, users: [userId]});
 				tag.save(function(err) {
 					if (err) return handleError(err);
-					console.log('Saved: ', tag);
 					cb(tag);
 				});
 				
@@ -32,8 +31,6 @@ exports.pushTag = function(userId, receivedTag, cb){
 			else{
 				var existingUser = false;
 				for (var i = 0; i < tag.users.length; i++) {
-					console.log('Log: tag.users: ', tag.users[i]);
-					console.log('userId: ', userId)
 					if(tag.users[i] == userId){
 						existingUser = true;
 					}
@@ -42,8 +39,6 @@ exports.pushTag = function(userId, receivedTag, cb){
 				if(!existingUser){
 					Tag.update({text: receivedTag}, { $push: {users: userId} }, { upsert: true }, function(err, updatedTag) {
 					    if (err) return [500, err];
-					    console.log('Update successful');
-					    console.log('Updated: ', updatedTag);
 						cb(tag);
 					});
 				}
@@ -97,7 +92,6 @@ exports.getUsersFollowingTags = function(tags, cb){
 				cb(usersFollowingTags);
 			}
 			else{
-				console.log('no one follows');
 				cb(null);
 			}
 			
