@@ -23,6 +23,7 @@
 		tweets = JSON.parse(tweets || "null");
 	}
 
+	// Default actions at page loading
 	writeTweets();
 	writeStatistics();
 	removeTagMonitor();
@@ -66,14 +67,26 @@
 		toggleBool = !toggleBool;
 	});
 
+	// Triggers the Enter button for adding tags
+	tagInput.addEventListener('keypress', function(e){
+		if (e.keyCode == 13) {
+			sendingTag();
+	    }
+	});
+
 	// Sends tag to add
 	sendTagButton.addEventListener('click', function(){
+		sendingTag();
+	});
+
+
+	function sendingTag(){
 		var tagObject = {};
 		tagObject.tag = tagInput.value;
 		tagInput.value = "";
 		tagObject.userId = userId;
 		socket.emit('add tag', tagObject);
-	});
+	}
 
 	// Receive the tag list and process it
 	socket.on('tag list', function(tags){
