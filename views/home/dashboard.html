@@ -1,19 +1,13 @@
 <div id="sidebar">
     <h2>Hello <%=username %></h2>
-    <form action="/tag" method="post">
         
-        <input type="text" name="tag" placeholder="Tag to track"/>
-        <input type="hidden" value="<%= userId %>" />
-        <input type="submit" value="Track" />
-    </form>
+        <input type="text" name="tag" placeholder="Tag to track" id="tagInput"/>
+        <button id="sendTagButton">Track</button> 
 
     <button id="toggleButton">Stop</button>
 
     <p>You are following:
-    <ul id="tags">
-        <% for(var i=0; i<tags.length; i++) {%>
-           <li><button class="tag"><%= tags[i] %></button></li>
-        <% } %> 
+    <ul id="tag-list">
     </ul>
     </p>
 

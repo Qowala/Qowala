@@ -1,6 +1,6 @@
 {
-  "name": "LiveTV",
-  "version": "0.0.1",
+  "name": "KoalasLiveTweet",
+  "version": "0.2.1",
   "private": "true",
   "dependencies": {
     "body-parser": "^1.9.0",
@@ -16,5 +16,8 @@
     "twit": "^1.1.18",
     "passport-twitter": "~1.0.2",
     "passport": "~0.2.1"
+  },
+  "devDependencies": {
+    "chai": "~2.0.0"
   }
 }

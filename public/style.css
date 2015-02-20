@@ -45,11 +45,11 @@ html{
     width: 100px;
 }
 
-#tags{
+#tag-list{
 	list-style-type: none;
 }
 
-#tags li+li{
+#tag-list li+li{
 	margin-top: 5px;
 }
 
@@ -178,7 +178,7 @@ input[type="text"] {
     height: 22px;
 }
 
-input[type="submit"] {
+#sendTagButton {
     background-color: #ddd;
     border: medium none;
     border-radius: 5px;
@@ -186,7 +186,7 @@ input[type="submit"] {
     padding: 5px 10px;
 }
 
-input[type="submit"]:hover {
+#sendTagButton:hover {
 	background-color: #F5F5F5;	
 }
 
