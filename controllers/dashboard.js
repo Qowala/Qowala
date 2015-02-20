@@ -10,15 +10,11 @@ exports.getDashboard = function(req, res) {
 	}
 
 	users.getUserName(userId, function(username){
-		// Return the tags the user follows
-		users.getTags(userId, function(tags){
-			// Renders the dashboard.html page
-		    res.render('home/dashboard', {
-		        userId : userId,
-		        tags : tags,
-		        username: username
-		    });
-		});
+		// Renders the dashboard.html page
+	    res.render('home/dashboard', {
+	        userId : userId,
+	        username: username
+	    });
 	});
 
 	console.log(req.session);

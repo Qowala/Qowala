@@ -8,6 +8,10 @@
 	var toggleButton = document.getElementById('toggleButton');
 	var tweets = [];
 	var tweetsToPrint = "";
+	var sendTagButton = document.getElementById('sendTagButton');
+	var tagInput = document.getElementById('tagInput');
+	var tagElements = document.getElementsByClassName('tag');
+	var tagList = document.getElementById('tag-list');
 
 	// Restores the content
 	if (localStorage.getItem('data_statistics')){
@@ -21,6 +25,73 @@
 
 	writeTweets();
 	writeStatistics();
+	removeTagMonitor();
+
+	// Emit a message to connect to the server
+	socket.emit('auth', userId);
+
+	// Receive tweet and process it
+	socket.on('tweet', function(tweetObject){
+		writeTweets(tweetObject);
+		displayStatsBuilder(tweetObject);
+		writeStatistics();
+	});
+
+	// Monitor the tracked tags list if user wants to remove one of them
+	function removeTagMonitor(){
+		for (var i = 0; i < tagElements.length; i++) {
+			var element = tagElements[i];
+			FollowedTags.push(element.innerHTML);
+
+			element.addEventListener('click', function(event){
+				var tag = this.innerHTML;
+
+				// Remove the tag from the statistics table
+				delete statistics[tag];
+				writeStatistics();
+
+				socket.emit('remove tag', {tag:tag, userId:userId});
+				// Remove the li containing the tag
+				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+				
+			});
+		};
+	}
+
+	// Sends the pause request when button clicked
+	var toggleBool = false;
+	toggleButton.addEventListener('click', function(){
+		socket.emit('toggle pause', userId);
+		toggleBool ? toggleButton.innerHTML = "Stop" : toggleButton.innerHTML = "Play";
+		toggleBool = !toggleBool;
+	});
+
+	// Sends tag to add
+	sendTagButton.addEventListener('click', function(){
+		var tagObject = {};
+		tagObject.tag = tagInput.value;
+		tagInput.value = "";
+		tagObject.userId = userId;
+		socket.emit('add tag', tagObject);
+	});
+
+	// Receive the tag list and process it
+	socket.on('tag list', function(tags){
+		writeTagList(tags);
+	});
+
+	/**
+	 * Rewrites the tags list in HTML and updates the removeTagMonitor
+	 * @param  {Array} tags The tags list
+	 */
+	function writeTagList(tags){
+		tagList.innerHTML = "";
+		for(var i=0; i<tags.length; i++) {
+			tagList.innerHTML  += '<li><button class="tag">' + tags[i].text + '</button></li>';
+		}
+		var tagElements = document.getElementsByClassName('tag');
+		removeTagMonitor();
+	}
 
 	/**
 	 * Rewrites the statistics table in HTML. Saves the data in localStorage.
@@ -82,10 +153,10 @@
 	}
 
 	/**
-	 * Displays the tweets stats
+	 * Build the tweets stats to be displayed
 	 * @param  {Object} tweetObject Object containing the stats with the tweets
 	 */
-	function displayStats(tweetObject){
+	function displayStatsBuilder(tweetObject){
 		for (var i = 0; i < tweetObject.updatedTags.length; i++) {
 			for (var j = 0; j < FollowedTags.length; j++) {
 				tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
@@ -199,42 +270,4 @@
 
 	 	return newTweetText;
 	}
-
-	socket.emit('auth', userId);
-	socket.on('tweet', function(tweetObject){
-		writeTweets(tweetObject);
-		displayStats(tweetObject);
-		writeStatistics();
-	});
-
-	var tagElements = document.getElementsByClassName('tag');
-
-	for (var i = 0; i < tagElements.length; i++) {
-		var element = tagElements[i];
-		FollowedTags.push(element.innerHTML.slice(1, element.length));
-
-		element.addEventListener('click', function(event){
-			var tag = this.innerHTML;
-			// Remove the # from the tag name
-			tag = tag.slice(1,tag.length);
-
-			// Remove the tag from the statistics table
-			delete statistics[tag];
-			writeStatistics();
-
-			socket.emit('remove tag', {tag:tag, userId:userId});
-			// Remove the li containing the tag
-			event.target.parentNode.parentNode.removeChild(event.target.parentNode);
-			
-		});
-	};
-
-	// Sends the pause request when button clicked
-	var toggleBool = false;
-	toggleButton.addEventListener('click', function(){
-		socket.emit('toggle pause', userId);
-		toggleBool ? toggleButton.innerHTML = "Stop" : toggleButton.innerHTML = "Play";
-		toggleBool = !toggleBool;
-	});
-
 })();
