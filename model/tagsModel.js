@@ -32,7 +32,9 @@ exports.pushTag = function(userId, receivedTag, cb){
 			else{
 				var existingUser = false;
 				for (var i = 0; i < tag.users.length; i++) {
-					if(tag.users[i] === userId){
+					console.log('Log: tag.users: ', tag.users[i]);
+					console.log('userId: ', userId)
+					if(tag.users[i] == userId){
 						existingUser = true;
 					}
 					
