@@ -11,7 +11,13 @@ KoalasLiveTweet is a Twitter client to track tweets with specified hashtags. You
 - Stop and play the stream
 
 ### How to use 
-To use the KoalasLiveTweet, rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* after creating your own app). For the callback URL you have to put the domain name where the app will be hosted + '/auth/twitter/callback'.
+To use the KoalasLiveTweet: 
+
+- Rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* at http://apps.twitter.com after creating your own app).
+
+![Twitter App Manager](https://lut.im/qAlAvLX3/hYTfULdb)
+
+- For the callback URL in **config/twitter.json** you have to put the domain name where the app will be hosted and add to it '/auth/twitter/callback'.
 
 ##### Ubuntu 14.04 process:
 ###### Install NodeJS
@@ -32,13 +38,12 @@ To use the KoalasLiveTweet, rename **config/template_twitter.json** to **config/
     nodejs app.js
     
     
-*NodeJS installation process inspired by Digital Ocean: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server
-*
+*NodeJS installation process inspired by Digital Ocean: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server*
 
 *MongoDB installation process inspired by MongoDB.org http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/*
 
 #### To develop
-The recommanded way to launch the app for developmlent is to use **Vagrant**.
+The recommanded way to launch the app for development is to use **Vagrant**.
 
 In the KoalasLiveTweet's directory do
 
