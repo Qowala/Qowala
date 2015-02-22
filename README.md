@@ -20,6 +20,9 @@ To use the KoalasLiveTweet:
 - For the callback URL in **config/twitter.json** you have to put the domain name where the app will be hosted and add to it '/auth/twitter/callback'.
 
 ##### Ubuntu 14.04 process:
+- Automatically: You can just launch the **KoalasLiveTweet_InstallationScript.sh**, it will do automatically what is below
+- Manually: Follow below instructions
+
 ###### Install NodeJS
     curl -sL https://deb.nodesource.com/setup | sudo bash -
     sudo apt-get install nodejs
