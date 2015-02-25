@@ -71,20 +71,39 @@ html{
 }
 /** TWEETS **/
 
-#tweets {
+#tweets-columns {
     position: relative;
 	right: -340px;
     width: calc(100% - 350px);
     padding: 0;
+    display: inline-flex;
 }
 
-#tweets li{
+.tweets li{
 	list-style-type: none;
 	/*background-color: #5072b2;
 	color: white;*/
 	min-height: 48px;
 	padding: 10px;
 	border-bottom: 1px dotted gray;
+}
+
+#search-tweets {
+    width: 50%;
+}
+
+#search-tweets:before {
+    content: "Search";
+    text-align: center;
+}
+
+#user-tweets {
+    width: 50%;
+}
+
+#user-tweets:before{
+    content: "Timeline";
+    text-align: center;
 }
 
 .tweet-date{

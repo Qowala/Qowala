@@ -4,9 +4,13 @@
 	var FollowedTags = [];
 	var statistics = {};
 	var table = document.getElementById('statistics');
-	var tweetsDisplay = document.getElementById('tweets');
+	var tweetsColumns = document.getElementById('tweets-columns');
+	var userTweets = document.getElementById('user-tweets');
+	var searchTweets = document.getElementById('search-tweets');
 	var toggleButton = document.getElementById('toggleButton');
-	var tweets = [];
+	// var tweets = [];
+	var tweetsFromUser = [];
+	var tweetsFromSearch = [];
 	var tweetsToPrint = "";
 	var sendTagButton = document.getElementById('sendTagButton');
 	var tagInput = document.getElementById('tagInput');
@@ -18,9 +22,13 @@
 		statistics = localStorage.getItem('data_statistics');
 		statistics = JSON.parse(statistics || "null");
 	}
-	if (localStorage.getItem('data_tweets')){
-		tweets = localStorage.getItem('data_tweets');
-		tweets = JSON.parse(tweets || "null");
+	if (localStorage.getItem('tweetsFromSearch')){
+		tweetsFromSearch = localStorage.getItem('tweetsFromSearch');
+		tweetsFromSearch = JSON.parse(tweetsFromSearch || "null");
+	}
+	if (localStorage.getItem('tweetsFromUser')){
+		tweetsFromUser = localStorage.getItem('tweetsFromUser');
+		tweetsFromUser = JSON.parse(tweetsFromUser || "null");
 	}
 
 	// Default actions at page loading
@@ -126,27 +134,52 @@
 	function writeTweets(tweetObject){
 
 		if(tweetObject){
-			var i = 50;
-			while(i--) { 
-				if(tweets[i]){
-					tweets[i+1] = tweets[i];
-				}
-			 }
 			 
 			var date = tweetObject.tweet.created_at.slice(0, -5);
 
 			// Replace all URLs of the tweet by clickable links
 			var tweetText = urlify(tweetObject.tweet);
 
-			tweets[0] ='<li><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /><span class="tweet-date">' + date + '</span><span class="tweet-authorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+			
+			if(tweetObject.streamSource == 'user') {
+				var i = 50;
+				while(i--) { 
+					if(tweetsFromUser[i]){
+						tweetsFromUser[i+1] = tweetsFromUser[i];
+					}
+				 }
+				console.log('Got a tweet for user ! ');
+				tweetsFromUser[0] ='<li><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /><span class="tweet-date">' + date + '</span><span class="tweet-authorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+			}
+			else if (tweetObject.streamSource == 'search') {
+				var i = 50;
+				while(i--) { 
+					if(tweetsFromSearch[i]){
+						tweetsFromSearch[i+1] = tweetsFromSearch[i];
+					}
+				 }
+				tweetsFromSearch[0] ='<li><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /><span class="tweet-date">' + date + '</span><span class="tweet-authorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+			}
+			else {
+				sendTo = 'default';
+			}
 		}
 
+		// Update content of HTML elements
 		tweetsToPrint = "";
-		for (var i = 0; i < tweets.length; i++) {
-		 	tweetsToPrint += tweets[i];
+		for (var i = 0; i < tweetsFromUser.length; i++) {
+		 	tweetsToPrint += tweetsFromUser[i];
 		}; 
-		tweetsDisplay.innerHTML = tweetsToPrint;
-		localStorage.setItem('data_tweets', JSON.stringify(tweets));
+		userTweets.innerHTML = tweetsToPrint;
+
+		tweetsToPrint = "";
+		for (var i = 0; i < tweetsFromSearch.length; i++) {
+		 	tweetsToPrint += tweetsFromSearch[i];
+		}; 
+		searchTweets.innerHTML = tweetsToPrint;
+
+		localStorage.setItem('tweetsFromSearch', JSON.stringify(tweetsFromSearch));
+		localStorage.setItem('tweetsFromUser', JSON.stringify(tweetsFromUser));
 	}
 
 	/**
