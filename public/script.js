@@ -40,6 +40,9 @@
 
 	// Receive tweet and process it
 	socket.on('tweet', function(tweetObject){
+		if(tweetObject.streamSource == 'user') {
+			console.log('Got a tweet for user ! ');
+		}
 		writeTweets(tweetObject);
 		displayStatsBuilder(tweetObject);
 		writeStatistics();
@@ -148,8 +151,7 @@
 						tweetsFromUser[i+1] = tweetsFromUser[i];
 					}
 				 }
-				console.log('Got a tweet for user ! ');
-				tweetsFromUser[0] ='<li><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /><span class="tweet-date">' + date + '</span><span class="tweet-authorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+				tweetsFromUser[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 			}
 			else if (tweetObject.streamSource == 'search') {
 				var i = 50;
@@ -158,7 +160,7 @@
 						tweetsFromSearch[i+1] = tweetsFromSearch[i];
 					}
 				 }
-				tweetsFromSearch[0] ='<li><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /><span class="tweet-date">' + date + '</span><span class="tweet-authorname"> ' + tweetObject.tweet.user.name + '</span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 			}
 			else {
 				sendTo = 'default';

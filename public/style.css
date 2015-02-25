@@ -125,8 +125,18 @@ html{
     background-color: gray;
 }
 
+.tweet-profile > a {
+    color: black;
+    text-decoration: none;
+}
+
 .tweet-authorname{
-	font-weight: 600;
+    font-weight: 600;
+}
+
+.tweet-authorname > a {
+    color: black;
+    text-decoration: none;
 }
 
 .tweet-url{
