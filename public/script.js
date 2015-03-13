@@ -169,23 +169,22 @@
 				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 			}
 			else if (tweetObject.streamSource == 'lists') {
-					console.log('they are ', tweetObject.tweet.length, 'lists');
+				listsRow.innerHTML = "";
 				for (var i = 0; i < tweetObject.tweet.length; i++) {
 					// Replace all URLs of the tweet by clickable links
 
 					var newColumn = document.createElement('ul');
-					newColumn.class = 'tweets';
-					var tweetsList = [];
+					newColumn.setAttribute('class', 'tweets');
+					var tweetsList = "";
 					for (var j = 0; j < tweetObject.tweet[i].length; j++) {
 						var date = tweetObject.tweet[i][j].created_at.slice(0, -5);
 						var tweetText = urlify(tweetObject.tweet[i][j]);
 		
-						tweetsList[j] ='<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+						tweetsList += '<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 					};
 					newColumn.innerHTML = tweetsList;
 
 					listsRow.appendChild(newColumn);
-					console.log('appended: ', newColumn);
 				}; 
 			}
 			else {
@@ -322,14 +321,14 @@
 			if(urlObject.indices[0] == 139){
 			 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + displayUrl + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url" target="_blank">' + displayUrl + '</a>' + finishingText) ;
 			 	return beginningText ;	
 			}
 			// Replaces the URL by a clickable link and returns the rest of the text to be transformed
 			else{
 			 	beginningText = text.substring(0, urlObject.indices[0]);
 			 	finishingText = text.substring(urlObject.indices[1]); 
-			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url">' + displayUrl + '</a>' + finishingText) ;
+			 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url" target="_blank">' + displayUrl + '</a>' + finishingText) ;
 			 	return beginningText ;
 			}
 		}

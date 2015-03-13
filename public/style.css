@@ -79,6 +79,11 @@ html{
     display: inline-flex;
 }
 
+#lists-row {
+    padding: 0;
+    display: inline-flex;
+}
+
 .tweets li{
 	list-style-type: none;
 	/*background-color: #5072b2;
