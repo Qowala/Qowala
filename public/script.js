@@ -8,6 +8,7 @@
 	var userTweets = document.getElementById('user-tweets');
 	var searchTweets = document.getElementById('search-tweets');
 	var toggleButton = document.getElementById('toggleButton');
+	var listsRow = document.getElementById('lists-row');
 	// var tweets = [];
 	var tweetsFromUser = [];
 	var tweetsFromSearch = [];
@@ -138,13 +139,14 @@
 
 		if(tweetObject){
 			 
-			var date = tweetObject.tweet.created_at.slice(0, -5);
-
-			// Replace all URLs of the tweet by clickable links
-			var tweetText = urlify(tweetObject.tweet);
 
 			
 			if(tweetObject.streamSource == 'user') {
+				var date = tweetObject.tweet.created_at.slice(0, -5);
+
+				// Replace all URLs of the tweet by clickable links
+				var tweetText = urlify(tweetObject.tweet);
+				
 				var i = 50;
 				while(i--) { 
 					if(tweetsFromUser[i]){
@@ -154,6 +156,10 @@
 				tweetsFromUser[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 			}
 			else if (tweetObject.streamSource == 'search') {
+				var date = tweetObject.tweet.created_at.slice(0, -5);
+
+				// Replace all URLs of the tweet by clickable links
+				var tweetText = urlify(tweetObject.tweet);
 				var i = 50;
 				while(i--) { 
 					if(tweetsFromSearch[i]){
@@ -161,6 +167,26 @@
 					}
 				 }
 				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+			}
+			else if (tweetObject.streamSource == 'lists') {
+					console.log('they are ', tweetObject.tweet.length, 'lists');
+				for (var i = 0; i < tweetObject.tweet.length; i++) {
+					// Replace all URLs of the tweet by clickable links
+
+					var newColumn = document.createElement('ul');
+					newColumn.class = 'tweets';
+					var tweetsList = [];
+					for (var j = 0; j < tweetObject.tweet[i].length; j++) {
+						var date = tweetObject.tweet[i][j].created_at.slice(0, -5);
+						var tweetText = urlify(tweetObject.tweet[i][j]);
+		
+						tweetsList[j] ='<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+					};
+					newColumn.innerHTML = tweetsList;
+
+					listsRow.appendChild(newColumn);
+					console.log('appended: ', newColumn);
+				}; 
 			}
 			else {
 				sendTo = 'default';
@@ -207,15 +233,17 @@
 	 * @param  {Object} tweetObject Object containing the stats with the tweets
 	 */
 	function displayStatsBuilder(tweetObject){
-		for (var i = 0; i < tweetObject.updatedTags.length; i++) {
-			for (var j = 0; j < FollowedTags.length; j++) {
-				tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
-				if(FollowedTags[j] === tweetObject.updatedTags[i]){
-					var languages = calculateLangStats(tweetObject.tagsStats[tweetObject.updatedTags[i]].lang);
-					statistics[tweetObject.updatedTags[i]] = '<tr><td class="tag-name">' + tweetObject.updatedTags[i] + '</td><td class="tag-frequency">'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td><td class="tag-lang">' + languages + '</td></tr>';
-				}
+		if(tweetObject.updatedTags != null){
+			for (var i = 0; i < tweetObject.updatedTags.length; i++) {
+				for (var j = 0; j < FollowedTags.length; j++) {
+					tweetObject.updatedTags[i] = tweetObject.updatedTags[i].toLowerCase();
+					if(FollowedTags[j] === tweetObject.updatedTags[i]){
+						var languages = calculateLangStats(tweetObject.tagsStats[tweetObject.updatedTags[i]].lang);
+						statistics[tweetObject.updatedTags[i]] = '<tr><td class="tag-name">' + tweetObject.updatedTags[i] + '</td><td class="tag-frequency">'+ tweetObject.tagsStats[tweetObject.updatedTags[i]].frequency + ' tweets/min </td><td class="tag-lang">' + languages + '</td></tr>';
+					}
+				};
 			};
-		};
+		}
 	}
 
 	/**
