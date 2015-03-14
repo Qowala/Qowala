@@ -4,9 +4,9 @@
 	var FollowedTags = [];
 	var statistics = {};
 	var table = document.getElementById('statistics');
-	var tweetsColumns = document.getElementById('tweets-columns');
-	var userTweets = document.getElementById('user-tweets');
-	var searchTweets = document.getElementById('search-tweets');
+	var tweetsColumnsList = document.getElementById('tweets-columns-list');
+	var userTweets = document.getElementById('tweets-user');
+	var searchTweets = document.getElementById('tweets-search');
 	var toggleButton = document.getElementById('toggleButton');
 	var listsRow = document.getElementById('lists-row');
 	// var tweets = [];
@@ -17,6 +17,7 @@
 	var tagInput = document.getElementById('tagInput');
 	var tagElements = document.getElementsByClassName('tag');
 	var tagList = document.getElementById('tag-list');
+	var listsList = [];
 
 	// Restores the content
 	if (localStorage.getItem('data_statistics')){
@@ -47,6 +48,31 @@
 		writeTweets(tweetObject);
 		displayStatsBuilder(tweetObject);
 		writeStatistics();
+	});
+
+	socket.on('lists-list', function(listsObject){
+		for (var i = listsObject.length - 1; i >= 0; i--) {
+			var newTweetColumn = document.createElement('li');
+			newTweetColumn.setAttribute('class', 'tweets-column');
+			newTweetColumn.setAttribute('id', 'tweets-column-' + listsObject[i].slug);
+
+			var newTweetColumnHeader = document.createElement('h3');
+			newTweetColumnHeader.setAttribute('class', 'tweets-column-header');
+			newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + listsObject[i].slug);
+			newTweetColumnHeader.textContent = listsObject[i].name;
+			
+			var newTweetColumnTweets = document.createElement('ul');
+			newTweetColumnTweets.setAttribute('class', 'tweets');
+			newTweetColumnTweets.setAttribute('id', 'tweets-' + listsObject[i].slug);
+
+			newTweetColumn.appendChild(newTweetColumnHeader);
+			newTweetColumn.appendChild(newTweetColumnTweets);
+
+			// Store the list name in an array 
+			listsList.push({slug: listsObject[i].slug, name: listsObject[i].name});
+
+			tweetsColumnsList.appendChild(newTweetColumn);
+		};
 	});
 
 	// Monitor the tracked tags list if user wants to remove one of them
@@ -169,22 +195,19 @@
 				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
 			}
 			else if (tweetObject.streamSource == 'lists') {
-				listsRow.innerHTML = "";
 				for (var i = 0; i < tweetObject.tweet.length; i++) {
-					// Replace all URLs of the tweet by clickable links
-
-					var newColumn = document.createElement('ul');
-					newColumn.setAttribute('class', 'tweets');
-					var tweetsList = "";
-					for (var j = 0; j < tweetObject.tweet[i].length; j++) {
-						var date = tweetObject.tweet[i][j].created_at.slice(0, -5);
-						var tweetText = urlify(tweetObject.tweet[i][j]);
-		
-						tweetsList += '<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
-					};
-					newColumn.innerHTML = tweetsList;
-
-					listsRow.appendChild(newColumn);
+					if(listsList[i]){
+						var currentColumnTweets = document.getElementById('tweets-' + listsList[i].slug);
+						currentColumnTweets.innerHTML = "";
+						var tweetsList = "";
+						for (var j = 0; j < tweetObject.tweet[i].length; j++) {
+							var date = tweetObject.tweet[i][j].created_at.slice(0, -5);
+							var tweetText = urlify(tweetObject.tweet[i][j]);
+			
+							tweetsList += '<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+						};
+						currentColumnTweets.innerHTML = tweetsList;
+					}
 				}; 
 			}
 			else {
