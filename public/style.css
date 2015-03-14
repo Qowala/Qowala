@@ -110,6 +110,8 @@ html{
 
 .tweet-text{
 	font-size: 0.9em;
+    margin: 5px 0;
+    word-wrap: break-word;
 }
 
 .tweet-profile {

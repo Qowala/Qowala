@@ -179,7 +179,7 @@
 						tweetsFromUser[i+1] = tweetsFromUser[i];
 					}
 				 }
-				tweetsFromUser[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+				tweetsFromUser[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <p class="tweet-text">' + tweetText  + '</p></li>'; 
 			}
 			else if (tweetObject.streamSource == 'search') {
 				var date = tweetObject.tweet.created_at.slice(0, -5);
@@ -192,7 +192,7 @@
 						tweetsFromSearch[i+1] = tweetsFromSearch[i];
 					}
 				 }
-				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <p class="tweet-text">' + tweetText  + '</p></li>'; 
 			}
 			else if (tweetObject.streamSource == 'lists') {
 				for (var i = 0; i < tweetObject.tweet.length; i++) {
@@ -204,7 +204,7 @@
 							var date = tweetObject.tweet[i][j].created_at.slice(0, -5);
 							var tweetText = urlify(tweetObject.tweet[i][j]);
 			
-							tweetsList += '<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <span class="tweet-text">' + tweetText  + '</span></li>'; 
+							tweetsList += '<li><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet[i][j].user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet[i][j].user.screen_name + '" target="_blank">' + tweetObject.tweet[i][j].user.name + '</a></span> : <p class="tweet-text">' + tweetText  + '</p></li>'; 
 						};
 						currentColumnTweets.innerHTML = tweetsList;
 					}
