@@ -51,7 +51,7 @@
 	});
 
 	socket.on('lists-list', function(listsObject){
-		for (var i = listsObject.length - 1; i >= 0; i--) {
+		for (var i = 0; i < listsObject.length; i++) {
 			var newTweetColumn = document.createElement('li');
 			newTweetColumn.setAttribute('class', 'tweets-column');
 			newTweetColumn.setAttribute('id', 'tweets-column-' + listsObject[i].slug);
