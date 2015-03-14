@@ -50,7 +50,18 @@
 		writeStatistics();
 	});
 
+	// Receive the user's lists and prepare the columns
 	socket.on('lists-list', function(listsObject){
+
+		// Delete current columns
+		for (var i = 0; i < listsList.length; i++) {
+			var currentColumn = document.getElementById('tweets-column-' + listsList[i].slug);
+			document.removeChild(currentColumn);
+		}; 
+
+		// Reinitialize lists
+		listsList = [];
+
 		for (var i = 0; i < listsObject.length; i++) {
 			var newTweetColumn = document.createElement('li');
 			newTweetColumn.setAttribute('class', 'tweets-column');
@@ -75,6 +86,15 @@
 		};
 	});
 
+	socket.on('remove tag', function(tag){
+		// Remove the tag from the statistics table
+		delete statistics[tag.tag];
+		writeStatistics();
+
+		// Remove the li containing the tag
+		event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+	});
+
 	// Monitor the tracked tags list if user wants to remove one of them
 	function removeTagMonitor(tags){
 		for (var i = 0; i < tags.length; i++) {
@@ -94,7 +114,6 @@
 				socket.emit('remove tag', {tag:tag, userId:userId});
 				// Remove the li containing the tag
 				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
-				
 			});
 		};
 	}
@@ -164,9 +183,6 @@
 	function writeTweets(tweetObject){
 
 		if(tweetObject){
-			 
-
-			
 			if(tweetObject.streamSource == 'user') {
 				var date = tweetObject.tweet.created_at.slice(0, -5);
 
