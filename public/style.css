@@ -71,7 +71,7 @@ html{
 }
 /** TWEETS **/
 
-#tweets-columns {
+#tweets-columns-list {
     position: relative;
 	right: -340px;
     width: calc(100% - 350px);
@@ -79,9 +79,18 @@ html{
     display: inline-flex;
 }
 
+.tweets-column{
+    list-style-type: none;
+    width: 25%;
+}
+
 #lists-row {
     padding: 0;
     display: inline-flex;
+}
+
+.tweets {
+    padding: 0;
 }
 
 .tweets li{
@@ -91,24 +100,6 @@ html{
 	min-height: 48px;
 	padding: 10px;
 	border-bottom: 1px dotted gray;
-}
-
-#search-tweets {
-    width: 50%;
-}
-
-#search-tweets:before {
-    content: "Search";
-    text-align: center;
-}
-
-#user-tweets {
-    width: 50%;
-}
-
-#user-tweets:before{
-    content: "Timeline";
-    text-align: center;
 }
 
 .tweet-date{
