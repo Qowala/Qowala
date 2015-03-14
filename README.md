@@ -1,9 +1,9 @@
-KoalasLiveTweet
-===============
+Qowala live
+===========
 
-KoalasLiveTweet is a Twitter client to track tweets with specified hashtags. You can get the frequency of each hashtags and the percentage of languages using the hashtags.
+Qowala live is a Twitter client to track tweets with specified hashtags. You can get the frequency of each hashtags and the percentage of languages using the hashtags.
 
-### KoalasLiveTweet v0.2 functionalities:
+### Qowala live v0.2 functionalities:
 
 - Multi-client with Twitter authentication
 - Track tweets according hashtags
@@ -11,7 +11,7 @@ KoalasLiveTweet is a Twitter client to track tweets with specified hashtags. You
 - Stop and play the stream
 
 ### How to use 
-To use the KoalasLiveTweet: 
+To use the Qowala live: 
 
 - Rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* at http://apps.twitter.com after creating your own app).
 
@@ -48,7 +48,7 @@ To use the KoalasLiveTweet:
 #### To develop
 The recommanded way to launch the app for development is to use **Vagrant**.
 
-In the KoalasLiveTweet's directory do
+In the Qowala live's directory do
 
     vagrant up
     
