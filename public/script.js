@@ -56,7 +56,7 @@
 		// Delete current columns
 		for (var i = 0; i < listsList.length; i++) {
 			var currentColumn = document.getElementById('tweets-column-' + listsList[i].slug);
-			document.removeChild(currentColumn);
+			tweetsColumnsList.removeChild(currentColumn);
 		}; 
 
 		// Reinitialize lists
@@ -87,16 +87,19 @@
 	});
 
 	socket.on('remove tag', function(tag){
+
+		console.log('Got remove tag request');
 		// Remove the tag from the statistics table
 		delete statistics[tag.tag];
 		writeStatistics();
 
 		// Remove the li containing the tag
-		event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+		tagList.removeChild(document.getElementById('tag-' + tag));
 	});
 
 	// Monitor the tracked tags list if user wants to remove one of them
 	function removeTagMonitor(tags){
+		FollowedTags = [];
 		for (var i = 0; i < tags.length; i++) {
 			FollowedTags.push(tags[i].text);
 		}
@@ -113,7 +116,7 @@
 
 				socket.emit('remove tag', {tag:tag, userId:userId});
 				// Remove the li containing the tag
-				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+				tagList.removeChild(document.getElementById('tag-' + tag));
 			});
 		};
 	}
@@ -159,7 +162,7 @@
 	function writeTagList(tags){
 		tagList.innerHTML = "";
 		for(var i=0; i<tags.length; i++) {
-			tagList.innerHTML  += '<li><button class="tag">' + tags[i].text + '</button></li>';
+			tagList.innerHTML  += '<li id="tag-' + tags[i].text + '" ><button class="tag" >' + tags[i].text + '</button></li>';
 		}
 		var tagElements = document.getElementsByClassName('tag');
 		removeTagMonitor(tags);
