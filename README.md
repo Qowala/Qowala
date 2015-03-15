@@ -14,8 +14,7 @@ Qowala live is a Twitter client that can track tweets with specified hashtags. Y
 
 ![Qowala live Screenshot](http://www.killiankemps.fr/data/images/screenshot_qowala-live_v0_3.png)
 
-### How to use 
-To use the Qowala live: 
+### How to install Qowala live
 
 - Rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* at http://apps.twitter.com after creating your own app).
 
