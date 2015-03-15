@@ -137,7 +137,6 @@
 		sendingTag();
 	});
 
-
 	function sendingTag(){
 		var tagObject = {};
 		tagObject.tag = tagInput.value;
