@@ -1,14 +1,18 @@
 Qowala live
 ===========
 
-Qowala live is a Twitter client to track tweets with specified hashtags. You can get the frequency of each hashtags and the percentage of languages using the hashtags.
+Qowala live is a Twitter client that can track tweets with specified hashtags. You can get the frequency of each hashtags and the percentage of languages using the hashtags.
 
-### Qowala live v0.2 functionalities:
+### Qowala live v0.3 functionalities:
 
 - Multi-client with Twitter authentication
+- Display user's timeline
+- Display all user's lists
 - Track tweets according hashtags
 - See tweets statistics : number of tweets per min and proportion of tweets languages
 - Stop and play the stream
+
+![Qowala live Screenshot](http://www.killiankemps.fr/data/images/screenshot_qowala-live_v0_3.png)
 
 ### How to use 
 To use the Qowala live: 
