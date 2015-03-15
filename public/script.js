@@ -42,9 +42,6 @@
 
 	// Receive tweet and process it
 	socket.on('tweet', function(tweetObject){
-		if(tweetObject.streamSource == 'user') {
-			console.log('Got a tweet for user ! ');
-		}
 		writeTweets(tweetObject);
 		displayStatsBuilder(tweetObject);
 		writeStatistics();
@@ -88,7 +85,6 @@
 
 	socket.on('remove tag', function(tag){
 
-		console.log('Got remove tag request');
 		// Remove the tag from the statistics table
 		delete statistics[tag.tag];
 		writeStatistics();
