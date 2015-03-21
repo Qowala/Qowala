@@ -1,3 +1,3 @@
 module.exports = {
-	url : 'mongodb://localhost/koalaslivetweet'
+	url : 'mongodb://localhost/qowala-live'
 }
