@@ -42,6 +42,7 @@
 
 	// Receive tweet and process it
 	socket.on('tweet', function(tweetObject){
+		console.log('Got a tweetObject');
 		writeTweets(tweetObject);
 		displayStatsBuilder(tweetObject);
 		writeStatistics();
@@ -49,6 +50,8 @@
 
 	// Receive the user's lists and prepare the columns
 	socket.on('lists-list', function(listsObject){
+
+		console.log('Got the lists lists');
 
 		// Delete current columns
 		for (var i = 0; i < listsList.length; i++) {
@@ -210,6 +213,7 @@
 				tweetsFromSearch[0] ='<li><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank"><img src="' + tweetObject.tweet.user.profile_image_url + '" class="tweet-profile" /></a><span class="tweet-date">' + date + '</span><span class="tweet-authorname"><a href="http://twitter.com/' + tweetObject.tweet.user.screen_name + '" target="_blank">' + tweetObject.tweet.user.name + '</a></span> : <p class="tweet-text">' + tweetText  + '</p></li>'; 
 			}
 			else if (tweetObject.streamSource == 'lists') {
+				console.log('Parsing lists tweets');
 				for (var i = 0; i < tweetObject.tweet.length; i++) {
 					if(listsList[i]){
 						var currentColumnTweets = document.getElementById('tweets-' + listsList[i].slug);

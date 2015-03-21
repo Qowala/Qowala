@@ -5,7 +5,9 @@ var userSchema = mongoose.Schema({
 	token: String,
 	tokenSecret: String,
 	name: String,
-	profileImage: String
+	profileImage: String,
+	listsTweetsCache: Array,
+	lists: Array
 	// socket: Object, --REMOVED--
 	// pause: Boolean  --REMOVED--
 });
@@ -108,6 +110,61 @@ exports.getAllUsers = function (cb){
 		} 
 		else {
 			cb(allUsers);
+		}
+	});
+};
+
+/**
+ * Puts the tweets coming from the lists in cache
+ * @param  {Number}  userId The users ID to create
+ * @return {Object}         The user once created
+ */
+exports.pushListsTweetsCache = function(userId, listsTweetsCache){
+	User.update({user: userId}, {listsTweetsCache: listsTweetsCache}, {}, function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get lists tweets cache
+ * @param  {Function} cb     Callback returning the lists tweets
+ */
+exports.getListsTweetsCache = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			cb(user.listsTweetsCache);
+		}
+	});
+};
+
+/**
+ * Push the users lists
+ * @param  {Number}  userId The users ID 
+ * @param  {Array}   lists  The users lists
+ * @return {Object}         The user once created
+ */
+exports.pushUserListsCache = function(userId, lists){
+	User.update({user: userId}, {lists: lists}, {}, function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get user's lists 
+ * @param  {Function} cb     Callback returning the lists tweets
+ */
+exports.getUserListsCache = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			cb(user.lists);
 		}
 	});
 };
