@@ -42,7 +42,10 @@ Qowala live is a Twitter client that can track tweets with specified hashtags. Y
     
 ###### Run the app
     nodejs app.js
-    
+
+##### Production mode
+    sudo npm install -g forever
+    forever -l forever.log -ao stdout.log -e stderr.log start app.js
     
 *NodeJS installation process inspired by Digital Ocean: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server*
 
