@@ -24,6 +24,7 @@ function MessagesColumn(id, columnHeaderName){
 	this.columnHTML = null;
 	this.columnContentHTML = null;
 	this.columnHeaderHTML = null;
+	this.limitNumberMessages = 50;
 
 	this.messagesList = [];
 
@@ -158,6 +159,17 @@ MessagesColumn.prototype.addMessage = function(message){
 	var newMessage = new Message(message.tweet.id_str, message.tweet.user.screen_name, message.tweet.user.name, message.tweet.created_at.slice(0, -5), message.tweet.text, message.tweet.user.profile_image_url, message.streamSource);
 	this.messagesList.push(newMessage);
 	console.log('Pushed: ', newMessage);
+
+	// Limit number of messages
+	if(this.messagesList == this.limitNumberMessages){
+		var i = this.limitNumberMessages;
+		while(i--) { 
+			if(this.messagesList[i]){
+				this.messagesList[i+1] = this.messagesList[i];
+			}
+		 }
+	}
+
 	return newMessage;
 }
 
@@ -180,6 +192,11 @@ MessagesColumn.prototype.displayOneMessage = function(message){
 	var newTweet = this.generateMessage(message);
 
 	this.columnContentHTML.insertBefore(newTweet, this.columnContentHTML.childNodes[0]);
+
+	// Limit number of messages displayed
+	if(this.columnContentHTML.childNodes[this.limitNumberMessages]){
+		this.columnContentHTML.removeChild(this.columnContentHTML.childNodes[this.limitNumberMessages]);
+	}
 }
 
 /**

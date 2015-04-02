@@ -16,7 +16,7 @@ var mapping = {
 
 /**
  * Dashboard main module
- * @param  {[type]} socket){	var mainSidebar   [description]
+ * @param  {Object} socket        Web socket
  * @return {[type]}               [description]
  */
 var dashboard = (function (socket){
@@ -26,30 +26,7 @@ var dashboard = (function (socket){
 
 	var socket = socket;
 
-	socket.on('tweet', function(message){
-		console.log('Got tweet: ', message);
-		if(message.streamSource == 'user' || message.streamSource == 'search'){
-			if(message.streamSource == 'search'){
-				message.streamSource = 'tracking';
-				console.log('changed for tracking');
-			}
-			var messageToDisplay = messagesDisplay.addMessage(message);
-			if(messageToDisplay != undefined){
-				messagesDisplay.displayOneMessage(messageToDisplay);
-			}
-		}
-	});
-
-	socket.on('lists-list', function(listsObject){
-		for (var i = 0; i < listsObject.length; i++) {
-			messagesDisplay.addColumn(listsObject[i].slug, listsObject[i].name);
-		};
-		messagesDisplay.displayColumns();
-	});
-
-	socket.on('remove tag', function(){});
-
-	var init = function(mapping){
+	var init = function(mapping, callback){
 
 		// Create the main components of the application
 		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.buttonTrackHashtag);
@@ -62,20 +39,45 @@ var dashboard = (function (socket){
 
 		// Emit a message to connect to the server
 		socket.emit('auth', userId);
+
+		callback();
 	}
 
-	var display = function(){
+	var listen = function(){
+		socket.on('tweet', function(message){
+			console.log('Got tweet: ', message);
+			if(message.streamSource == 'user' || message.streamSource == 'search'){
+				if(message.streamSource == 'search'){
+					message.streamSource = 'tracking';
+					console.log('changed for tracking');
+				}
+				var messageToDisplay = messagesDisplay.addMessage(message);
+				if(messageToDisplay != undefined){
+					messagesDisplay.displayOneMessage(messageToDisplay);
+				}
+			}
+		});
 
+		socket.on('lists-list', function(listsObject){
+			for (var i = 0; i < listsObject.length; i++) {
+				messagesDisplay.addColumn(listsObject[i].slug, listsObject[i].name);
+			};
+			messagesDisplay.displayColumns();
+		});
+
+		socket.on('remove tag', function(){});
 	}
 
 	return {
 		init:init,
-		display:display
+		listen:listen
 	};
 
 })(socket);
 
-dashboard.init(mapping);
+dashboard.init(mapping, function(){
+	dashboard.listen();
+});
 
 
 
