@@ -132,7 +132,7 @@ html{
     font-weight: 600;
 }
 
-.tweet-authorname > a {
+.tweet-authorname {
     color: black;
     text-decoration: none;
 }
