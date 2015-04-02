@@ -27,11 +27,16 @@ var dashboard = (function (socket){
 	var socket = socket;
 
 	socket.on('tweet', function(message){
-		console.log('Got tweet');
-		if(message.streamSource == 'user'){
-			console.log('got tweet for user');
-			messagesDisplay.addMessage(message);
-			messagesDisplay.displayMessages(message);
+		console.log('Got tweet: ', message);
+		if(message.streamSource == 'user' || message.streamSource == 'search'){
+			if(message.streamSource == 'search'){
+				message.streamSource = 'tracking';
+				console.log('changed for tracking');
+			}
+			var messageToDisplay = messagesDisplay.addMessage(message);
+			if(messageToDisplay != undefined){
+				messagesDisplay.displayOneMessage(messageToDisplay);
+			}
 		}
 	});
 

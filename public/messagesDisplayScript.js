@@ -4,6 +4,7 @@
 
 /**
  * MessageDisplay's class
+ * @param {Object} columnsListHTML   Reference to the HTML container for all the columns
  */
 function MessagesDisplay(columnsListHTML){
 	this.messagesColumnsList = [];
@@ -13,8 +14,8 @@ function MessagesDisplay(columnsListHTML){
 
 /**
  * MessagesColumn's class
- * @param {[type]} id               [description]
- * @param {[type]} columnHeaderName [description]
+ * @param {String} id               Column ID from social network
+ * @param {String} columnHeaderName Column name from social network
  */
 function MessagesColumn(id, columnHeaderName){
 	this.id = id;
@@ -37,20 +38,21 @@ function MessagesColumn(id, columnHeaderName){
 
 /**
  * Message's class
- * @param {[type]} id              [description]
- * @param {[type]} authorUsername  [description]
- * @param {[type]} authorPseudonym [description]
- * @param {[type]} date            [description]
- * @param {[type]} text            [description]
- * @param {[type]} profilePicture  [description]
+ * @param {String} id              Message ID from social network
+ * @param {String} authorUsername  User's login username
+ * @param {String} authorPseudonym User's displayed name
+ * @param {String} date            Message date
+ * @param {String} text            Message text content
+ * @param {String} profilePicture  URL to user's profile picture
  */
-function Message(id, authorUsername, authorPseudonym, date, text, profilePicture){
+function Message(id, authorUsername, authorPseudonym, date, text, profilePicture, streamSource){
 	this.id = id;
 	this.authorUsername = authorUsername;
 	this.authorPseudonym = authorPseudonym;
 	this.date = date;
 	this.text = text;
 	this.profilePicture = profilePicture;
+	this.streamSource = streamSource
 
 	this.buttonRetweet = createButtonRetweet(id);
 
@@ -111,83 +113,111 @@ MessagesDisplay.prototype.getColumnList = function(){
 
 /**
  * [addMessage description]
- * @param {[type]} message [description]
+ * @param  {Object} message     Message to be added
+ * @return {Object} newMessage  Added message
  */
 MessagesDisplay.prototype.addMessage = function(message){
-	console.log('In MessagesDisplay for adding message');
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		if(this.messagesColumnsList[i].id == message.streamSource){
-			this.messagesColumnsList[i].addMessage(message);
+			var newMessage = this.messagesColumnsList[i].addMessage(message);
+			return newMessage;
 		}
 	};
 }
 
-MessagesDisplay.prototype.displayMessages = function(message){
-	console.log('In MessagesDisplay for displaying message');
+/**
+ * Communicate all messages display command to the concerning column
+ * @param  {Object} message Message to be added
+ */
+MessagesDisplay.prototype.displayAllMessages = function(message){
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		if(this.messagesColumnsList[i].id == message.streamSource){
-			this.messagesColumnsList[i].displayMessages();
+			this.messagesColumnsList[i].displayAllMessages();
 		}
 	};
 }
 
-
+/**
+ * Communicate one message display command to the concerning column
+ * @param  {Object} message Message to be added
+ */
+MessagesDisplay.prototype.displayOneMessage = function(message){
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id == message.streamSource){
+			this.messagesColumnsList[i].displayOneMessage(message);
+		}
+	};
+}
 
 /**
  * Add a message to a column
- * @param {[type]} id              [description]
- * @param {[type]} authorUsername  [description]
- * @param {[type]} authorPseudonym [description]
- * @param {[type]} date            [description]
- * @param {[type]} text            [description]
- * @param {[type]} profilePicture  [description]
+ * @param  {Object} message         Message to be added
+ * @return {Object} Added message
  */
 MessagesColumn.prototype.addMessage = function(message){
-	var newMessage = new Message(message.id, message.tweet.user.screen_name, message.tweet.user.name, message.tweet.created_at.slice(0, -5), message.tweet.text, message.tweet.user.profile_image_url);
+	var newMessage = new Message(message.tweet.id_str, message.tweet.user.screen_name, message.tweet.user.name, message.tweet.created_at.slice(0, -5), message.tweet.text, message.tweet.user.profile_image_url, message.streamSource);
 	this.messagesList.push(newMessage);
 	console.log('Pushed: ', newMessage);
+	return newMessage;
 }
 
 /**
- * Displays the messages in the column
- * @return {[type]} [description]
+ * Displays all the messages in the column
  */
-MessagesColumn.prototype.displayMessages = function(){
-	console.log('In MessagesColumn to display messages');
-	console.log('messagesList: ', this.messagesList);
+MessagesColumn.prototype.displayAllMessages = function(){
 	this.columnContentHTML.innerHTML = "";
 	for (var i = this.messagesList.length -1; i >= 0; i--) {
+		var newTweet = this.generateMessage(this.messagesList[i]);
 
-			var newTweet = document.createElement('li');
-
-			var newLinkAuthorImg = document.createElement('a');
-			newLinkAuthorImg.setAttribute('href', 'http://twitter.com/' + this.messagesList[i].authorUsername);
-			newLinkAuthorImg.setAttribute('target', '_blank');
-
-			var newImg = document.createElement('img');
-			newImg.setAttribute('src', this.messagesList[i].profilePicture);
-			newImg.setAttribute('class', 'tweet-profile');
-
-			var newDate = document.createElement('span');
-			newDate.setAttribute('class', 'tweet-date');
-			newDate.textContent = this.messagesList[i].date;
-			
-			var newLinkAuthor = document.createElement('a');
-			newLinkAuthor.setAttribute('class', 'tweet-authorname');
-			newLinkAuthor.setAttribute('href', 'http://twitter.com/' + this.messagesList[i].authorUsername);
-			newLinkAuthor.setAttribute('target', '_blank');
-			newLinkAuthor.textContent = this.messagesList[i].authorPseudonym;
-
-			var newContent = document.createElement('p');
-			newContent.setAttribute('class', 'tweet-text');
-			newContent.textContent = this.messagesList[i].text;
-
-			newLinkAuthorImg.appendChild(newImg);
-			newTweet.appendChild(newLinkAuthorImg);
-			newTweet.appendChild(newDate);
-			newTweet.appendChild(newLinkAuthor);
-			newTweet.appendChild(newContent);
-
-			this.columnContentHTML.appendChild(newTweet);
+		this.columnContentHTML.appendChild(newTweet);
 	};
+}
+
+/**
+ * Displays one message in the column
+ */
+MessagesColumn.prototype.displayOneMessage = function(message){
+	var newTweet = this.generateMessage(message);
+
+	this.columnContentHTML.insertBefore(newTweet, this.columnContentHTML.childNodes[0]);
+}
+
+/**
+ * Create the HTML elements for the message
+ * @param  {Object} message Processed message to be generated
+ * @return {Object}         Generated message in HTML
+ */
+MessagesColumn.prototype.generateMessage = function(message){
+
+	var newTweet = document.createElement('li');
+
+	var newLinkAuthorImg = document.createElement('a');
+	newLinkAuthorImg.setAttribute('href', 'http://twitter.com/' + message.authorUsername);
+	newLinkAuthorImg.setAttribute('target', '_blank');
+
+	var newImg = document.createElement('img');
+	newImg.setAttribute('src', message.profilePicture);
+	newImg.setAttribute('class', 'tweet-profile');
+
+	var newDate = document.createElement('span');
+	newDate.setAttribute('class', 'tweet-date');
+	newDate.textContent = message.date;
+	
+	var newLinkAuthor = document.createElement('a');
+	newLinkAuthor.setAttribute('class', 'tweet-authorname');
+	newLinkAuthor.setAttribute('href', 'http://twitter.com/' + message.authorUsername);
+	newLinkAuthor.setAttribute('target', '_blank');
+	newLinkAuthor.textContent = message.authorPseudonym;
+
+	var newContent = document.createElement('p');
+	newContent.setAttribute('class', 'tweet-text');
+	newContent.textContent = message.text;
+
+	newLinkAuthorImg.appendChild(newImg);
+	newTweet.appendChild(newLinkAuthorImg);
+	newTweet.appendChild(newDate);
+	newTweet.appendChild(newLinkAuthor);
+	newTweet.appendChild(newContent);
+
+	return newTweet;
 }
