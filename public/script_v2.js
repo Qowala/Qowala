@@ -38,7 +38,9 @@ var dashboard = (function (socket){
 		messagesDisplay.addColumn('tracking', 'Tracking');
 
 		// Emit a message to connect to the server
-		socket.emit('auth', userId);
+		if(userId != undefined){
+			socket.emit('auth', userId);
+		}
 
 		callback();
 	}
