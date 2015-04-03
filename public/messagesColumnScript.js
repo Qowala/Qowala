@@ -63,8 +63,12 @@ MessagesColumn.prototype.displayAllMessages = function(){
  */
 MessagesColumn.prototype.displayOneMessage = function(message){
 	var newTweet = message.generateMessage();
-
-	this.columnContentHTML.insertBefore(newTweet, this.columnContentHTML.childNodes[0]);
+	if(this.columnContentHTML.childNodes[0]){
+		this.columnContentHTML.insertBefore(newTweet, this.columnContentHTML.childNodes[0]);
+	}
+	else{
+		this.columnContentHTML.appendChild(newTweet);
+	}
 
 	// Limit number of messages displayed
 	if(this.columnContentHTML.childNodes[this.limitNumberMessages]){
