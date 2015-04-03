@@ -31,6 +31,8 @@ MessagesDisplay.prototype.addColumn = function(id, columnHeaderName){
  * Display the columns listed in the columns list
  */
 MessagesDisplay.prototype.displayColumns = function(){
+	this.messagesColumnsHTML.innerHTML = "";
+
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		var newTweetColumn = document.createElement('li');
 		newTweetColumn.setAttribute('class', 'tweets-column');

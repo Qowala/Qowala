@@ -11,6 +11,7 @@ var socket = io();
 var mapping = {
 	buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
 	inputTag: document.getElementById('tagInput'),
+	tagContainer: document.getElementById('tagContainer'),
 	columnsList: document.getElementById('tweets-columns-list')
 };
 
@@ -29,13 +30,14 @@ var dashboard = (function (socket){
 	var init = function(mapping, callback){
 
 		// Create the main components of the application
-		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.inputTag);
+		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.inputTag, mapping.tagContainer);
 		statisticsSidebar = new StatisticsSidebar();
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
 
 		// Generate the defaults columns
 		messagesDisplay.addColumn('user', 'Timeline');
 		messagesDisplay.addColumn('tracking', 'Tracking');
+		messagesDisplay.displayColumns();
 
 		mainSidebar.init();
 
