@@ -11,6 +11,7 @@ var socket = io();
 var mapping = {
 	buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
 	buttonTrackHashtag: document.getElementById('buttonTrackHashtag'),
+	inputTag: document.getElementById('tagInput'),
 	columnsList: document.getElementById('tweets-columns-list')
 };
 
@@ -29,13 +30,15 @@ var dashboard = (function (socket){
 	var init = function(mapping, callback){
 
 		// Create the main components of the application
-		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.buttonTrackHashtag);
+		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.buttonTrackHashtag, mapping.inputTag);
 		statisticsSidebar = new StatisticsSidebar();
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
 
 		// Generate the defaults columns
 		messagesDisplay.addColumn('user', 'Timeline');
 		messagesDisplay.addColumn('tracking', 'Tracking');
+
+		mainSidebar.init();
 
 		// Emit a message to connect to the server
 		if(userId != undefined){
