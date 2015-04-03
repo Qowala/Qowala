@@ -67,7 +67,7 @@ MessagesDisplay.prototype.getColumnList = function(){
 MessagesDisplay.prototype.addMessage = function(message, streamSource){
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		if(this.messagesColumnsList[i].id == streamSource){
-			var newMessage = this.messagesColumnsList[i].addMessage(message);
+			var newMessage = this.messagesColumnsList[i].addMessage(message, streamSource);
 			return newMessage;
 		}
 	};
@@ -81,6 +81,8 @@ MessagesDisplay.prototype.addMessage = function(message, streamSource){
 MessagesDisplay.prototype.addAllMessages = function(allMessages, list){
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		if(this.messagesColumnsList[i].id == list){
+			// Reset the messages list before adding new ones
+			this.messagesColumnsList[i].messagesList = [];
 			for (var y = 0; y < allMessages[list].length; y++) {
 				this.messagesColumnsList[i].addMessage(allMessages[list][y], allMessages[list]);
 			}
