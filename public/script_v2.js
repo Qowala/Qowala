@@ -54,7 +54,7 @@ var dashboard = (function (socket){
 					console.log('changed for tracking');
 				}
 				console.log('A message for user');
-				var messageToDisplay = messagesDisplay.addMessage(message.tweet, message.streamSource);
+				var messageToDisplay = messagesDisplay.addOneMessage(message.tweet, message.streamSource);
 				if(messageToDisplay != undefined){
 					messagesDisplay.displayOneMessage(messageToDisplay);
 				}
