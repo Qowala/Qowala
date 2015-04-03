@@ -1,9 +1,8 @@
 /**
  * Displays the main controls
  */
-function MainSidebar(buttonOpenMessageEdition, buttonTrackHashtag, inputTag){
+function MainSidebar(buttonOpenMessageEdition, inputTag){
 	this.buttonOpenMessageEdition = buttonOpenMessageEdition;
-	this.buttonTrackHashtag = buttonTrackHashtag;
 	this.inputTag = inputTag;
 
 	this.hashtagsToTrack = [];
@@ -23,10 +22,6 @@ MainSidebar.prototype.init = function(){
 		if (e.keyCode == 13) {
 			trackTag(scope);
 	    }
-	});
-
-	this.buttonTrackHashtag.addEventListener('click', function(e){
-		trackTag(scope);
 	});
 }
 

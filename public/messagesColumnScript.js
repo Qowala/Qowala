@@ -151,8 +151,6 @@ Message.prototype.generateMessage = function(){
  */
 Message.prototype.processText = function(urls, medias){
 
-	console.log('Going to process tweets');
-
 	// Array where to store all URLs of the tweet
 	var urls_indices = [];
 
