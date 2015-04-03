@@ -4,7 +4,7 @@ var userSchema = mongoose.Schema({
 	user: Number,
 	name: String,
 	profileImage: String,
-	listsTweetsCache: Array,
+	listsTweetsCache: Object,
 	lists: Array
 	// socket: Object, --REMOVED--
 	// pause: Boolean  --REMOVED--

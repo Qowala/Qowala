@@ -13,6 +13,107 @@ function MessagesDisplay(columnsListHTML){
 }
 
 /**
+ * Add a column to the columns list
+ * @param {String} id               Slug of the column's name
+ * @param {String} columnHeaderName Column's name
+ */
+MessagesDisplay.prototype.addColumn = function(id, columnHeaderName){
+	var column = new MessagesColumn(id, columnHeaderName);
+	console.log('Created: ', column);
+	this.messagesColumnsList.push(column);
+}
+
+/**
+ * Display the columns listed in the columns list
+ */
+MessagesDisplay.prototype.displayColumns = function(){
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+			var newTweetColumn = document.createElement('li');
+			newTweetColumn.setAttribute('class', 'tweets-column');
+			newTweetColumn.setAttribute('id', 'tweets-column-' + this.messagesColumnsList[i].id);
+
+			var newTweetColumnHeader = document.createElement('h3');
+			newTweetColumnHeader.setAttribute('class', 'tweets-column-header');
+			newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.messagesColumnsList[i].id);
+			newTweetColumnHeader.textContent = this.messagesColumnsList[i].columnHeaderName;
+			
+			var newTweetColumnTweets = document.createElement('ul');
+			newTweetColumnTweets.setAttribute('class', 'tweets');
+			newTweetColumnTweets.setAttribute('id', 'tweets-' + this.messagesColumnsList[i].id);
+
+			newTweetColumn.appendChild(newTweetColumnHeader);
+			newTweetColumn.appendChild(newTweetColumnTweets);
+
+			this.messagesColumnsHTML.appendChild(newTweetColumn);
+			this.messagesColumnsList[i].columnHTML = newTweetColumn;
+			this.messagesColumnsList[i].columnContentHTML = newTweetColumnTweets;
+			this.messagesColumnsList[i].columnHeaderHTML = newTweetColumnHeader;
+	};
+}
+
+/**
+ * Returns the columns list
+ * @return {Object} Column's list
+ */
+MessagesDisplay.prototype.getColumnList = function(){
+	return this.messagesColumnsList;
+}
+
+/**
+ * [addMessage description]
+ * @param  {Object} message     Message to be added
+ * @return {Object} newMessage  Added message
+ */
+MessagesDisplay.prototype.addMessage = function(message, streamSource){
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id == streamSource){
+			var newMessage = this.messagesColumnsList[i].addMessage(message);
+			return newMessage;
+		}
+	};
+}
+
+/**
+ * [addMessage description]
+ * @param  {Object} message     Message to be added
+ * @return {Object} newMessage  Added message
+ */
+MessagesDisplay.prototype.addAllMessages = function(allMessages, list){
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id == list){
+			for (var y = 0; y < allMessages[list].length; y++) {
+				this.messagesColumnsList[i].addMessage(allMessages[list][y], allMessages[list]);
+			}
+			return {streamSource: this.messagesColumnsList[i].id};
+		}
+	};
+}
+
+/**
+ * Communicate all messages display command to the concerning column
+ * @param  {Object} message Message to be added
+ */
+MessagesDisplay.prototype.displayAllMessages = function(message){
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id == message.streamSource){
+			this.messagesColumnsList[i].displayAllMessages();
+		}
+	};
+}
+
+/**
+ * Communicate one message display command to the concerning column
+ * @param  {Object} message Message to be added
+ */
+MessagesDisplay.prototype.displayOneMessage = function(message){
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id == message.streamSource){
+			this.messagesColumnsList[i].displayOneMessage(message);
+		}
+	};
+}
+
+/**
  * MessagesColumn's class
  * @param {String} id               Column ID from social network
  * @param {String} columnHeaderName Column name from social network
@@ -66,108 +167,17 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 }
 
 /**
- * Add a column to the columns list
- * @param {String} id               Slug of the column's name
- * @param {String} columnHeaderName Column's name
- */
-MessagesDisplay.prototype.addColumn = function(id, columnHeaderName){
-	var column = new MessagesColumn(id, columnHeaderName);
-	console.log('Created: ', column);
-	this.messagesColumnsList.push(column);
-}
-
-/**
- * Display the columns listed in the columns list
- */
-MessagesDisplay.prototype.displayColumns = function(){
-	for (var i = 0; i < this.messagesColumnsList.length; i++) {
-			var newTweetColumn = document.createElement('li');
-			newTweetColumn.setAttribute('class', 'tweets-column');
-			newTweetColumn.setAttribute('id', 'tweets-column-' + this.messagesColumnsList[i].id);
-
-			var newTweetColumnHeader = document.createElement('h3');
-			newTweetColumnHeader.setAttribute('class', 'tweets-column-header');
-			newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.messagesColumnsList[i].id);
-			newTweetColumnHeader.textContent = this.messagesColumnsList[i].columnHeaderName;
-			
-			var newTweetColumnTweets = document.createElement('ul');
-			newTweetColumnTweets.setAttribute('class', 'tweets');
-			newTweetColumnTweets.setAttribute('id', 'tweets-' + this.messagesColumnsList[i].id);
-
-			newTweetColumn.appendChild(newTweetColumnHeader);
-			newTweetColumn.appendChild(newTweetColumnTweets);
-
-			this.messagesColumnsHTML.appendChild(newTweetColumn);
-			this.messagesColumnsList[i].columnHTML = newTweetColumn;
-			this.messagesColumnsList[i].columnContentHTML = newTweetColumnTweets;
-			this.messagesColumnsList[i].columnHeaderHTML = newTweetColumnHeader;
-	};
-}
-
-/**
- * Returns the columns list
- * @return {Object} Column's list
- */
-MessagesDisplay.prototype.getColumnList = function(){
-	return this.messagesColumnsList;
-}
-
-/**
- * [addMessage description]
- * @param  {Object} message     Message to be added
- * @return {Object} newMessage  Added message
- */
-MessagesDisplay.prototype.addMessage = function(message){
-	for (var i = 0; i < this.messagesColumnsList.length; i++) {
-		if(this.messagesColumnsList[i].id == message.streamSource){
-			var newMessage = this.messagesColumnsList[i].addMessage(message);
-			return newMessage;
-		}
-	};
-}
-
-/**
- * Communicate all messages display command to the concerning column
- * @param  {Object} message Message to be added
- */
-MessagesDisplay.prototype.displayAllMessages = function(message){
-	for (var i = 0; i < this.messagesColumnsList.length; i++) {
-		if(this.messagesColumnsList[i].id == message.streamSource){
-			this.messagesColumnsList[i].displayAllMessages();
-		}
-	};
-}
-
-/**
- * Communicate one message display command to the concerning column
- * @param  {Object} message Message to be added
- */
-MessagesDisplay.prototype.displayOneMessage = function(message){
-	for (var i = 0; i < this.messagesColumnsList.length; i++) {
-		if(this.messagesColumnsList[i].id == message.streamSource){
-			this.messagesColumnsList[i].displayOneMessage(message);
-		}
-	};
-}
-
-/**
  * Add a message to a column
  * @param  {Object} message         Message to be added
  * @return {Object} Added message
  */
-MessagesColumn.prototype.addMessage = function(message){
-	var newMessage = new Message(message.tweet.id_str, message.tweet.user.screen_name, message.tweet.user.name, message.tweet.created_at.slice(0, -5), message.tweet.text, message.tweet.user.profile_image_url, message.streamSource);
-	this.messagesList.push(newMessage);
-	console.log('Pushed: ', newMessage);
+MessagesColumn.prototype.addMessage = function(message, streamSource){
+	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at.slice(0, -5), message.text, message.user.profile_image_url, streamSource);
+	this.messagesList.unshift(newMessage);
 
 	// Limit number of messages
-	if(this.messagesList == this.limitNumberMessages){
-		var i = this.limitNumberMessages;
-		while(i--) { 
-			if(this.messagesList[i]){
-				this.messagesList[i+1] = this.messagesList[i];
-			}
-		 }
+	if(this.messagesList.length > this.limitNumberMessages){
+		this.messagesList.pop();
 	}
 
 	return newMessage;

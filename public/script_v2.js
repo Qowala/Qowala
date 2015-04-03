@@ -53,9 +53,18 @@ var dashboard = (function (socket){
 					message.streamSource = 'tracking';
 					console.log('changed for tracking');
 				}
-				var messageToDisplay = messagesDisplay.addMessage(message);
+				console.log('A message for user');
+				var messageToDisplay = messagesDisplay.addMessage(message.tweet, message.streamSource);
 				if(messageToDisplay != undefined){
 					messagesDisplay.displayOneMessage(messageToDisplay);
+				}
+			}
+			else if(message.streamSource == 'lists'){
+				for (var list in message.tweet) {
+					var messagesToDisplay = messagesDisplay.addAllMessages(message.tweet, list);
+					if(messagesToDisplay != undefined){
+						messagesDisplay.displayAllMessages(messagesToDisplay);
+					}
 				}
 			}
 		});
