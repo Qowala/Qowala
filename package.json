@@ -1,6 +1,6 @@
 {
   "name": "Qowala-live",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "private": "true",
   "dependencies": {
     "body-parser": "^1.9.0",
