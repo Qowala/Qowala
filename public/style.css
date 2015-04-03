@@ -90,6 +90,18 @@ html{
     padding: 0;
 }
 
+/* Prevent the text contents of draggable elements from being selectable. */
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+
 .draggableTag:before{
     content: "..";
     position: relative;
@@ -119,7 +131,7 @@ html{
 
 #tweets-columns-list {
     position: relative;
-	right: -340px;
+	right: -230px;
     width: calc(100% - 350px);
     padding: 0;
     display: inline-flex;
