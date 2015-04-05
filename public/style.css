@@ -131,15 +131,28 @@ html{
 
 #tweets-columns-list {
     position: relative;
-	right: -230px;
-    width: calc(100% - 350px);
+	right: -192px;
+    width: calc(100% - 192px);
     padding: 0;
     display: inline-flex;
+    margin-top: 0;
+    z-index: -1;
 }
 
 .tweets-column{
     list-style-type: none;
     width: 25%;
+    background-color: #333333;
+    border-right: 5px solid #1a1a1a;
+    max-height: 100%;
+    min-width: 425px;
+}
+
+.tweets-column-header {
+    background-color: #4d4d4d;
+    color: #e0e2e0;
+    margin: 0;
+    padding: 10px 20px;
 }
 
 #lists-row {
@@ -153,8 +166,8 @@ html{
 
 .tweets li{
 	list-style-type: none;
-	/*background-color: #5072b2;
-	color: white;*/
+	/*background-color: #5072b2;*/
+	color: white;
 	min-height: 48px;
 	padding: 10px;
 	border-bottom: 1px dotted gray;
@@ -188,15 +201,12 @@ html{
 
 .tweet-authorname{
     font-weight: 600;
-}
-
-.tweet-authorname {
-    color: black;
     text-decoration: none;
+    color: white;
 }
 
 .tweet-url{
-	color: #0084b4;
+	color: #2aa3d6;
 	text-decoration: none;
 }
 
