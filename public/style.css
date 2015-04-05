@@ -31,6 +31,7 @@ html{
     position: fixed;
     top: 0;
     width: 172px;
+    z-index: 1;
 }
 
 #buttonOpenMessageEdition {
@@ -136,16 +137,18 @@ html{
     padding: 0;
     display: inline-flex;
     margin-top: 0;
-    z-index: -1;
 }
 
-.tweets-column{
+.tweets-column {
     list-style-type: none;
     width: 25%;
     background-color: #333333;
-    border-right: 5px solid #1a1a1a;
     max-height: 100%;
     min-width: 425px;
+}
+
+.tweets-column + .tweets-column {
+    border-left: 5px solid #1a1a1a;
 }
 
 .tweets-column-header {
@@ -162,6 +165,8 @@ html{
 
 .tweets {
     padding: 0;
+    margin-top: 0;
+    overflow-y: scroll;
 }
 
 .tweets li{
@@ -170,7 +175,7 @@ html{
 	color: white;
 	min-height: 48px;
 	padding: 10px;
-	border-bottom: 1px dotted gray;
+	border-bottom: 1px solid #119955;
 }
 
 .tweet-date{
@@ -187,11 +192,13 @@ html{
 
 .tweet-profile {
     float: left;
-    height: 30px;
+    height: 40px;
     margin-right: 10px;
     margin-top: 6px;
-    width: 30px;
+    width: 40px;
     background-color: gray;
+    border-radius: 10px;
+    border: solid white 1px;
 }
 
 .tweet-profile > a {
