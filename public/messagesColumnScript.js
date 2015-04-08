@@ -34,8 +34,9 @@ function MessagesColumn(id, columnHeaderName){
  * @return {Object} Added message
  */
 MessagesColumn.prototype.addMessage = function(message, streamSource){
-	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at.slice(0, -5), message.text, message.user.profile_image_url, streamSource);
+	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url, streamSource);
 	newMessage.processText(message.entities.urls, message.entities.media);
+	newMessage.processDate();
 	this.messagesList.unshift(newMessage);
 
 	// Limit number of messages
@@ -249,4 +250,17 @@ Message.prototype.processText = function(urls, medias){
  	}
 
  	this.text =  newTweetText;
+}
+
+/**
+ * Process the message date
+ */
+Message.prototype.processDate = function(){
+	// pass in the 'created_at' string returned from twitter //
+	// stamp arrives formatted as Tue Apr 07 22:52:51 +0000 2009 //
+	var date = new Date(Date.parse(this.date)).toLocaleString().substr(0, 17);
+	var hour = date.substr(-8, 2);
+	var min = date.substr(-5, 2);
+
+	this.date = date.substr(0, 8) + ' ' + hour + 'h' + min ;
 }
