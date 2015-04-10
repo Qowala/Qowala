@@ -60,7 +60,7 @@ var dashboard = (function (socket){
 			}
 			else if(message.streamSource == 'lists'){
 				for (var list in message.tweet) {
-					var messagesToDisplay = messagesDisplay.addAllMessages(message.tweet, list);
+					var messagesToDisplay = messagesDisplay.addAllMessages(message.tweet[list], list);
 					if(messagesToDisplay != undefined){
 						messagesDisplay.displayAllMessages(messagesToDisplay);
 					}
@@ -73,6 +73,14 @@ var dashboard = (function (socket){
 				messagesDisplay.addColumn(listsObject[i].slug, listsObject[i].name);
 			};
 			messagesDisplay.displayColumns();
+		});
+
+		socket.on('home-timeline', function(timeline){
+			console.log('Got home-timeline: ', timeline);
+			var messagesToDisplay = messagesDisplay.addAllMessages(timeline, 'user');
+			if(messagesToDisplay != undefined){
+				messagesDisplay.displayAllMessages(messagesToDisplay);
+			}
 		});
 
 		socket.on('remove tag', function(){});

@@ -5,9 +5,8 @@ var userSchema = mongoose.Schema({
 	name: String,
 	profileImage: String,
 	listsTweetsCache: Object,
-	lists: Array
-	// socket: Object, --REMOVED--
-	// pause: Boolean  --REMOVED--
+	lists: Array,
+	homeTimelineCache: Array
 });
 
 var User = mongoose.model('User', userSchema);
@@ -15,8 +14,6 @@ var User = mongoose.model('User', userSchema);
 /**
  * Create a new user. If already existing, updating its informations
  * @param  {Number}  userId The users ID to create
- * @param  {Object}  socket The users socket       --REMOVED--
- * @param  {Boolean} pause  Users pause status     --REMOVED--
  * @return {Object}         The user once created
  */
 exports.pushUser = function(userId, name, profileImage){
@@ -40,22 +37,6 @@ exports.pushUser = function(userId, name, profileImage){
 				});
 				
 			}
-		}
-	});
-};
-
-/**
- * Get the socket from a user
- * @param  {Number}   userId The users ID to get the socket from
- * @param  {Function} cb     Callback returning the socket
- */
-exports.getUserSocket = function (userId, cb){
-	User.findOne({user: userId}).exec(function(err, user) {
-		if (err) {
-			return ['error', {status: 500}];
-		} 
-		else {
-			cb(user.socket);
 		}
 	});
 };
@@ -92,6 +73,33 @@ exports.getAllUsers = function (cb){
 		} 
 		else {
 			cb(allUsers);
+		}
+	});
+};
+
+/**
+ * Puts the tweets coming from the home timeline in cache
+ * @param  {Number}  userId The users ID to create
+ * @return {Object}         The user once created
+ */
+exports.pushHomeTimelineCache = function(userId, homeTimelineCache){
+	User.update({user: userId}, {homeTimelineCache: homeTimelineCache}, {}, function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get home timeline cache
+ * @param  {Function} cb     Callback returning the home timeline
+ */
+exports.getHomeTimelineCache = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			cb(user.homeTimelineCache);
 		}
 	});
 };

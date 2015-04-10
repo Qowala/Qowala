@@ -89,8 +89,8 @@ MessagesDisplay.prototype.addAllMessages = function(allMessages, list){
 		if(this.messagesColumnsList[i].id == list){
 			// Reset the messages list before adding new ones
 			this.messagesColumnsList[i].messagesList = [];
-			for (var y = 0; y < allMessages[list].length; y++) {
-				this.messagesColumnsList[i].addMessage(allMessages[list][y], allMessages[list]);
+			for (var y = 0; y < allMessages.length; y++) {
+				this.messagesColumnsList[i].addMessage(allMessages[y], allMessages);
 			}
 			return {streamSource: this.messagesColumnsList[i].id};
 		}
