@@ -256,11 +256,14 @@ Message.prototype.processText = function(urls, medias){
  * Process the message date
  */
 Message.prototype.processDate = function(){
-	// pass in the 'created_at' string returned from twitter //
-	// stamp arrives formatted as Tue Apr 07 22:52:51 +0000 2009 //
-	var date = new Date(Date.parse(this.date)).toLocaleString().substr(0, 17);
-	var hour = date.substr(-8, 2);
-	var min = date.substr(-5, 2);
+	var date = new Date(Date.parse(this.date));
+	// Put to the right timezone
+	date.toLocaleString();
+	var year = date.getFullYear();
+	var month = date.getMonth();
+	var day = date.getDate();
+	var hour = date.getHours();
+	var min = date.getMinutes();
 
-	this.date = date.substr(0, 8) + ' ' + hour + 'h' + min ;
+	this.date = day + '/'+ month + '/' + year + ' ' + hour + 'h' + min;
 }
