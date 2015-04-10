@@ -52,11 +52,7 @@ var dashboard = (function (socket){
 	var listen = function(){
 		socket.on('tweet', function(message){
 			console.log('Got tweet: ', message);
-			if(message.streamSource == 'user' || message.streamSource == 'search'){
-				if(message.streamSource == 'search'){
-					message.streamSource = 'tracking';
-					console.log('changed for tracking');
-				}
+			if(message.streamSource == 'user' || message.streamSource == 'tracking'){
 				var messageToDisplay = messagesDisplay.addOneMessage(message.tweet, message.streamSource);
 				if(messageToDisplay != undefined){
 					messagesDisplay.displayOneMessage(messageToDisplay);
