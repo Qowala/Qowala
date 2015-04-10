@@ -73,7 +73,7 @@ You will then be able to access the client in your browser at **http://192.168.1
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Killian Kemps
+Copyright (c) 2015 Killian Kemps & Adrien Touminet
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
