@@ -261,9 +261,13 @@ Message.prototype.processDate = function(){
 	date.toLocaleString();
 	var year = date.getFullYear();
 	var month = date.getMonth();
+	month = month < 10 ? '0' + month : month;
 	var day = date.getDate();
+	day = day < 10 ? '0' + day : day;
 	var hour = date.getHours();
+	hour = hour < 10 ? '0' + hour : hour;
 	var min = date.getMinutes();
+	min = min < 10 ? '0' + min : min;
 
 	this.date = day + '/'+ month + '/' + year + ' ' + hour + 'h' + min;
 }
