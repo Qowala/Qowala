@@ -3,7 +3,8 @@ html{
 }
 
 #logo {
-    font-size: 1.6em;
+    font-family: "Open Sans Light";
+    font-size: 1.4em;
     margin: 0 auto;
     text-align: center;
 }
@@ -20,6 +21,8 @@ html{
 
 #logo-qowala{
     color: #119955;
+    font-family: Ubuntu;
+    font-size: 1.5em;
 }
 
 #mainSidebar {
