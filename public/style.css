@@ -21,8 +21,9 @@ html{
 
 #logo-qowala{
     color: #119955;
-    font-family: Ubuntu;
+    font-family: Ubuntu, sans-serif;
     font-size: 1.5em;
+    font-weight: 400;
 }
 
 #mainSidebar {
