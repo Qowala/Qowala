@@ -3,10 +3,11 @@ html{
 }
 
 #logo {
-    font-family: "Open Sans Light";
+    font-family: "Open Sans";
     font-size: 1.4em;
     margin: 0 auto;
     text-align: center;
+    font-weight: 300;
 }
 
 #logo::after {
