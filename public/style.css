@@ -180,6 +180,7 @@ html{
 	min-height: 48px;
 	padding: 10px;
 	border-bottom: 1px solid #119955;
+    position: relative;
 }
 
 .tweet-date{
@@ -190,7 +191,7 @@ html{
 
 .tweet-text{
 	font-size: 0.9em;
-    margin: 5px 0;
+    margin: 5px 0 30px;
     word-wrap: break-word;
 }
 
@@ -229,7 +230,9 @@ html{
     background-color: transparent;
     border: none;
     color: #dddede;
-    margin: 0 0 0 85%;
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
     padding: 0;
 }
 
