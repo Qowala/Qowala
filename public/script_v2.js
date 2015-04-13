@@ -51,7 +51,6 @@ var dashboard = (function (socket){
 
 	var listen = function(){
 		socket.on('tweet', function(message){
-			console.log('Got tweet: ', message);
 			if(message.streamSource == 'user' || message.streamSource == 'tracking'){
 				var messageToDisplay = messagesDisplay.addOneMessage(message.tweet, message.streamSource);
 				if(messageToDisplay != undefined){
@@ -76,7 +75,6 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('home-timeline', function(timeline){
-			console.log('Got home-timeline: ', timeline);
 			var messagesToDisplay = messagesDisplay.addAllMessages(timeline, 'user');
 			if(messagesToDisplay != undefined){
 				messagesDisplay.displayAllMessages(messagesToDisplay);

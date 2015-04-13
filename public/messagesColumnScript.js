@@ -99,15 +99,6 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 	this.text = text;
 	this.profilePicture = profilePicture;
 	this.streamSource = streamSource
-
-	this.buttonRetweet = createButtonRetweet(id);
-
-	function createButtonRetweet(id){
-		var button = document.createElement('button');
-		button.setAttribute('retweetId', id);
-
-		return button;
-	}
 }
 
 /**
@@ -141,13 +132,66 @@ Message.prototype.generateMessage = function(){
 	newContent.setAttribute('class', 'tweet-text');
 	newContent.innerHTML = this.text;
 
+	var newRetweetButton = document.createElement('button');
+	newRetweetButton.setAttribute('retweetId', this.id);
+	newRetweetButton.setAttribute('class', 'tweet-retweet-button');
+
+	var newRetweetFont = document.createElement('i');
+	newRetweetFont.setAttribute('class', 'fa fa-retweet');
+
+	// Put event listener on elements
+	elementsListened = this.addEvent(newRetweetButton);
+
 	newLinkAuthorImg.appendChild(newImg);
+	newRetweetButton.appendChild(newRetweetFont);
 	newTweet.appendChild(newLinkAuthorImg);
 	newTweet.appendChild(newDate);
 	newTweet.appendChild(newLinkAuthor);
 	newTweet.appendChild(newContent);
+	newTweet.appendChild(elementsListened.retweetButton);
 
 	return newTweet;
+}
+
+/**
+ * Process the message date
+ */
+Message.prototype.processDate = function(){
+	var date = new Date(Date.parse(this.date));
+	// Put to the right timezone
+	date.toLocaleString();
+	var year = date.getFullYear();
+	var month = date.getMonth();
+	month = month < 10 ? '0' + month : month;
+	var day = date.getDate();
+	day = day < 10 ? '0' + day : day;
+	var hour = date.getHours();
+	hour = hour < 10 ? '0' + hour : hour;
+	var min = date.getMinutes();
+	min = min < 10 ? '0' + min : min;
+
+	this.date = day + '/'+ month + '/' + year + ' ' + hour + 'h' + min;
+}
+
+/**
+ * Add event listener on elements
+ */
+Message.prototype.addEvent = function(retweetButton){
+	var sendRetweet = this.sendRetweet;
+	var scope = this;
+
+	retweetButton.addEventListener('click', function(e){
+			sendRetweet(scope);
+	});
+
+	return {retweetButton: retweetButton};
+}
+
+/**
+ * Send Retweet message
+ */
+Message.prototype.sendRetweet = function(scope){
+	console.log('Gonna send retweet with id: ', scope.id);
 }
 
 /**
@@ -250,24 +294,4 @@ Message.prototype.processText = function(urls, medias){
  	}
 
  	this.text =  newTweetText;
-}
-
-/**
- * Process the message date
- */
-Message.prototype.processDate = function(){
-	var date = new Date(Date.parse(this.date));
-	// Put to the right timezone
-	date.toLocaleString();
-	var year = date.getFullYear();
-	var month = date.getMonth();
-	month = month < 10 ? '0' + month : month;
-	var day = date.getDate();
-	day = day < 10 ? '0' + day : day;
-	var hour = date.getHours();
-	hour = hour < 10 ? '0' + hour : hour;
-	var min = date.getMinutes();
-	min = min < 10 ? '0' + min : min;
-
-	this.date = day + '/'+ month + '/' + year + ' ' + hour + 'h' + min;
 }

@@ -225,6 +225,23 @@ html{
 	text-decoration: underline;
 }
 
+.tweet-retweet-button {
+    background-color: transparent;
+    border: none;
+    color: #dddede;
+    margin: 0 0 0 85%;
+    padding: 0;
+}
+
+.tweet-retweet-button:hover {
+    color: #119955;
+}
+
+.tweet-retweet-button i {
+    font-size: 2em;
+}
+
+
 /** STATISTICS **/
 
 #statistics tbody{
