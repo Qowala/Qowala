@@ -34,7 +34,7 @@ function MessagesColumn(id, columnHeaderName){
  * @return {Object} Added message
  */
 MessagesColumn.prototype.addMessage = function(message, streamSource){
-	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url, streamSource);
+	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url, message.retweeted, streamSource);
 	newMessage.processText(message.entities.urls, message.entities.media);
 	newMessage.processDate();
 	this.messagesList.unshift(newMessage);
@@ -56,6 +56,7 @@ MessagesColumn.prototype.displayAllMessages = function(){
 		var newTweet = this.messagesList[i].generateMessage();
 
 		this.columnContentHTML.appendChild(newTweet);
+		this.messagesList[i].checkStatus();
 	};
 }
 
@@ -75,6 +76,8 @@ MessagesColumn.prototype.displayOneMessage = function(message){
 	if(this.columnContentHTML.childNodes[this.limitNumberMessages]){
 		this.columnContentHTML.removeChild(this.columnContentHTML.childNodes[this.limitNumberMessages]);
 	}
+
+	message.checkStatus();
 }
 
 
@@ -91,7 +94,7 @@ MessagesColumn.prototype.displayOneMessage = function(message){
  * @param {String} text            Message text content
  * @param {String} profilePicture  URL to user's profile picture
  */
-function Message(id, authorUsername, authorPseudonym, date, text, profilePicture, streamSource){
+function Message(id, authorUsername, authorPseudonym, date, text, profilePicture, retweeted, streamSource){
 	this.id = id;
 	this.authorUsername = authorUsername;
 	this.authorPseudonym = authorPseudonym;
@@ -99,6 +102,7 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 	this.text = text;
 	this.profilePicture = profilePicture;
 	this.streamSource = streamSource
+	this.retweeted = retweeted;
 }
 
 /**
@@ -133,7 +137,7 @@ Message.prototype.generateMessage = function(){
 	newContent.innerHTML = this.text;
 
 	var newRetweetButton = document.createElement('button');
-	newRetweetButton.setAttribute('retweetId', this.id);
+	newRetweetButton.setAttribute('id', 'retweet-' + this.id);
 	newRetweetButton.setAttribute('class', 'tweet-retweet-button');
 
 	var newRetweetFont = document.createElement('i');
@@ -192,6 +196,19 @@ Message.prototype.addEvent = function(retweetButton){
  */
 Message.prototype.sendRetweet = function(scope){
 	console.log('Gonna send retweet with id: ', scope.id);
+	socket.emit('retweet', scope.id);
+
+	scope.retweeted = true;
+	scope.checkStatus();
+}
+
+Message.prototype.checkStatus = function(){
+	if(this.retweeted){
+		retweetButton = document.getElementById('retweet-' + this.id);
+		retweetButton.removeAttribute("class");
+		retweetButton.setAttribute('class', 'tweet-retweet-button-active');
+		console.log('Updated concerning retweet');
+	}
 }
 
 /**

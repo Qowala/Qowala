@@ -226,7 +226,7 @@ html{
 	text-decoration: underline;
 }
 
-.tweet-retweet-button {
+.tweet-retweet-button, .tweet-retweet-button-active {
     background-color: transparent;
     border: none;
     color: #dddede;
@@ -236,11 +236,11 @@ html{
     padding: 0;
 }
 
-.tweet-retweet-button:hover {
+.tweet-retweet-button:hover, .tweet-retweet-button-active {
     color: #119955;
 }
 
-.tweet-retweet-button i {
+.tweet-retweet-button i, .tweet-retweet-button-active i {
     font-size: 2em;
 }
 

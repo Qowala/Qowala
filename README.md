@@ -18,6 +18,8 @@ Qowala live is a Twitter client that can track tweets with specified hashtags. Y
 
 - Rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* at http://apps.twitter.com after creating your own app).
 
+- Give your application Read & Write permissions on Twitter Application Management Dashboard
+
 ![Twitter App Manager](https://lut.im/qAlAvLX3/hYTfULdb)
 
 - For the callback URL in **config/twitter.json** you have to put the domain name where the app will be hosted and add to it '/auth/twitter/callback'.
