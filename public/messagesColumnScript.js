@@ -56,7 +56,7 @@ MessagesColumn.prototype.displayAllMessages = function(){
 		var newTweet = this.messagesList[i].generateMessage();
 
 		this.columnContentHTML.appendChild(newTweet);
-		this.messagesList[i].checkStatus();
+		this.messagesList[i].applyTweetStatus();
 	};
 }
 
@@ -77,7 +77,7 @@ MessagesColumn.prototype.displayOneMessage = function(message){
 		this.columnContentHTML.removeChild(this.columnContentHTML.childNodes[this.limitNumberMessages]);
 	}
 
-	message.checkStatus();
+	message.applyTweetStatus();
 }
 
 
@@ -99,10 +99,20 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 	this.authorUsername = authorUsername;
 	this.authorPseudonym = authorPseudonym;
 	this.date = date;
+	this.displayedDate = '0 min';
+	this.friendlyDate = date;
+	this.dateHTML = null;
 	this.text = text;
 	this.profilePicture = profilePicture;
 	this.streamSource = streamSource
 	this.retweeted = retweeted;
+
+	setTimeout(function(){
+		this.timeUpdater = setInterval(function(){
+				this.updateTime()
+			}.bind(this)
+		, 90000);
+	}.bind(this), 1000);
 }
 
 /**
@@ -124,7 +134,9 @@ Message.prototype.generateMessage = function(){
 
 	var newDate = document.createElement('span');
 	newDate.setAttribute('class', 'tweet-date');
-	newDate.textContent = this.date;
+	newDate.setAttribute('title', this.friendlyDate);
+	newDate.textContent = this.displayedDate;
+	this.dateHTML = newDate;
 	
 	var newLinkAuthor = document.createElement('a');
 	newLinkAuthor.setAttribute('class', 'tweet-authorname');
@@ -153,10 +165,10 @@ Message.prototype.generateMessage = function(){
 	newLinkAuthorImg.appendChild(newImg);
 	newRetweetButton.appendChild(newRetweetFont);
 	newTweet.appendChild(newLinkAuthorImg);
-	newTweet.appendChild(newDate);
 	newTweet.appendChild(newLinkAuthor);
 	newTweet.appendChild(newAuthorScreenName);
 	newTweet.appendChild(newContent);
+	newTweet.appendChild(newDate);
 	newTweet.appendChild(elementsListened.retweetButton);
 
 	return newTweet;
@@ -179,7 +191,11 @@ Message.prototype.processDate = function(){
 	var min = date.getMinutes();
 	min = min < 10 ? '0' + min : min;
 
-	this.date = day + '/'+ month + '/' + year + ' ' + hour + 'h' + min;
+	this.date = date;
+
+	this.friendlyDate = hour + 'h' + min + ' - ' + day + '/'+ month + '/' + year;
+
+	this.updateTime();
 }
 
 /**
@@ -204,16 +220,102 @@ Message.prototype.sendRetweet = function(scope){
 	socket.emit('retweet', scope.id);
 
 	scope.retweeted = true;
-	scope.checkStatus();
+	scope.applyTweetStatus();
 }
 
-Message.prototype.checkStatus = function(){
+/**
+ * Apply tweet's status on the display
+ */
+Message.prototype.applyTweetStatus = function(){
 	if(this.retweeted){
 		retweetButton = document.getElementById('retweet-' + this.id);
 		retweetButton.removeAttribute("class");
 		retweetButton.setAttribute('class', 'tweet-retweet-button-active');
 		console.log('Updated concerning retweet');
 	}
+}
+
+/**
+ * Update the relative time for every tweet
+ * @return {String} Relative time to be displayed
+ */
+Message.prototype.updateTime = function(test){
+	var timeDifference = Date.now() - this.date.getTime();
+	timeDifference = timeDifference / 60000;
+	timeDifference = Math.trunc(timeDifference);
+	var unit = ' min';
+
+	var toBeDisplayed = timeDifference + unit;
+
+	if(timeDifference >= 60){
+		timeDifference = timeDifference / 60;
+		timeDifference = Math.round(timeDifference);
+
+		if(timeDifference == 1){
+			unit = ' hr';
+		}
+		else {
+			unit = ' hrs';
+		}
+
+		toBeDisplayed = timeDifference + unit;
+
+		if (timeDifference >= 24) {
+			if(month == 0) {
+				var literalMonth = 'Jan';
+			}
+			else if (month == 1) {
+				var literalMonth = 'Feb';
+			}
+			else if (month == 2) {
+				var literalMonth = 'Mar';
+			}
+			else if (month == 3) {
+				var literalMonth = 'Apr';
+			}
+			else if (month == 4) {
+				var literalMonth = 'May';
+			}
+			else if (month == 5) {
+				var literalMonth = 'Jun';
+			}
+			else if (month == 6) {
+				var literalMonth = 'Jul';
+			}
+			else if (month == 7) {
+				var literalMonth = 'Aug';
+			}
+			else if (month == 8) {
+				var literalMonth = 'Sep';
+			}
+			else if (month == 9) {
+				var literalMonth = 'Oct';
+			}
+			else if (month == 10) {
+				var literalMonth = 'Nov';
+			}
+			else if (month == 11) {
+				var literalMonth = 'Dec';
+			}
+			else {
+				var literalMonth = '/' + month;
+			}
+
+			toBeDisplayed = day + ' ' + literalMonth;
+		};
+	}
+
+	if(this.dateHTML != null){
+		// console.log('Updated time with ', toBeDisplayed, ' in ', this.dateHTML);
+		this.dateHTML.textContent = toBeDisplayed;
+	}
+
+	if(test){
+		console.log('Being recalled');
+	}
+
+	this.displayedDate = toBeDisplayed; 
+	//return toBeDisplayed;
 }
 
 /**

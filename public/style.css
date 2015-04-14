@@ -184,14 +184,16 @@ html{
 }
 
 .tweet-date{
-	font-style: italic;
-	font-size: 0.85em;
-	display: block;
+	font-size: 0.8em;
+}
+
+.tweet-date:hover {
+    text-decoration: underline;
 }
 
 .tweet-text{
 	font-size: 0.9em;
-    margin: 5px 0 30px;
+    margin: 8px 0 10px;
     word-wrap: break-word;
 }
 
