@@ -35,7 +35,7 @@ var dashboard = (function (socket){
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
 
 		// Generate the defaults columns
-		messagesDisplay.addColumn('user', 'Timeline');
+		messagesDisplay.addColumn('user', 'Home');
 		messagesDisplay.addColumn('tracking', 'Tracking');
 		messagesDisplay.displayColumns();
 
