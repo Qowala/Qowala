@@ -217,6 +217,13 @@ html{
     color: white;
 }
 
+.tweet-authorScreenName {
+    color: #119955;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    margin-left: 10px;
+}
+
 .tweet-url{
 	color: #2aa3d6;
 	text-decoration: none;

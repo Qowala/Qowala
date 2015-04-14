@@ -132,6 +132,10 @@ Message.prototype.generateMessage = function(){
 	newLinkAuthor.setAttribute('target', '_blank');
 	newLinkAuthor.textContent = this.authorPseudonym;
 
+	var newAuthorScreenName = document.createElement('span');
+	newAuthorScreenName.setAttribute('class', 'tweet-authorScreenName');
+	newAuthorScreenName.textContent = '@' + this.authorUsername;
+
 	var newContent = document.createElement('p');
 	newContent.setAttribute('class', 'tweet-text');
 	newContent.innerHTML = this.text;
@@ -151,6 +155,7 @@ Message.prototype.generateMessage = function(){
 	newTweet.appendChild(newLinkAuthorImg);
 	newTweet.appendChild(newDate);
 	newTweet.appendChild(newLinkAuthor);
+	newTweet.appendChild(newAuthorScreenName);
 	newTweet.appendChild(newContent);
 	newTweet.appendChild(elementsListened.retweetButton);
 
