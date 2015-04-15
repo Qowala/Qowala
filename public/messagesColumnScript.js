@@ -261,6 +261,10 @@ Message.prototype.updateTime = function(test){
 		toBeDisplayed = timeDifference + unit;
 
 		if (timeDifference >= 24) {
+
+			var month = this.date.getMonth();
+			month = month < 10 ? '0' + month : month;
+			
 			if(month == 0) {
 				var literalMonth = 'Jan';
 			}
