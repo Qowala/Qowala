@@ -264,6 +264,9 @@ Message.prototype.updateTime = function(test){
 
 			var month = this.date.getMonth();
 			month = month < 10 ? '0' + month : month;
+
+			var day = this.date.getDate();
+			day = day < 10 ? '0' + day : day;
 			
 			if(month == 0) {
 				var literalMonth = 'Jan';
