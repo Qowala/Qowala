@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passportAuthentication = require('./lib/passport');
 var app = express();
+var port = process.env.PORT;
+
 
 // Configuration file for the DB
 var dbconfig = require('./config/db');
@@ -52,8 +54,8 @@ passportAuthentication(app);
 routes(app);
 
 // Express listen at port 8080
-var server = app.listen(8080);
-console.log('Listening at 8080');
+var server = app.listen(port);
+console.log('Listening at ' + port);
 
 // Socket.io listen at port 8080
 var io = require('socket.io').listen(server);
