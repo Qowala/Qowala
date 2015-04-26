@@ -1,5 +1,5 @@
 html{
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     height: 100%;
 }
 
@@ -25,6 +25,11 @@ body {
 
 #loginPopup > p {
     margin-bottom: 50px;
+}
+
+#logo-live {
+    font-family: "Open Sans";
+    font-weight: 300;
 }
 
 #welcome-button {
@@ -65,6 +70,7 @@ body {
     font-size: 1.5em;
     font-weight: 400;
 }
+
 
 #mainSidebar {
     background-color: #1a1a1a;
@@ -145,7 +151,6 @@ body {
   -khtml-user-drag: element;
   -webkit-user-drag: element;
 }
-
 
 .draggableTag:before{
     content: "..";
