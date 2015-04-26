@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passportAuthentication = require('./lib/passport');
 var app = express();
-var port = process.env.PORT;
+var port = process.env.PORT || 8080;
 
 
 // Configuration file for the DB
