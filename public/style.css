@@ -1,5 +1,44 @@
 html{
 	font-family: 'Open Sans', sans-serif;
+    height: 100%;
+}
+
+body {
+    height: 100%
+}
+
+#loginPopup {
+    background-color: #595959;
+    height: 180px;
+    left: 50%;
+    margin-left: -300px;
+    margin-top: -120px;
+    padding: 20px 0 40px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 600px;
+    z-index: 1;
+    border-radius: 20px;
+    color: white;
+}
+
+#loginPopup > p {
+    margin-bottom: 50px;
+}
+
+#welcome-button {
+    background-color: #007d92;
+    border-radius: 10px;
+    font-family: "Open Sans",sans-serif;
+    text-decoration: none;
+    padding: 8px 30px;
+    color: white;
+}
+
+#welcome-button:hover{
+    color: black;
+    background-color: #F5F5F5;
 }
 
 #logo {
@@ -142,6 +181,9 @@ html{
     padding: 0;
     display: inline-flex;
     margin-top: 0;
+    min-height: 100%;
+    margin: 0;
+    background-color: #333333;
 }
 
 .tweets-column {
@@ -322,69 +364,9 @@ html{
 	background-color: #F5F5F5;	
 }
 
-/********************/
-/*    Index.html    */
-/********************/
-
-#welcome-block {
-	text-align: center;
-	margin-top: 10%;
-}
-
-#welcome-block a {
-	font-size: 2em;
-}
-
-#welcome-block p + p{
-	font-size: 1.2em;
-	font-style: italic;
-	margin-top: 50px;
-}
-#welcome-button {
-	background-color: #dddddd;
-    border: 1px solid #dddddd;
-    border-radius: 5px;
-    color: #676767;
-    font-family: "Open Sans",sans-serif;
-    padding: 4px 15px;
-    text-decoration: none;
-}
-
-#welcome-button:hover{
-	background-color: #F5F5F5;
-}
-
-ul#about-informations {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-#about-informations a{
-	color: white;
-	text-decoration: none;
-	padding-left: 15px;
-	font-size: 2em;
-}
-
-#about-informations li {
-	margin-bottom: 10px;
-}
-
-#about-informations li + li a{
-	font-size: 1em;
-}
-
-#about-informations a img{
-	/*width: 20px;*/
-	position: relative;
-	bottom: 2px;
-	padding-right: 10px;
-}
-
-#about-informations a:hover{
-	text-decoration: underline;
-}
+/***********************/
+/*    MEDIA QUERIES    */
+/***********************/
 
 @media only screen and (max-device-width: 1500px) {
     .tweets-column {

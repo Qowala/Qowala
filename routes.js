@@ -3,9 +3,9 @@ var dashboard = require('./controllers/dashboard');
 var passport = require('passport');
 
 function routes (app){
-    app.get('/', home.getIndex);
+    app.get('/', home.redirectToDashboard);
 
-    app.get('/dashboard', ensureAuthenticated, dashboard.getDashboard);
+    app.get('/dashboard', dashboard.getDashboard);
     
     app.post('/tag', ensureAuthenticated, dashboard.postTag);
 
