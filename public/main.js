@@ -42,9 +42,12 @@ var dashboard = (function (socket){
 		mainSidebar.init();
 
 		// Emit a message to connect to the server
-		if(userId != undefined){
-			socket.emit('auth', userId);
-		}
+		socket.on('connect', function () {
+			if(userId != undefined){
+				socket.emit('auth', userId);
+				console.log('Fires auth');
+			}
+		})
 
 		callback();
 	}
@@ -82,6 +85,10 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('remove tag', function(){});
+
+		socket.on('disconnect', function(){
+			console.log('Got disconnect');
+		})
 	}
 
 	return {
