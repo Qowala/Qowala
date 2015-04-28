@@ -1,11 +1,12 @@
 /**
  * Displays the main controls
  */
-function MainSidebar(buttonOpenMessageEdition, inputTag, tagContainer){
+function MainSidebar(buttonOpenMessageEdition, inputTag, tagContainer, numberConnectedUsersSpan){
 	this.buttonOpenMessageEdition = buttonOpenMessageEdition;
 	this.inputTag = inputTag;
 	this.tagContainer = tagContainer;
 	this.draggableTags = [];
+	this.numberConnectedUsersSpan = numberConnectedUsersSpan;
 
 	this.hashtagsToTrack = [];
 }
@@ -103,4 +104,20 @@ MainSidebar.prototype.trackTag = function(scope){
 	scope.inputTag.value = "";
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
+}
+
+/**
+ * Updates the number of connected uers
+ * @param  {Number}  numberConnectedUsers
+ */
+MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers){
+	this.numberConnectedUsersSpan.textContent = numberConnectedUsers;
+	if(numberConnectedUsers == 1){
+		koalaPlural.textContent = "";
+	}
+	else{
+		koalaPlural.textContent = "s";
+	}
+
+	console.log('updating the number');
 }

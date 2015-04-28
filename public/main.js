@@ -12,6 +12,8 @@ var mapping = {
 	buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
 	inputTag: document.getElementById('tagInput'),
 	tagContainer: document.getElementById('tagContainer'),
+	numberConnectedUsersSpan: document.getElementById('numberConnectedUsers'),
+	koalaPlural: document.getElementById('koalaPlural'),
 	columnsList: document.getElementById('tweets-columns-list')
 };
 
@@ -30,7 +32,7 @@ var dashboard = (function (socket){
 	var init = function(mapping, callback){
 
 		// Create the main components of the application
-		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.inputTag, mapping.tagContainer);
+		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.inputTag, mapping.tagContainer, mapping.numberConnectedUsersSpan, mapping.koalaPlural);
 		statisticsSidebar = new StatisticsSidebar();
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
 
@@ -85,6 +87,11 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('remove tag', function(){});
+
+		socket.on('numberConnectedUsers', function(numberConnectedUsers){
+			console.log('Receive update message: ', numberConnectedUsers);
+			mainSidebar.updateNumberConnectedUsers(numberConnectedUsers);
+		});
 
 		socket.on('disconnect', function(){
 			console.log('Got disconnect');

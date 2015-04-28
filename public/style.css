@@ -177,6 +177,15 @@ body {
     padding: 4px 15px;
 }
 
+#numberConnectedUsersPhrase {
+    bottom: 20px;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    font-size: .8em;
+}
+
 /** TWEETS **/
 
 #tweets-columns-list {
