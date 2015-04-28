@@ -177,6 +177,22 @@ body {
     padding: 4px 15px;
 }
 
+#logoutLink {
+    background-color: transparent;
+    border: none;
+    color: #d18933;
+    position: absolute;
+    left: 58px;
+    bottom: 80px;
+    width: 80px;
+    text-align: center;
+    text-decoration: none;
+}
+
+#logoutLink p {
+    margin: 0;
+}
+
 #numberConnectedUsersPhrase {
     bottom: 20px;
     left: 0;
