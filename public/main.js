@@ -47,7 +47,7 @@ var dashboard = (function (socket){
 				socket.emit('auth', userId);
 				console.log('Fires auth');
 			}
-		})
+		});
 
 		callback();
 	}
