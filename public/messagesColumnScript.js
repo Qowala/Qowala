@@ -153,7 +153,7 @@ Message.prototype.generateMessage = function(){
 	newContent.innerHTML = this.text;
 
 	var newRetweetButton = document.createElement('button');
-	newRetweetButton.setAttribute('id', 'retweet-' + this.id);
+	newRetweetButton.setAttribute('name', 'retweet-' + this.id);
 	newRetweetButton.setAttribute('class', 'tweet-retweet-button');
 
 	var newRetweetFont = document.createElement('i');
@@ -228,10 +228,12 @@ Message.prototype.sendRetweet = function(scope){
  */
 Message.prototype.applyTweetStatus = function(){
 	if(this.retweeted){
-		retweetButton = document.getElementById('retweet-' + this.id);
-		retweetButton.removeAttribute("class");
-		retweetButton.setAttribute('class', 'tweet-retweet-button-active');
-		console.log('Updated concerning retweet');
+		retweetButtons = document.getElementsByName('retweet-' + this.id);
+		for (var i = 0; i < retweetButtons.length; i++) {
+			retweetButtons[i].removeAttribute("class");
+			retweetButtons[i].setAttribute('class', 'tweet-retweet-button-active');
+			console.log('Updated concerning retweet');
+		};
 	}
 }
 
