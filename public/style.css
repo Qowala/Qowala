@@ -90,7 +90,9 @@ body {
     color: white;
     height: 50px;
     margin: 50px auto;
-    padding: 5px;
+    padding: 5px 0 0 7px;
+    border-radius: 10px;
+    font-size: 2.2em;
     width: 50px;
     display: block;
 }
