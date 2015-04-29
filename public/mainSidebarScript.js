@@ -43,6 +43,8 @@ MainSidebar.prototype.init = function(){
 		this.sendMessage();
 	}.bind(this));
 
+	this.textareaListener();
+		
 	var dragSrcEl = null;
 
 	function handleDragStart(e) {
@@ -152,7 +154,6 @@ MainSidebar.prototype.openMessageEdition = function(){
 		this.messageEditionPanel.style.width = width + 'px';
 		this.messageEditionPanel.style.left = 192 + 'px';
 
-		this.textareaListener();
 	}
 	else{
 		console.log('Closing the panel');
