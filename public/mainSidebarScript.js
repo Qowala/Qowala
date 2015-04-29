@@ -207,6 +207,10 @@ MainSidebar.prototype.textareaListener = function(){
  */
 MainSidebar.prototype.sendMessage = function(){
 	var message = this.messageTextarea.value;
-	console.log('Going to send: ', message);
-	socket.emit('sendMessage', message);
+	if(message != ""){
+		console.log('Going to send: ', message);
+		socket.emit('sendMessage', message);
+		this.messageTextarea.value = "";
+		this.openMessageEdition();
+	}
 }
