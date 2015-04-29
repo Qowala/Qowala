@@ -100,7 +100,7 @@ body {
     width: 10px;
     background-color: #afacac;
     border-radius: 0 10px 10px 0;
-    position: absolute;
+    position: fixed;
     top: 95px;
     z-index: 1;
     left: -100px;
