@@ -71,7 +71,6 @@ body {
     font-weight: 400;
 }
 
-
 #mainSidebar {
     background-color: #1a1a1a;
     bottom: 0;
@@ -81,7 +80,7 @@ body {
     position: fixed;
     top: 0;
     width: 172px;
-    z-index: 1;
+    z-index: 2;
 }
 
 #buttonOpenMessageEdition {
@@ -95,6 +94,53 @@ body {
     font-size: 2.2em;
     width: 50px;
     display: block;
+}
+
+#messageEditionPanel{
+    width: 10px;
+    background-color: #afacac;
+    border-radius: 0 10px 10px 0;
+    position: absolute;
+    top: 95px;
+    z-index: 1;
+    left: -100px;
+    -moz-transition: left 1s; 
+    -webkit-transition: left 1s;  
+    -ms-transition: left 1s;  
+    -o-transition: left 1s;  
+    transition: left 1s;
+}  
+
+#messageEditionPanel p {
+    color: black;
+    padding: 0 110px 0 0;
+    text-align: right;
+}
+
+#messageTextarea {
+    background-color: #ededed;
+    border: medium none;
+    border-radius: 10px;
+    display: block;
+    height: 200px;
+    margin: 14px auto;
+    padding: 10px;
+    width: 80%;
+}
+
+.red{
+    color: red;
+}
+
+#sendTweetButton {
+    background-color: #119955;
+    border: medium none;
+    border-radius: 5px;
+    bottom: 10px;
+    color: white;
+    padding: 7px 20px;
+    position: absolute;
+    right: 10px;
 }
 
 #tagInputWrapper::before {

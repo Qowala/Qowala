@@ -10,6 +10,10 @@ var socket = io();
  */
 var mapping = {
 	buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
+	messageEditionPanel: document.getElementById('messageEditionPanel'),
+	messageTextarea: document.getElementById('messageTextarea'),
+	numberCharactersLeft: document.getElementById('numberCharactersLeft'),
+	sendTweetButton: document.getElementById('sendTweetButton'),
 	inputTag: document.getElementById('tagInput'),
 	tagContainer: document.getElementById('tagContainer'),
 	numberConnectedUsersSpan: document.getElementById('numberConnectedUsers'),
@@ -32,7 +36,7 @@ var dashboard = (function (socket){
 	var init = function(mapping, callback){
 
 		// Create the main components of the application
-		mainSidebar = new MainSidebar(mapping.buttonOpenMessageEdition, mapping.inputTag, mapping.tagContainer, mapping.numberConnectedUsersSpan, mapping.koalaPlural);
+		mainSidebar = new MainSidebar(mapping);
 		statisticsSidebar = new StatisticsSidebar();
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
 

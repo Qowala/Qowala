@@ -1,12 +1,18 @@
 /**
  * Displays the main controls
  */
-function MainSidebar(buttonOpenMessageEdition, inputTag, tagContainer, numberConnectedUsersSpan){
-	this.buttonOpenMessageEdition = buttonOpenMessageEdition;
-	this.inputTag = inputTag;
-	this.tagContainer = tagContainer;
+function MainSidebar(mapping){
+	this.buttonOpenMessageEdition = mapping.buttonOpenMessageEdition;
+	this.isMessageEditionPanelOpen = false;
+	this.messageEditionPanel = mapping.messageEditionPanel;
+	this.messageTextarea = mapping.messageTextarea;
+	this.numberCharactersLeft = mapping.numberCharactersLeft;
+	this.sendTweetButton = mapping.sendTweetButton;
+
+	this.inputTag = mapping.inputTag;
+	this.tagContainer = mapping.tagContainer;
 	this.draggableTags = [];
-	this.numberConnectedUsersSpan = numberConnectedUsersSpan;
+	this.numberConnectedUsersSpan = mapping.numberConnectedUsersSpan;
 
 	this.hashtagsToTrack = [];
 }
@@ -26,6 +32,16 @@ MainSidebar.prototype.init = function(){
 			trackTag(scope);
 	    }
 	});
+
+	// Triggers a click on the button to open the message edition panel
+	this.buttonOpenMessageEdition.addEventListener('click', function(e){
+		this.openMessageEdition();
+	}.bind(this));
+
+	// Triggers a click on the button to send a message
+	this.sendTweetButton.addEventListener('click', function(e){
+		this.sendMessage();
+	}.bind(this));
 
 	var dragSrcEl = null;
 
@@ -120,4 +136,77 @@ MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers
 	}
 
 	console.log('updating the number');
+}
+
+/**
+ * Opens and closes the message edition panel
+ */
+MainSidebar.prototype.openMessageEdition = function(){
+	this.isMessageEditionPanelOpen = !this.isMessageEditionPanelOpen;
+	if(this.isMessageEditionPanelOpen){
+		console.log('Opening the panel');
+
+		var width = calculateWidth();
+
+		this.messageEditionPanel.style.left = '-' + width +'px';
+		this.messageEditionPanel.style.width = width + 'px';
+		this.messageEditionPanel.style.left = 192 + 'px';
+
+		this.textareaListener();
+	}
+	else{
+		console.log('Closing the panel');
+
+		var width = calculateWidth();
+		this.messageEditionPanel.style.left = '-' + width +'px';
+	}
+
+	function calculateWidth(){
+		// Give it the same size as a tweet column
+		if(window.innerWidth > 1500){
+			var width = (window.innerWidth - 192) * 25/100;
+		}
+		else if(window.innerWidth > 1200){
+			var width = (window.innerWidth - 192) * 33.333/100;
+		}
+		else{
+			var width = (window.innerWidth - 192) * 50/100;
+		}
+		
+		return width;
+	}
+}
+
+/**
+ * Updates the textarea
+ */
+MainSidebar.prototype.textareaListener = function(){
+	// Triggers inputs for updating the number of characters
+	this.messageTextarea.addEventListener('input', function(e){
+		updateNumberCharacters();
+	}.bind(this));
+
+	function updateNumberCharacters(){
+		var numberCharacters = this.messageTextarea.value.length;
+		var numberCharactersLeft = 140 - numberCharacters
+		this.numberCharactersLeft.textContent = numberCharactersLeft;
+
+		// If number of characters negative, display in red
+		if(numberCharactersLeft < 0){
+			this.numberCharactersLeft.className = "red";
+		}
+		else{
+			this.numberCharactersLeft.className = "";
+		}
+	}
+}
+
+/**
+ * Sends the message
+ * @return {[type]} [description]
+ */
+MainSidebar.prototype.sendMessage = function(){
+	var message = this.messageTextarea.value;
+	console.log('Going to send: ', message);
+	socket.emit('sendMessage', message);
 }
