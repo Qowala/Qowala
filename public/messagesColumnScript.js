@@ -18,6 +18,11 @@ function MessagesColumn(id, columnHeaderName){
 	this.buttonOpenOptions = null;
 	this.panel = null;
 	this.isPanelOpen = false;
+	this.areImagesEnabled = true;
+	this.imagesCheckbox = null;
+	this.isListsOpen = true;
+	this.twitterLists = null;
+	this.hashtagsBlock = null;
 
 	this.messagesList = [];
 }
@@ -71,6 +76,9 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnImageSwitchInput.setAttribute('type', 'checkbox');
 	newTweetColumnImageSwitchInput.setAttribute('id', 'tweets-column-switch-image' + this.id);
 	newTweetColumnImageSwitchInput.setAttribute('name', 'tweets-column-switch-image' + this.id);
+	newTweetColumnImageSwitchInput.setAttribute('checked', 'true');
+
+	this.imagesCheckbox = newTweetColumnImageSwitch;
 
 	var newTweetColumnImageSwitchLabel = document.createElement('label');
 	newTweetColumnImageSwitchLabel.setAttribute('for', 'tweets-column-switch-image' + this.id);
@@ -87,19 +95,85 @@ MessagesColumn.prototype.generateColumn = function(){
 
 	panelList.appendChild(firstParameter);
 
+	/** SECOND PARAMETER **/
+
+	var secondParamter = document.createElement('li');
+	secondParamter.className = 'tweets-column-panel-list-second';
+
+	var secondParameterFirstChoice = document.createElement('p');
+	secondParameterFirstChoice.textContent = "Lists";
+
+	var secondParameterSecondChoice = document.createElement('p');
+	secondParameterSecondChoice.textContent = "Hashtags";
+
+	var listsOrTagsSwitch = document.createElement('span');
+	listsOrTagsSwitch.setAttribute('class', 'switch');
+
+	var listsOrTagsSwitchInput = document.createElement('input');
+	listsOrTagsSwitchInput.setAttribute('type', 'checkbox');
+	listsOrTagsSwitchInput.setAttribute('id', 'tweets-column-switch-listsOrTags' + this.id);
+	listsOrTagsSwitchInput.setAttribute('name', 'tweets-column-switch-listsOrTags' + this.id);
+
+	var listsOrTagsSwitchLabel = document.createElement('label');
+	listsOrTagsSwitchLabel.setAttribute('for', 'tweets-column-switch-listsOrTags' + this.id);
+
+	var listsOrTagsSwitchKnob = document.createElement('span');
+	listsOrTagsSwitchKnob.setAttribute('class', 'switch-knob');
+
+	listsOrTagsSwitch.appendChild(listsOrTagsSwitchInput);
+	listsOrTagsSwitch.appendChild(listsOrTagsSwitchLabel);
+	listsOrTagsSwitch.appendChild(listsOrTagsSwitchKnob);
+
+	secondParamter.appendChild(secondParameterFirstChoice);
+	secondParamter.appendChild(secondParameterSecondChoice);
+	secondParamter.appendChild(listsOrTagsSwitch);
+
+	panelList.appendChild(secondParamter);
+
+	/** LISTS **/
+
+	var twitterLists = document.createElement('li');
+	twitterLists.className = 'tweets-column-panel-list-twitterLists';
+
+	this.twitterLists = twitterLists;
+
+	var listChoice = document.createElement('select');
+	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
+
+	twitterLists.appendChild(listChoice);
+	panelList.appendChild(twitterLists);
+
+	/** HASHTAGS */
+
+	var hashtagsBlock = document.createElement('li');
+	hashtagsBlock.className = 'tweets-column-panel-list-hashtagsBlock';
+
+	this.hashtagsBlock = hashtagsBlock;
+
+	var hashtagsBlockTitle = document.createElement('h4');
+	hashtagsBlockTitle.textContent = "Add hashtag to track";
+
+	var hashtagTrackInput = document.createElement('input');
+
+	hashtagsBlock.appendChild(hashtagsBlockTitle);
+	hashtagsBlock.appendChild(hashtagTrackInput);
+
+	panelList.appendChild(hashtagsBlock);
+
+
 	/** TWEETS **/
 
 	var newTweetColumnTweets = document.createElement('ul');
 	newTweetColumnTweets.setAttribute('class', 'tweets');
 	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
 
-	var elementsListened = this.addEvent(newTweetColumnParametersButton);
+	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch);
 
 	newTweetColumnPanel.appendChild(panelList);
 
 	newTweetColumnHeader.appendChild(newTweetColumnTitle);
 	newTweetColumnParametersButton.appendChild(newTweetColumnParametersIcon);
-	newTweetColumnHeader.appendChild(elementsListened.buttonOpenOptions);
+	newTweetColumnHeader.appendChild(newTweetColumnParametersButton);
 	newTweetColumn.appendChild(newTweetColumnHeader);
 	newTweetColumn.appendChild(newTweetColumnPanel);
 	newTweetColumn.appendChild(newTweetColumnTweets);
@@ -111,12 +185,24 @@ MessagesColumn.prototype.generateColumn = function(){
 	return newTweetColumn;
 }
 
-MessagesColumn.prototype.addEvent = function(buttonOpenOptions){
+/**
+ * Add events on buttons and other inputs
+ * @param {Object} buttonOpenOptions          [description]
+ * @param {Object]} newTweetColumnImageSwitch [description]
+ * @param {Object} listsOrTagsSwitch          [description]
+ */
+MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch){
 	buttonOpenOptions.addEventListener('click', function(){
-			this.openPanel();
+		this.openPanel();
 	}.bind(this));
 
-	return {buttonOpenOptions: buttonOpenOptions};
+	newTweetColumnImageSwitch.addEventListener('change', function(){
+		this.enableImages();
+	}.bind(this));
+
+	listsOrTagsSwitch.addEventListener('change', function(){
+		this.switchListsOrHashtags();
+	}.bind(this));
 }
 
 /**
@@ -125,12 +211,35 @@ MessagesColumn.prototype.addEvent = function(buttonOpenOptions){
 MessagesColumn.prototype.openPanel = function(){
 	this.isPanelOpen = !this.isPanelOpen;
 	if(this.isPanelOpen){
-		this.panel.style.display = "block";
+		this.panel.style.transform = "scaleY(1)";
 		this.buttonOpenOptions.className = "tweets-column-header-button tweets-column-header-button-active";
 	}
 	else{
-		this.panel.style.display = "none";
+		this.panel.style.transform = "scaleY(0)";
 		this.buttonOpenOptions.className = "tweets-column-header-button";
+	}
+}
+
+/**
+ * Enable/Disables images display
+ */
+MessagesColumn.prototype.enableImages = function(){
+	this.areImagesEnabled = this.imagesCheckbox.value;
+	console.log('Images are: ', this.areImagesEnabled);
+}
+
+/**
+ * Switchs display between hashtags and Twitter lists
+ */
+MessagesColumn.prototype.switchListsOrHashtags = function(){
+	this.isListsOpen = !this.isListsOpen;
+	if(this.isListsOpen){
+		this.hashtagsBlock.style.display = "none";
+		this.twitterLists.style.display = "block";
+	}
+	else{
+		this.hashtagsBlock.style.display = "block";
+		this.twitterLists.style.display = "none";
 	}
 }
 

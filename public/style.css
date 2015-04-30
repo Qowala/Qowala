@@ -309,28 +309,41 @@ body {
 
 .tweets-column-panel {
     position: absolute;
-    top: 50px;
+    top: 46px;
     background-color: #202020;
-    min-height: 200px;
-    display: none;
     width: 100%;
     z-index: 1;
+    overflow: hidden;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    -moz-transition: transform ease-in 0.35s; 
+    -webkit-transition: transform ease-in 0.35s;  
+    -ms-transition: transform ease-in 0.35s;  
+    -o-transition: transform ease-in 0.35s;  
+    transition: transform ease-in 0.35s;
+}
+
+.tweets-column-panel-list {
+    padding: 0 40px 10px;
 }
 
 .tweets-column-panel-list li{
     list-style-type: none;
+    text-align: center;
+    height: 60px;
+    color: white;
+    position: relative;
 }
 
 .tweets-column-panel-list-first p{
-    color: white;
     float: left;
 }
 
 .switch {
     position: relative;
     top: 18px;
+    left: 100px;
 }
-
 
 .switch > [type="checkbox"]:checked, .switch > [type="checkbox"]:not(:checked) {
     width: 0;
@@ -401,7 +414,38 @@ body {
 
 .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
     right: 30px;
+    background-color: #898989; 
+}
+
+/* Special switch for second parameter */
+
+.tweets-column-panel-list-second .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
     background-color: #cbcbcb; 
+}
+
+.tweets-column-panel-list-second .switch > [type="checkbox"]:not(:checked) + label:after {
+    background-color: #00955b; 
+}
+
+.tweets-column-panel-list-second p {
+    float: left;
+}
+
+.tweets-column-panel-list-second p + p {
+    position: absolute;
+    right: 0;
+}
+
+.tweets-column-panel-list-second .switch {
+    left: -20px;
+}
+
+.tweets-column-panel-list-twitterLists {
+
+}
+
+.tweets-column-panel-list-hashtagsBlock {
+    display: none;
 }
 
 #lists-row {
