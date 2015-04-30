@@ -1,4 +1,4 @@
-html{
+html {
     font-family: 'Open Sans', sans-serif;
     height: 100%;
 }
@@ -254,7 +254,7 @@ body {
 
 #tweets-columns-list {
     position: relative;
-	right: -192px;
+    right: -192px;
     width: calc(100% - 192px);
     padding: 0;
     display: inline-flex;
@@ -281,6 +281,29 @@ body {
     color: #e0e2e0;
     margin: 0;
     padding: 10px 20px;
+    position: relative;
+}
+
+.tweets-column-header h3 {
+    margin: 0;
+    width: calc(100% - 50px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tweets-column-header-button {
+    background-color: transparent;
+    border: medium none;
+    bottom: 6px;
+    color: #afacac;
+    font-size: 1.6em;
+    position: absolute;
+    right: 10px;
+}
+
+.tweets-column-header-button:hover {
+    color: #119955;
 }
 
 #lists-row {

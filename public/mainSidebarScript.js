@@ -44,7 +44,7 @@ MainSidebar.prototype.init = function(){
 	}.bind(this));
 
 	this.textareaListener();
-		
+
 	var dragSrcEl = null;
 
 	function handleDragStart(e) {
@@ -146,8 +146,6 @@ MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers
 MainSidebar.prototype.openMessageEdition = function(){
 	this.isMessageEditionPanelOpen = !this.isMessageEditionPanelOpen;
 	if(this.isMessageEditionPanelOpen){
-		console.log('Opening the panel');
-
 		var width = calculateWidth();
 
 		this.messageEditionPanel.style.left = '-' + width +'px';
@@ -156,8 +154,6 @@ MainSidebar.prototype.openMessageEdition = function(){
 
 	}
 	else{
-		console.log('Closing the panel');
-
 		var width = calculateWidth();
 		this.messageEditionPanel.style.left = '-' + width +'px';
 	}
@@ -204,7 +200,6 @@ MainSidebar.prototype.textareaListener = function(){
 
 /**
  * Sends the message
- * @return {[type]} [description]
  */
 MainSidebar.prototype.sendMessage = function(){
 	var message = this.messageTextarea.value;

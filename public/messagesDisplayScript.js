@@ -38,15 +38,27 @@ MessagesDisplay.prototype.displayColumns = function(){
 		newTweetColumn.setAttribute('class', 'tweets-column');
 		newTweetColumn.setAttribute('id', 'tweets-column-' + this.messagesColumnsList[i].id);
 
-		var newTweetColumnHeader = document.createElement('h3');
+		var newTweetColumnHeader = document.createElement('div');
 		newTweetColumnHeader.setAttribute('class', 'tweets-column-header');
 		newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.messagesColumnsList[i].id);
-		newTweetColumnHeader.textContent = this.messagesColumnsList[i].columnHeaderName;
-		
+
+		var newTweetColumnTitle = document.createElement('h3');
+		newTweetColumnTitle.textContent = this.messagesColumnsList[i].columnHeaderName;
+
+		var newTweetColumnParametersButton = document.createElement('button');
+		newTweetColumnParametersButton.setAttribute('class', 'tweets-column-header-button');
+		newTweetColumnParametersButton.setAttribute('id', 'tweets-column-header-button-' + this.messagesColumnsList[i].id);
+
+		var newTweetColumnParametersIcon = document.createElement('i');
+		newTweetColumnParametersIcon.setAttribute('class', 'fa fa-cog');
+
 		var newTweetColumnTweets = document.createElement('ul');
 		newTweetColumnTweets.setAttribute('class', 'tweets');
 		newTweetColumnTweets.setAttribute('id', 'tweets-' + this.messagesColumnsList[i].id);
 
+		newTweetColumnHeader.appendChild(newTweetColumnTitle);
+		newTweetColumnParametersButton.appendChild(newTweetColumnParametersIcon);
+		newTweetColumnHeader.appendChild(newTweetColumnParametersButton);
 		newTweetColumn.appendChild(newTweetColumnHeader);
 		newTweetColumn.appendChild(newTweetColumnTweets);
 
