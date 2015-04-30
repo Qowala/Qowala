@@ -78,7 +78,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnImageSwitchInput.setAttribute('name', 'tweets-column-switch-image' + this.id);
 	newTweetColumnImageSwitchInput.setAttribute('checked', 'true');
 
-	this.imagesCheckbox = newTweetColumnImageSwitch;
+	this.imagesCheckbox = newTweetColumnImageSwitchInput;
 
 	var newTweetColumnImageSwitchLabel = document.createElement('label');
 	newTweetColumnImageSwitchLabel.setAttribute('for', 'tweets-column-switch-image' + this.id);
@@ -224,8 +224,11 @@ MessagesColumn.prototype.openPanel = function(){
  * Enable/Disables images display
  */
 MessagesColumn.prototype.enableImages = function(){
-	this.areImagesEnabled = this.imagesCheckbox.value;
-	console.log('Images are: ', this.areImagesEnabled);
+	this.areImagesEnabled = !this.areImagesEnabled;
+	for (var i = 0; i < this.messagesList.length; i++) {
+		this.messagesList[i].areImagesEnabled = this.areImagesEnabled;
+	};
+	this.displayAllMessages();
 }
 
 /**
@@ -249,8 +252,7 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
  * @return {Object} Added message
  */
 MessagesColumn.prototype.addMessage = function(message, streamSource){
-	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url, message.retweeted, streamSource);
-	newMessage.processText(message.entities.urls, message.entities.media);
+	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url, message.retweeted, streamSource, this.areImagesEnabled, message.entities.urls, message.entities.media);
 	newMessage.processDate();
 	this.messagesList.unshift(newMessage);
 
@@ -309,7 +311,7 @@ MessagesColumn.prototype.displayOneMessage = function(message){
  * @param {String} text            Message text content
  * @param {String} profilePicture  URL to user's profile picture
  */
-function Message(id, authorUsername, authorPseudonym, date, text, profilePicture, retweeted, streamSource){
+function Message(id, authorUsername, authorPseudonym, date, text, profilePicture, retweeted, streamSource, areImagesEnabled, urls, media){
 	this.id = id;
 	this.authorUsername = authorUsername;
 	this.authorPseudonym = authorPseudonym;
@@ -317,10 +319,15 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 	this.displayedDate = '0 min';
 	this.friendlyDate = date;
 	this.dateHTML = null;
-	this.text = text;
+	this.text = document.createTextNode('p');
+	this.text.textContent = text;
 	this.profilePicture = profilePicture;
 	this.streamSource = streamSource
 	this.retweeted = retweeted;
+	this.areImagesEnabled = areImagesEnabled;
+
+	this.urls = urls;
+	this.medias = media;
 
 	setTimeout(function(){
 		this.timeUpdater = setInterval(function(){
@@ -335,6 +342,8 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
  * @return {Object}         Generated message in HTML
  */
 Message.prototype.generateMessage = function(){
+
+	this.processText();
 
 	var newTweet = document.createElement('li');
 
@@ -364,7 +373,7 @@ Message.prototype.generateMessage = function(){
 
 	var newContent = document.createElement('p');
 	newContent.setAttribute('class', 'tweet-text');
-	newContent.innerHTML = this.text;
+	newContent.innerHTML = this.text.innerHTML;
 
 	var newRetweetButton = document.createElement('button');
 	newRetweetButton.setAttribute('name', 'retweet-' + this.id);
@@ -545,37 +554,39 @@ Message.prototype.updateTime = function(test){
  * Process the message text
  * @return {[type]} [description]
  */
-Message.prototype.processText = function(urls, medias){
+Message.prototype.processText = function(){
 
 	// Array where to store all URLs of the tweet
 	var urls_indices = [];
 
 	// Copy of the original text
-	var tweetText = this.text;
+	tweetText = this.text.textContent;
 
 	// Parse all URLs from the Tweet object to be sort in a array
-	if(urls) {
-		for (var i = 0; i < urls.length; i++) {
+	if(this.urls) {
+		for (var i = 0; i < this.urls.length; i++) {
 			urlIndice = {
-				expanded_url: urls[i].expanded_url, 
-				url: urls[i].url, 
-				indices: urls[i].indices
+				expanded_url: this.urls[i].expanded_url, 
+				url: this.urls[i].url, 
+				indices: this.urls[i].indices,
+				media: false
 			};
-			urls_indices.push(urlIndice);
+			urls_indices.push(urlIndice);		
 		}
 	}
 	// Parse all media URLs from the Tweet object to be sort in a array
-	if(medias) {
-		for (var i = 0; i < medias.length; i++) {
+	if(this.medias) {
+		for (var i = 0; i < this.medias.length; i++) {
 			urlIndice = {
-				expanded_url: medias[i].expanded_url, 
-				url: medias[i].url, 
-				indices: medias[i].indices
+				expanded_url: this.medias[i].expanded_url, 
+				media_url: this.medias[i].media_url_https, 
+				url: this.medias[i].url, 
+				indices: this.medias[i].indices,
+				media: true
 			};
 			urls_indices.push(urlIndice);
 		}; 
 	}
-
 	/**
 	 * Compare the indices from bigger to smaller
 	 * @param  {Array} a [Indices of first element]
@@ -589,56 +600,56 @@ Message.prototype.processText = function(urls, medias){
 	// Sort the indices from bigger to smaller
 	urls_indices.sort(compareIndicesInversed);
 
-	// Copy of the orignal text to be then modified
-	var originText = tweetText;
-	// Array that will store parts of the tweet text being processed
-	var workingText = [];
-	// For every URL of the tweet, linkify it
-	for(var i = 0; i < urls_indices.length; i++){
-		if(originText != ""){
-			originText = linkify(originText, urls_indices[i]);
-		}
+	var parsedText = document.createElement('p');
+	if(urls_indices[0]){
+
+		for (var i = 0; i < urls_indices.length; i++) {
+			var splittedText = tweetText.substring(urls_indices[i].indices[1]) + " ";
+		 	var firstPart = document.createTextNode(splittedText);	
+
+			if(urls_indices[i].indices[0] == 139){
+				tweetText = tweetText.substring(0, tweetText.lastIndexOf(' ') + 1);
+			}
+			else{
+				tweetText = tweetText.substring(0, urls_indices[i].indices[0]);
+			}
+
+			if(this.areImagesEnabled && urls_indices[i].media){
+				var object = document.createElement('img');
+				object.setAttribute('src', urls_indices[i].media_url + ':thumb');
+				object.className = "tweet-image";
+		 		parsedText.appendChild(object);
+			}
+			else{
+				if(urls_indices[i].expanded_url.length > 35){
+					var displayUrl = urls_indices[i].expanded_url.slice(0, 32);
+					displayUrl += '...';
+				}
+				else {
+					var displayUrl = urls_indices[i].expanded_url;
+				}
+				var object = document.createElement('a');
+			 	object.setAttribute('href', urls_indices[i].expanded_url);
+			 	object.setAttribute('target', "_blank");
+			 	object.className = 'tweet-url';
+			 	object.textContent = displayUrl;
+		 		parsedText.insertBefore(object, parsedText.firstChild);
+			}
+		 	
+		 	parsedText.insertBefore(firstPart, parsedText.firstChild);
+
+		 	if(i == urls_indices.length - 1){
+				splittedText = tweetText.substring(0, urls_indices[i].indices[0]);
+		 		var firstPart = document.createTextNode(splittedText);
+		 		parsedText.insertBefore(firstPart, parsedText.firstChild);
+		 	}
+		};
 	}
-	// If no more URL, push the rest of the tweet text at the end of the processed text
-	workingText.push(originText);
-
-	// Search the strings and replace them by links
-	function linkify(text, urlObject){
-		if(urlObject.expanded_url.length > 35){
-			displayUrl = urlObject.expanded_url.slice(0, 32);
-			displayUrl += '...';
-		}
-		else {
-			displayUrl = urlObject.expanded_url;
-		}
-
-		// Special condition to fix because Twitter media tells it uses only one character when they are more
-		if(urlObject.indices[0] == 139){
-		 	beginningText = text.substring(0, text.lastIndexOf(' ') + 1);
-		 	finishingText = text.substring(urlObject.indices[1]); 
-		 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url" target="_blank">' + displayUrl + '</a>' + finishingText) ;
-		 	return beginningText ;	
-		}
-		// Replaces the URL by a clickable link and returns the rest of the text to be transformed
-		else{
-		 	beginningText = text.substring(0, urlObject.indices[0]);
-		 	finishingText = text.substring(urlObject.indices[1]); 
-		 	workingText.push('<a href="' + urlObject.expanded_url + '" class="tweet-url" target="_blank">' + displayUrl + '</a>' + finishingText) ;
-		 	return beginningText ;
-		}
+	else {
+		
+ 		var firstPart = document.createTextNode(tweetText);
+ 		parsedText.appendChild(firstPart);
 	}
 
-	// Reverse the text stack if they were links
- 	var newTweetText = "";
- 	if(workingText != []){
-	 	for (var i = workingText.length - 1; i >= 0; i--) {
-	 		newTweetText += workingText[i];
-	 	};
- 	}
- 	// If they were no links, just a copy
- 	else{
- 		newTweetText = tweetText;
- 	}
-
- 	this.text =  newTweetText;
+	this.text.innerHTML = parsedText.innerHTML;
 }

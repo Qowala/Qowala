@@ -538,6 +538,11 @@ body {
     font-size: 2em;
 }
 
+.tweet-image {
+    border-radius: 10px;
+    display: block;
+    margin: 10px auto 0;
+}
 
 /** STATISTICS **/
 
