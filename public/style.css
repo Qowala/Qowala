@@ -270,6 +270,7 @@ body {
     background-color: #333333;
     max-height: 100%;
     min-width: 24.75%;
+    position: relative;
 }
 
 .tweets-column + .tweets-column {
@@ -302,8 +303,105 @@ body {
     right: 10px;
 }
 
-.tweets-column-header-button:hover {
+.tweets-column-header-button:hover, .tweets-column-header-button-active {
     color: #119955;
+}
+
+.tweets-column-panel {
+    position: absolute;
+    top: 50px;
+    background-color: #202020;
+    min-height: 200px;
+    display: none;
+    width: 100%;
+    z-index: 1;
+}
+
+.tweets-column-panel-list li{
+    list-style-type: none;
+}
+
+.tweets-column-panel-list-first p{
+    color: white;
+    float: left;
+}
+
+.switch {
+    position: relative;
+    top: 18px;
+}
+
+
+.switch > [type="checkbox"]:checked, .switch > [type="checkbox"]:not(:checked) {
+    width: 0;
+    height: 0;
+    display: none;
+    opacity: 0; 
+}
+
+.switch > [type="checkbox"]:checked + label, .switch > [type="checkbox"]:not(:checked) + label {
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 7px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding-right: 60px; 
+}
+
+.switch > [type="checkbox"]:checked + label:after, .switch > [type="checkbox"]:not(:checked) + label:after {
+    content: "";
+    right: 10px;
+    width: 40px;
+    height: 22px;
+    position: absolute;
+    border-radius: 10px; 
+}
+
+.switch > [type="checkbox"]:checked + label + .switch-knob, .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 30px;
+    display: inline-block;
+    position: absolute;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: right .1s ease-in, background-color .1s ease-in;
+    -moz-transition: right .1s ease-in, background-color .1s ease-in;
+    -o-transition: right .1s ease-in, background-color .1s ease-in;
+    -ms-transition: right .1s ease-in, background-color .1s ease-in; 
+}
+
+.switch > [type="checkbox"]:checked:focus + label:after, .switch > [type="checkbox"]:checked:focus + label + .switch-knob,
+.switch > [type="checkbox"]:not(:checked):focus + label:after,
+.switch > [type="checkbox"]:not(:checked):focus + label + .switch-knob {
+    box-shadow: 0 0 6px 0 #6fb5fb; 
+}
+
+.switch > [type="checkbox"]:checked[disabled] + label, .switch > [type="checkbox"]:checked[disabled] + label:after, .switch > [type="checkbox"]:checked[disabled] + label + .switch-knob,
+.switch > [type="checkbox"]:not(:checked)[disabled] + label,
+.switch > [type="checkbox"]:not(:checked)[disabled] + label:after,
+.switch > [type="checkbox"]:not(:checked)[disabled] + label + .switch-knob {
+    cursor: not-allowed;
+    opacity: 0.4; 
+}
+
+.switch > [type="checkbox"]:checked + label:after {
+    background-color: #00955b; 
+}
+
+.switch > [type="checkbox"]:not(:checked) + label:after {
+    background-color: #dddddd; 
+}
+
+.switch > [type="checkbox"]:checked + label + .switch-knob {
+    right: 5px;
+    background-color: #cbcbcb; 
+}
+
+.switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
+    right: 30px;
+    background-color: #cbcbcb; 
 }
 
 #lists-row {

@@ -11,21 +11,127 @@
 function MessagesColumn(id, columnHeaderName){
 	this.id = id;
 	this.columnHeaderName = columnHeaderName;
-	this.buttonOpenOptions = createButtonOpenOptions(id);
 	this.columnHTML = null;
 	this.columnContentHTML = null;
 	this.columnHeaderHTML = null;
 	this.limitNumberMessages = 50;
+	this.buttonOpenOptions = null;
+	this.panel = null;
+	this.isPanelOpen = false;
 
 	this.messagesList = [];
+}
 
-	function createButtonOpenOptions(id){
-		var button = document.createElement('button');
-		button.setAttribute('buttonOptionsId', id);
+/**
+ * Generate column
+ * @return {Object} generated column
+ */
+MessagesColumn.prototype.generateColumn = function(){
+	var newTweetColumn = document.createElement('li');
+	newTweetColumn.setAttribute('class', 'tweets-column');
+	newTweetColumn.setAttribute('id', 'tweets-column-' + this.id);
 
-		return button;
+	var newTweetColumnHeader = document.createElement('div');
+	newTweetColumnHeader.setAttribute('class', 'tweets-column-header');
+	newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.id);
+
+	var newTweetColumnTitle = document.createElement('h3');
+	newTweetColumnTitle.textContent = this.columnHeaderName;
+
+	var newTweetColumnParametersButton = document.createElement('button');
+	newTweetColumnParametersButton.setAttribute('class', 'tweets-column-header-button');
+	newTweetColumnParametersButton.setAttribute('id', 'tweets-column-header-button-' + this.id);
+
+	this.buttonOpenOptions = newTweetColumnParametersButton;
+
+	var newTweetColumnParametersIcon = document.createElement('i');
+	newTweetColumnParametersIcon.setAttribute('class', 'fa fa-cog');
+
+	var newTweetColumnPanel = document.createElement('div');
+	newTweetColumnPanel.setAttribute('class', 'tweets-column-panel');
+	newTweetColumnPanel.setAttribute('id', 'tweets-column-panel-' + this.id);
+
+	this.panel = newTweetColumnPanel;
+
+	var panelList = document.createElement('ul');
+	panelList.className = "tweets-column-panel-list";
+
+	/** FIRST PARAMETER **/
+
+	var firstParameter = document.createElement('li');
+	firstParameter.className = 'tweets-column-panel-list-first';
+
+	var firstParameterName = document.createElement('p');
+	firstParameterName.textContent = "Show images";
+
+	var newTweetColumnImageSwitch = document.createElement('span');
+	newTweetColumnImageSwitch.setAttribute('class', 'switch');
+
+	var newTweetColumnImageSwitchInput = document.createElement('input');
+	newTweetColumnImageSwitchInput.setAttribute('type', 'checkbox');
+	newTweetColumnImageSwitchInput.setAttribute('id', 'tweets-column-switch-image' + this.id);
+	newTweetColumnImageSwitchInput.setAttribute('name', 'tweets-column-switch-image' + this.id);
+
+	var newTweetColumnImageSwitchLabel = document.createElement('label');
+	newTweetColumnImageSwitchLabel.setAttribute('for', 'tweets-column-switch-image' + this.id);
+
+	var newTweetColumnImageSwitchKnob = document.createElement('span');
+	newTweetColumnImageSwitchKnob.setAttribute('class', 'switch-knob');
+	
+	newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchInput);
+	newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchLabel);
+	newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchKnob);
+
+	firstParameter.appendChild(firstParameterName);
+	firstParameter.appendChild(newTweetColumnImageSwitch);
+
+	panelList.appendChild(firstParameter);
+
+	/** TWEETS **/
+
+	var newTweetColumnTweets = document.createElement('ul');
+	newTweetColumnTweets.setAttribute('class', 'tweets');
+	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
+
+	var elementsListened = this.addEvent(newTweetColumnParametersButton);
+
+	newTweetColumnPanel.appendChild(panelList);
+
+	newTweetColumnHeader.appendChild(newTweetColumnTitle);
+	newTweetColumnParametersButton.appendChild(newTweetColumnParametersIcon);
+	newTweetColumnHeader.appendChild(elementsListened.buttonOpenOptions);
+	newTweetColumn.appendChild(newTweetColumnHeader);
+	newTweetColumn.appendChild(newTweetColumnPanel);
+	newTweetColumn.appendChild(newTweetColumnTweets);
+
+	this.columnHTML = newTweetColumn;
+	this.columnContentHTML = newTweetColumnTweets;
+	this.columnHeaderHTML = newTweetColumnHeader;
+
+	return newTweetColumn;
+}
+
+MessagesColumn.prototype.addEvent = function(buttonOpenOptions){
+	buttonOpenOptions.addEventListener('click', function(){
+			this.openPanel();
+	}.bind(this));
+
+	return {buttonOpenOptions: buttonOpenOptions};
+}
+
+/**
+ * Opens and closes the panel
+ */
+MessagesColumn.prototype.openPanel = function(){
+	this.isPanelOpen = !this.isPanelOpen;
+	if(this.isPanelOpen){
+		this.panel.style.display = "block";
+		this.buttonOpenOptions.className = "tweets-column-header-button tweets-column-header-button-active";
 	}
-
+	else{
+		this.panel.style.display = "none";
+		this.buttonOpenOptions.className = "tweets-column-header-button";
+	}
 }
 
 /**
@@ -117,7 +223,6 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 
 /**
  * Create the HTML elements for the message
- * @param  {Object} message Processed message to be generated
  * @return {Object}         Generated message in HTML
  */
 Message.prototype.generateMessage = function(){
@@ -160,7 +265,7 @@ Message.prototype.generateMessage = function(){
 	newRetweetFont.setAttribute('class', 'fa fa-retweet');
 
 	// Put event listener on elements
-	elementsListened = this.addEvent(newRetweetButton);
+	var elementsListened = this.addEvent(newRetweetButton);
 
 	newLinkAuthorImg.appendChild(newImg);
 	newRetweetButton.appendChild(newRetweetFont);

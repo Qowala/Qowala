@@ -34,38 +34,9 @@ MessagesDisplay.prototype.displayColumns = function(){
 	this.messagesColumnsHTML.innerHTML = "";
 
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
-		var newTweetColumn = document.createElement('li');
-		newTweetColumn.setAttribute('class', 'tweets-column');
-		newTweetColumn.setAttribute('id', 'tweets-column-' + this.messagesColumnsList[i].id);
-
-		var newTweetColumnHeader = document.createElement('div');
-		newTweetColumnHeader.setAttribute('class', 'tweets-column-header');
-		newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.messagesColumnsList[i].id);
-
-		var newTweetColumnTitle = document.createElement('h3');
-		newTweetColumnTitle.textContent = this.messagesColumnsList[i].columnHeaderName;
-
-		var newTweetColumnParametersButton = document.createElement('button');
-		newTweetColumnParametersButton.setAttribute('class', 'tweets-column-header-button');
-		newTweetColumnParametersButton.setAttribute('id', 'tweets-column-header-button-' + this.messagesColumnsList[i].id);
-
-		var newTweetColumnParametersIcon = document.createElement('i');
-		newTweetColumnParametersIcon.setAttribute('class', 'fa fa-cog');
-
-		var newTweetColumnTweets = document.createElement('ul');
-		newTweetColumnTweets.setAttribute('class', 'tweets');
-		newTweetColumnTweets.setAttribute('id', 'tweets-' + this.messagesColumnsList[i].id);
-
-		newTweetColumnHeader.appendChild(newTweetColumnTitle);
-		newTweetColumnParametersButton.appendChild(newTweetColumnParametersIcon);
-		newTweetColumnHeader.appendChild(newTweetColumnParametersButton);
-		newTweetColumn.appendChild(newTweetColumnHeader);
-		newTweetColumn.appendChild(newTweetColumnTweets);
+		var newTweetColumn = this.messagesColumnsList[i].generateColumn();
 
 		this.messagesColumnsHTML.appendChild(newTweetColumn);
-		this.messagesColumnsList[i].columnHTML = newTweetColumn;
-		this.messagesColumnsList[i].columnContentHTML = newTweetColumnTweets;
-		this.messagesColumnsList[i].columnHeaderHTML = newTweetColumnHeader;
 	};
 }
 
