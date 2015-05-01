@@ -322,7 +322,7 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
  * @return {Object} Added message
  */
 MessagesColumn.prototype.addMessage = function(message, streamSource){
-	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url_https, message.retweeted, streamSource, this.areImagesEnabled, message.entities.urls, message.entities.media);
+	var newMessage = new Message(message, streamSource, this.areImagesEnabled);
 	newMessage.processDate();
 	this.messagesList.unshift(newMessage);
 
@@ -395,24 +395,26 @@ MessagesColumn.prototype.deleteMessage = function(message){
  * @param {String} text            Message text content
  * @param {String} profilePicture  URL to user's profile picture
  */
-function Message(id, authorUsername, authorPseudonym, date, text, profilePicture, retweeted, streamSource, areImagesEnabled, urls, media){
-	this.id = id;
-	this.authorUsername = authorUsername;
-	this.authorPseudonym = authorPseudonym;
-	this.date = date;
+function Message(message, streamSource, areImagesEnabled){
+	this.id = message.id_str;
+	this.authorUsername = message.user.screen_name;
+	this.authorPseudonym = message.user.name;
+	this.date = message.created_at;
 	this.displayedDate = '0 min';
-	this.friendlyDate = date;
+	this.friendlyDate = message.created_at;
 	this.dateHTML = null;
 	this.text = document.createTextNode('p');
-	this.text.textContent = text;
-	this.profilePicture = profilePicture;
+	this.text.textContent = message.text;
+	this.profilePicture = message.user.profile_image_url_https;
 	this.streamSource = streamSource
-	this.retweeted = retweeted;
+	this.retweeted = message.retweeted;
 	this.areImagesEnabled = areImagesEnabled;
 	this.image = null;
 
-	this.urls = urls;
-	this.medias = media;
+	this.urls = message.entities.urls;
+	this.medias = message.entities.media;
+	this.hashtags = message.entities.hashtags;
+	this.user_mentions = message.entities.user_mentions;
 
 	setTimeout(function(){
 		this.timeUpdater = setInterval(function(){
@@ -647,12 +649,12 @@ Message.prototype.processText = function(){
 	var urls_indices = [];
 
 	// Copy of the original text
-	tweetText = this.text.textContent;
+	var tweetText = this.text.textContent;
 
 	// Parse all URLs from the Tweet object to be sort in a array
 	if(this.urls) {
 		for (var i = 0; i < this.urls.length; i++) {
-			urlIndice = {
+			var urlIndice = {
 				expanded_url: this.urls[i].expanded_url, 
 				url: this.urls[i].url, 
 				indices: this.urls[i].indices,
@@ -664,12 +666,36 @@ Message.prototype.processText = function(){
 	// Parse all media URLs from the Tweet object to be sort in a array
 	if(this.medias) {
 		for (var i = 0; i < this.medias.length; i++) {
-			urlIndice = {
+			var urlIndice = {
 				expanded_url: this.medias[i].expanded_url, 
 				media_url: this.medias[i].media_url_https, 
 				url: this.medias[i].url, 
 				indices: this.medias[i].indices,
 				media: true
+			};
+			urls_indices.push(urlIndice);
+		}; 
+	}
+
+	if(this.hashtags) {
+		for (var i = 0; i < this.hashtags.length; i++) {
+			var urlIndice = {
+				url: 'https://twitter.com/hashtag/' + this.hashtags[i].text, 
+				text: '#' + this.hashtags[i].text, 
+				indices: this.hashtags[i].indices,
+				hashtag: true
+			};
+			urls_indices.push(urlIndice);
+		}; 
+	}
+
+	if(this.user_mentions) {
+		for (var i = 0; i < this.user_mentions.length; i++) {
+			var urlIndice = {
+				url: 'https://twitter.com/' + this.user_mentions[i].screen_name, 
+				text: '@' + this.user_mentions[i].screen_name, 
+				indices: this.user_mentions[i].indices,
+				user_mentions: true
 			};
 			urls_indices.push(urlIndice);
 		}; 
@@ -701,18 +727,25 @@ Message.prototype.processText = function(){
 				tweetText = tweetText.substring(0, urls_indices[i].indices[0]);
 			}
 
-			if(urls_indices[i].expanded_url.length > 35){
-				var displayUrl = urls_indices[i].expanded_url.slice(0, 32);
-				displayUrl += '...';
-			}
-			else {
-				var displayUrl = urls_indices[i].expanded_url;
-			}
 			var link = document.createElement('a');
-		 	link.setAttribute('href', urls_indices[i].expanded_url);
 		 	link.setAttribute('target', "_blank");
 		 	link.className = 'tweet-url';
-		 	link.textContent = displayUrl;
+
+		 	if(urls_indices[i].hashtag || urls_indices[i].user_mentions){
+			 	link.setAttribute('href', urls_indices[i].url);
+			 	link.textContent = urls_indices[i].text;
+		 	}
+		 	else{
+				if(urls_indices[i].expanded_url.length > 35){
+					var displayUrl = urls_indices[i].expanded_url.slice(0, 32);
+					displayUrl += '...';
+				}
+				else {
+					var displayUrl = urls_indices[i].expanded_url;
+				}
+			 	link.setAttribute('href', urls_indices[i].expanded_url);
+			 	link.textContent = displayUrl;
+		 	}
 
 			if(urls_indices[i].media){
 				var image = document.createElement('img');
@@ -736,8 +769,8 @@ Message.prototype.processText = function(){
 		 		parsedText.appendChild(image);
 			}
 		 	
-	 		parsedText.insertBefore(link, parsedText.firstChild);
 		 	parsedText.insertBefore(firstPart, parsedText.firstChild);
+	 		parsedText.insertBefore(link, parsedText.firstChild);
 
 		 	if(i == urls_indices.length - 1){
 				splittedText = tweetText.substring(0, urls_indices[i].indices[0]);
