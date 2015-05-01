@@ -36,7 +36,6 @@ function MessagesColumn(id, columnHeaderName){
  */
 MessagesColumn.prototype.updateTwitterLists = function(listsObject){
 	this.twitterLists = [];
-	console.log('listsObject: ', listsObject);
 	for (var i = 0; i < listsObject.length; i++) {
 		this.twitterLists.push(
 			{

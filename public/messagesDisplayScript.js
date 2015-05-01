@@ -49,7 +49,7 @@ MessagesDisplay.prototype.addColumnsTwitterLists = function(listsObject){
  */
 MessagesDisplay.prototype.addUsedListToTwitterLists = function(id){
 	for (var i = 0; i < this.twitterLists.length; i++) {
-		if(this.twitterLists[i].id == id){
+		if(this.twitterLists[i].slug == id){
 			this.twitterLists[i].exist = true;
 		}
 	};
@@ -67,10 +67,9 @@ MessagesDisplay.prototype.addColumn = function(id, columnHeaderName){
 	var column = new MessagesColumn(id, columnHeaderName);
 
 	console.log('existing : ', this.twitterLists);
-
-	this.addUsedListToTwitterLists(id);
 	console.log('Created: ', column);
 	this.messagesColumnsList.push(column);
+	this.addUsedListToTwitterLists(id);
 }
 
 /**
