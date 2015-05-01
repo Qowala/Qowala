@@ -542,10 +542,21 @@ body {
     font-size: 2em;
 }
 
-.tweet-image, .tweet-image-none {
+.tweet-image, .tweet-image-extended{
     border-radius: 10px;
     display: block;
     margin: 10px auto 0;
+    max-width: 100%;
+    cursor: pointer;
+    -moz-transition: all ease-in 0.35s; 
+    -webkit-transition: all ease-in 0.35s;  
+    -ms-transition: all ease-in 0.35s;  
+    -o-transition: all ease-in 0.35s;  
+    transition: all ease-in 0.35s;
+}
+
+.tweet-image-extended {
+    margin: 40px auto 20px;
 }
 
 .tweet-image-none {

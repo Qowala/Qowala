@@ -348,6 +348,7 @@ function Message(id, authorUsername, authorPseudonym, date, text, profilePicture
 	this.streamSource = streamSource
 	this.retweeted = retweeted;
 	this.areImagesEnabled = areImagesEnabled;
+	this.image = null;
 
 	this.urls = urls;
 	this.medias = media;
@@ -395,8 +396,8 @@ Message.prototype.generateMessage = function(){
 	newAuthorScreenName.textContent = '@' + this.authorUsername;
 
 	var newContent = document.createElement('p');
+	newContent = this.text;
 	newContent.setAttribute('class', 'tweet-text');
-	newContent.innerHTML = this.text.innerHTML;
 
 	var newRetweetButton = document.createElement('button');
 	newRetweetButton.setAttribute('name', 'retweet-' + this.id);
@@ -650,21 +651,26 @@ Message.prototype.processText = function(){
 		 	link.className = 'tweet-url';
 		 	link.textContent = displayUrl;
 
-			if(this.areImagesEnabled && urls_indices[i].media){
+			if(urls_indices[i].media){
 				var image = document.createElement('img');
 				image.setAttribute('src', urls_indices[i].media_url + ':thumb');
-				image.className = "tweet-image";
-		 		parsedText.appendChild(image);
 
-		 		link.className = " tweet-link-image-none";
-			}
-			else if(!this.areImagesEnabled && urls_indices[i].media){
-				var image = document.createElement('img');
-				image.setAttribute('src', urls_indices[i].media_url + ':thumb');
-				image.className = "tweet-image-none";
-		 		parsedText.appendChild(image);
+				if(this.areImagesEnabled){
+					image.className = "tweet-image";
+			 		link.className = "tweet-link-image-none";
+				}
+				else{
+					image.className = "tweet-image-none";
+		 			link.className = "tweet-link-image";
+				}
+		 			// console.log('binding event with ', this.enlargeImage, ' on ', image);
 
-		 		link.className = " tweet-link-image";
+		 		image.addEventListener('click', function(){
+		 			this.enlargeImage();
+		 		}.bind(this), false);
+
+		 		this.image = image;
+		 		parsedText.appendChild(image);
 			}
 		 	
 	 		parsedText.insertBefore(link, parsedText.firstChild);
@@ -683,5 +689,15 @@ Message.prototype.processText = function(){
  		parsedText.appendChild(firstPart);
 	}
 
-	this.text.innerHTML = parsedText.innerHTML;
+	this.text = parsedText;
+}
+
+/**
+ * Loads a bigger image
+ */
+Message.prototype.enlargeImage = function(){
+	var src = this.image.getAttribute('src');
+	src = src.substring(0, src.lastIndexOf(':'));
+	this.image.setAttribute('src', src + ':medium');
+	this.image.className = "tweet-image-extended";
 }
