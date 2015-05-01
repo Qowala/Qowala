@@ -143,6 +143,10 @@ body {
     right: 10px;
 }
 
+#sendTweetButton:disabled {
+    background-color: #4cc783;
+}
+
 #tagInputWrapper::before {
     border-top: 1px solid #8d8e8d;
     content: " ";

@@ -191,9 +191,14 @@ MainSidebar.prototype.textareaListener = function(){
 		// If number of characters negative, display in red
 		if(numberCharactersLeft < 0){
 			this.numberCharactersLeft.className = "red";
+			this.sendTweetButton.disabled = true;
+		}
+		else if (numberCharactersLeft == 140){
+			this.sendTweetButton.disabled = true;
 		}
 		else{
 			this.numberCharactersLeft.className = "";
+			this.sendTweetButton.disabled = false;
 		}
 	}
 }
@@ -203,8 +208,8 @@ MainSidebar.prototype.textareaListener = function(){
  */
 MainSidebar.prototype.sendMessage = function(){
 	var message = this.messageTextarea.value;
-	if(message != ""){
-		console.log('Going to send: ', message);
+	if(message != "" && message.length <= 140){
+		// console.log('Going to send: ', message);
 		socket.emit('sendMessage', message);
 		this.messageTextarea.value = "";
 		this.openMessageEdition();
