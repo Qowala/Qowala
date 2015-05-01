@@ -407,7 +407,7 @@ Message.prototype.generateMessage = function(){
 	newRetweetFont.setAttribute('class', 'fa fa-retweet');
 
 	// Put event listener on elements
-	var elementsListened = this.addEvent(newRetweetButton);
+	this.addEvent(newRetweetButton);
 
 	newLinkAuthorImg.appendChild(newImg);
 	newRetweetButton.appendChild(newRetweetFont);
@@ -416,7 +416,7 @@ Message.prototype.generateMessage = function(){
 	newTweet.appendChild(newAuthorScreenName);
 	newTweet.appendChild(newContent);
 	newTweet.appendChild(newDate);
-	newTweet.appendChild(elementsListened.retweetButton);
+	newTweet.appendChild(newRetweetButton);
 
 	return newTweet;
 }
@@ -449,25 +449,20 @@ Message.prototype.processDate = function(){
  * Add event listener on elements
  */
 Message.prototype.addEvent = function(retweetButton){
-	var sendRetweet = this.sendRetweet;
-	var scope = this;
-
 	retweetButton.addEventListener('click', function(e){
-			sendRetweet(scope);
-	});
-
-	return {retweetButton: retweetButton};
+			this.sendRetweet();
+	}.bind(this));
 }
 
 /**
  * Send Retweet message
  */
-Message.prototype.sendRetweet = function(scope){
-	console.log('Gonna send retweet with id: ', scope.id);
-	socket.emit('retweet', scope.id);
+Message.prototype.sendRetweet = function(){
+	console.log('Gonna send retweet with id: ', this.id);
+	socket.emit('retweet', this.id);
 
-	scope.retweeted = true;
-	scope.applyTweetStatus();
+	this.retweeted = true;
+	this.applyTweetStatus();
 }
 
 /**
@@ -699,5 +694,5 @@ Message.prototype.enlargeImage = function(){
 	var src = this.image.getAttribute('src');
 	src = src.substring(0, src.lastIndexOf(':'));
 	this.image.setAttribute('src', src + ':medium');
-	this.image.className = "tweet-image-extended";
+	this.image.className += " tweet-image-extended";
 }
