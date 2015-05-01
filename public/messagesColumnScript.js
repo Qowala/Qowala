@@ -10,6 +10,8 @@
  */
 function MessagesColumn(id, columnHeaderName){
 	this.id = id;
+	this.twitterLists = [];
+
 	this.columnHeaderName = columnHeaderName;
 	this.columnHTML = null;
 	this.columnContentHTML = null;
@@ -21,10 +23,31 @@ function MessagesColumn(id, columnHeaderName){
 	this.areImagesEnabled = true;
 	this.imagesCheckbox = null;
 	this.isListsOpen = true;
-	this.twitterLists = null;
+	this.twitterListsDOM = null;
 	this.hashtagsBlock = null;
 
 	this.messagesList = [];
+}
+
+/**
+ * [updateTwitterLists description]
+ * @param  {[type]} listsObject [description]
+ * @return {[type]}             [description]
+ */
+MessagesColumn.prototype.updateTwitterLists = function(listsObject){
+	this.twitterLists = [];
+	console.log('listsObject: ', listsObject);
+	for (var i = 0; i < listsObject.length; i++) {
+		this.twitterLists.push(
+			{
+				slug: listsObject[i].slug,
+				name: listsObject[i].name,
+				exist: listsObject[i].exist
+			}
+		);
+	};
+
+	this.generateColumnTwitterLists();
 }
 
 /**
@@ -129,19 +152,12 @@ MessagesColumn.prototype.generateColumn = function(){
 	secondParamter.appendChild(listsOrTagsSwitch);
 
 	panelList.appendChild(secondParamter);
-
+	
 	/** LISTS **/
 
-	var twitterLists = document.createElement('li');
-	twitterLists.className = 'tweets-column-panel-list-twitterLists';
-
-	this.twitterLists = twitterLists;
-
-	var listChoice = document.createElement('select');
-	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
-
-	twitterLists.appendChild(listChoice);
-	panelList.appendChild(twitterLists);
+	this.generateColumnTwitterLists();
+	
+	panelList.appendChild(this.twitterListsDOM);
 
 	/** HASHTAGS */
 
@@ -160,6 +176,12 @@ MessagesColumn.prototype.generateColumn = function(){
 
 	panelList.appendChild(hashtagsBlock);
 
+	if(this.id == 'tracking'){
+		this.isListsOpen = false;
+		listsOrTagsSwitchInput.setAttribute('checked', true);
+		this.hashtagsBlock.style.display = "block";
+		this.twitterListsDOM.style.display = "none";
+	}
 
 	/** TWEETS **/
 
@@ -183,6 +205,33 @@ MessagesColumn.prototype.generateColumn = function(){
 	this.columnHeaderHTML = newTweetColumnHeader;
 
 	return newTweetColumn;
+}
+
+/**
+ * Generate the lists of Twitter lists
+ * @return {Object} Generated list
+ */
+MessagesColumn.prototype.generateColumnTwitterLists = function(){
+	var twitterListsDOM = document.createElement('li');
+	twitterListsDOM.className = 'tweets-column-panel-list-twitterLists';
+
+	var listChoice = document.createElement('select');
+	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
+
+	for (var i = 0; i < this.twitterLists.length; i++) {
+		var option = document.createElement('option');
+		option.textContent = this.twitterLists[i].name;
+		if(this.twitterLists[i].slug == this.id){
+			option.setAttribute('selected', 'true');
+		}
+		if(this.twitterLists[i].exist){
+			option.className = "listChoiceAlreadyExist";
+		}
+		listChoice.appendChild(option);
+	};
+
+	twitterListsDOM.appendChild(listChoice);
+	this.twitterListsDOM = twitterListsDOM;
 }
 
 /**
@@ -239,7 +288,6 @@ MessagesColumn.prototype.enableImages = function(){
 		for (var i = 0; i < allLinksImages.length; i++) {
 			allLinksImages[i].className = "tweet-link-image-none";
 		};
-		console.log('allImages: ', allImages);
 	}
 	else{
 		var allImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-image');
@@ -261,11 +309,11 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
 	this.isListsOpen = !this.isListsOpen;
 	if(this.isListsOpen){
 		this.hashtagsBlock.style.display = "none";
-		this.twitterLists.style.display = "block";
+		this.twitterListsDOM.style.display = "block";
 	}
 	else{
 		this.hashtagsBlock.style.display = "block";
-		this.twitterLists.style.display = "none";
+		this.twitterListsDOM.style.display = "none";
 	}
 }
 
@@ -325,7 +373,6 @@ MessagesColumn.prototype.displayOneMessage = function(message){
  * @param  {Object} message Message to be deleted
  */
 MessagesColumn.prototype.deleteMessage = function(message){
-	console.log('Searching for the right message in the column, to be deleted');
 	for (var i = 0; i < this.messagesList.length; i++) {
 		if(this.messagesList[i].id == message.tweet.delete.status.id_str){
 			console.log('Message to be deleted found');

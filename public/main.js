@@ -77,6 +77,7 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('lists-list', function(listsObject){
+			messagesDisplay.addColumnsTwitterLists(listsObject);
 			for (var i = 0; i < listsObject.length; i++) {
 				messagesDisplay.addColumn(listsObject[i].slug, listsObject[i].name);
 			};

@@ -448,7 +448,16 @@ body {
 
 }
 
+.listChoiceAlreadyExist {
+    font-style: italic;
+    color: gray;
+}
+
 .tweets-column-panel-list-hashtagsBlock {
+    display: none;
+}
+
+#tweets-column-user .tweets-column-panel-list-second, #tweets-column-user .tweets-column-panel-list-twitterLists , #tweets-column-user .tweets-column-panel-list-hashtagsBlock {
     display: none;
 }
 
