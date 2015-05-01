@@ -320,6 +320,21 @@ MessagesColumn.prototype.displayOneMessage = function(message){
 	message.applyTweetStatus();
 }
 
+/**
+ * Delete message
+ * @param  {Object} message Message to be deleted
+ */
+MessagesColumn.prototype.deleteMessage = function(message){
+	console.log('Searching for the right message in the column, to be deleted');
+	for (var i = 0; i < this.messagesList.length; i++) {
+		if(this.messagesList[i].id == message.tweet.delete.status.id_str){
+			console.log('Message to be deleted found');
+			this.messagesList.splice(i, 1);
+			this.displayAllMessages();
+		}
+	};
+	
+}
 
 /**************************************************************************/
 /**                             Messages                                ***/
@@ -458,10 +473,17 @@ Message.prototype.addEvent = function(retweetButton){
  * Send Retweet message
  */
 Message.prototype.sendRetweet = function(){
-	console.log('Gonna send retweet with id: ', this.id);
-	socket.emit('retweet', this.id);
 
-	this.retweeted = true;
+	if(this.retweeted){
+		console.log('Gonna send delete tweet with id: ', this.id);
+		socket.emit('delete retweet', this.id);
+		this.retweeted = false;
+	}
+	else{
+		console.log('Gonna send retweet with id: ', this.id);
+		socket.emit('retweet', this.id);
+		this.retweeted = true;
+	}
 	this.applyTweetStatus();
 }
 
@@ -658,8 +680,8 @@ Message.prototype.processText = function(){
 					image.className = "tweet-image-none";
 		 			link.className = "tweet-link-image";
 				}
-		 			// console.log('binding event with ', this.enlargeImage, ' on ', image);
 
+				// Put an event to enlarge the image
 		 		image.addEventListener('click', function(){
 		 			this.enlargeImage();
 		 		}.bind(this), false);
@@ -679,7 +701,6 @@ Message.prototype.processText = function(){
 		};
 	}
 	else {
-		
  		var firstPart = document.createTextNode(tweetText);
  		parsedText.appendChild(firstPart);
 	}

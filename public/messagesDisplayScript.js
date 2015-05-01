@@ -103,3 +103,16 @@ MessagesDisplay.prototype.displayAllMessages = function(message){
 		}
 	};
 }
+
+/**
+ * Gives the message to be deleted to the concerned column
+ * @param  {Object} message Message to be deleted
+ */
+MessagesDisplay.prototype.deleteMessage = function(message){
+	console.log('Searching the concerned column for the tweet to be deleted');
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id == message.streamSource){
+			this.messagesColumnsList[i].deleteMessage(message);
+		}
+	};
+}

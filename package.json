@@ -11,11 +11,11 @@
     "express-ejs-layouts": "^1.1.0",
     "express-session": "^1.8.2",
     "mongoose": "^3.8.5",
+    "passport": "~0.2.1",
+    "passport-twitter": "~1.0.2",
     "redis": "^0.12.1",
     "socket.io": "^1.1.0",
-    "twit": "^1.1.18",
-    "passport-twitter": "~1.0.2",
-    "passport": "~0.2.1"
+    "twit": "^1.1.20"
   },
   "devDependencies": {
     "chai": "~2.0.0"

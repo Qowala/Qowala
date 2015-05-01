@@ -90,7 +90,9 @@ var dashboard = (function (socket){
 			}
 		});
 
-		socket.on('remove tag', function(){});
+		socket.on('delete tweet', function(message){
+			messagesDisplay.deleteMessage(message);
+		});
 
 		socket.on('numberConnectedUsers', function(numberConnectedUsers){
 			console.log('Receive update message: ', numberConnectedUsers);
