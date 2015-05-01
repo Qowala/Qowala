@@ -511,12 +511,12 @@ body {
     margin-left: 10px;
 }
 
-.tweet-url{
+.tweet-url, .tweet-link-image{
 	color: #2aa3d6;
 	text-decoration: none;
 }
 
-.tweet-url:hover{
+.tweet-url:hover, .tweet-link-image:hover{
 	text-decoration: underline;
 }
 
@@ -538,10 +538,18 @@ body {
     font-size: 2em;
 }
 
-.tweet-image {
+.tweet-image, .tweet-image-none {
     border-radius: 10px;
     display: block;
     margin: 10px auto 0;
+}
+
+.tweet-image-none {
+    display: none;
+}
+
+.tweet-link-image-none {
+    display: none;
 }
 
 /** STATISTICS **/

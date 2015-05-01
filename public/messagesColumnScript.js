@@ -225,10 +225,33 @@ MessagesColumn.prototype.openPanel = function(){
  */
 MessagesColumn.prototype.enableImages = function(){
 	this.areImagesEnabled = !this.areImagesEnabled;
+
 	for (var i = 0; i < this.messagesList.length; i++) {
 		this.messagesList[i].areImagesEnabled = this.areImagesEnabled;
 	};
-	this.displayAllMessages();
+
+	if(this.areImagesEnabled){
+		var allImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-image-none');
+		var allLinksImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-link-image');
+		for (var i = 0; i < allImages.length; i++) {
+			allImages[i].className = "tweet-image";
+		};
+		for (var i = 0; i < allLinksImages.length; i++) {
+			allLinksImages[i].className = "tweet-link-image-none";
+		};
+		console.log('allImages: ', allImages);
+	}
+	else{
+		var allImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-image');
+		var allLinksImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-link-image-none');
+		for (var i = 0; i < allImages.length; i++) {
+			allImages[i].className = "tweet-image-none";
+		};
+		for (var i = 0; i < allLinksImages.length; i++) {
+			allLinksImages[i].className = "tweet-link-image";
+		};
+	}
+	// this.displayAllMessages();
 }
 
 /**
@@ -614,28 +637,37 @@ Message.prototype.processText = function(){
 				tweetText = tweetText.substring(0, urls_indices[i].indices[0]);
 			}
 
-			if(this.areImagesEnabled && urls_indices[i].media){
-				var object = document.createElement('img');
-				object.setAttribute('src', urls_indices[i].media_url + ':thumb');
-				object.className = "tweet-image";
-		 		parsedText.appendChild(object);
+			if(urls_indices[i].expanded_url.length > 35){
+				var displayUrl = urls_indices[i].expanded_url.slice(0, 32);
+				displayUrl += '...';
 			}
-			else{
-				if(urls_indices[i].expanded_url.length > 35){
-					var displayUrl = urls_indices[i].expanded_url.slice(0, 32);
-					displayUrl += '...';
-				}
-				else {
-					var displayUrl = urls_indices[i].expanded_url;
-				}
-				var object = document.createElement('a');
-			 	object.setAttribute('href', urls_indices[i].expanded_url);
-			 	object.setAttribute('target', "_blank");
-			 	object.className = 'tweet-url';
-			 	object.textContent = displayUrl;
-		 		parsedText.insertBefore(object, parsedText.firstChild);
+			else {
+				var displayUrl = urls_indices[i].expanded_url;
+			}
+			var link = document.createElement('a');
+		 	link.setAttribute('href', urls_indices[i].expanded_url);
+		 	link.setAttribute('target', "_blank");
+		 	link.className = 'tweet-url';
+		 	link.textContent = displayUrl;
+
+			if(this.areImagesEnabled && urls_indices[i].media){
+				var image = document.createElement('img');
+				image.setAttribute('src', urls_indices[i].media_url + ':thumb');
+				image.className = "tweet-image";
+		 		parsedText.appendChild(image);
+
+		 		link.className = " tweet-link-image-none";
+			}
+			else if(!this.areImagesEnabled && urls_indices[i].media){
+				var image = document.createElement('img');
+				image.setAttribute('src', urls_indices[i].media_url + ':thumb');
+				image.className = "tweet-image-none";
+		 		parsedText.appendChild(image);
+
+		 		link.className = " tweet-link-image";
 			}
 		 	
+	 		parsedText.insertBefore(link, parsedText.firstChild);
 		 	parsedText.insertBefore(firstPart, parsedText.firstChild);
 
 		 	if(i == urls_indices.length - 1){
