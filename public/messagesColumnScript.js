@@ -322,7 +322,7 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
  * @return {Object} Added message
  */
 MessagesColumn.prototype.addMessage = function(message, streamSource){
-	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url, message.retweeted, streamSource, this.areImagesEnabled, message.entities.urls, message.entities.media);
+	var newMessage = new Message(message.id_str, message.user.screen_name, message.user.name, message.created_at, message.text, message.user.profile_image_url_https, message.retweeted, streamSource, this.areImagesEnabled, message.entities.urls, message.entities.media);
 	newMessage.processDate();
 	this.messagesList.unshift(newMessage);
 
@@ -433,7 +433,7 @@ Message.prototype.generateMessage = function(){
 	var newTweet = document.createElement('li');
 
 	var newLinkAuthorImg = document.createElement('a');
-	newLinkAuthorImg.setAttribute('href', 'http://twitter.com/' + this.authorUsername);
+	newLinkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
 	newLinkAuthorImg.setAttribute('target', '_blank');
 
 	var newImg = document.createElement('img');
@@ -448,7 +448,7 @@ Message.prototype.generateMessage = function(){
 	
 	var newLinkAuthor = document.createElement('a');
 	newLinkAuthor.setAttribute('class', 'tweet-authorname');
-	newLinkAuthor.setAttribute('href', 'http://twitter.com/' + this.authorUsername);
+	newLinkAuthor.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
 	newLinkAuthor.setAttribute('target', '_blank');
 	newLinkAuthor.textContent = this.authorPseudonym;
 
