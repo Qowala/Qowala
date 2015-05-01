@@ -360,8 +360,8 @@ body {
     cursor: pointer;
     display: inline-block;
     margin-right: 7px;
-    margin-top: 7px;
-    margin-bottom: 7px;
+    /*margin-top: 7px;*/
+    margin-bottom: 17px;
     padding-right: 60px; 
 }
 
