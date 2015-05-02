@@ -547,6 +547,14 @@ Message.prototype.applyTweetStatus = function(){
 			console.log('Updated concerning retweet');
 		};
 	}
+	else{
+		retweetButtons = document.getElementsByName('retweet-' + this.id);
+		for (var i = 0; i < retweetButtons.length; i++) {
+			retweetButtons[i].removeAttribute("class");
+			retweetButtons[i].setAttribute('class', 'tweet-retweet-button');
+			console.log('Updated concerning retweet');
+		};	
+	}
 }
 
 /**
