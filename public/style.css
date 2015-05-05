@@ -472,17 +472,24 @@ body {
 }
 
 .tweets li{
-	list-style-type: none;
-	/*background-color: #5072b2;*/
-	color: white;
-	min-height: 48px;
-	padding: 10px;
-	border-bottom: 1px solid #119955;
+    list-style-type: none;
+    /*background-color: #5072b2;*/
+    color: white;
+    min-height: 48px;
+    padding: 10px;
+    border-bottom: 1px solid #119955;
     position: relative;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    -moz-transition: transform ease-in 0.1s; 
+    -webkit-transition: transform ease-in 0.1s;  
+    -ms-transition: transform ease-in 0.1s;  
+    -o-transition: transform ease-in 0.1s;  
+    transition: transform ease-in 0.1s;
 }
 
 .tweet-date{
-	font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 .tweet-date:hover {

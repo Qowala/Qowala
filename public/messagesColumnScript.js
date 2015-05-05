@@ -343,6 +343,7 @@ MessagesColumn.prototype.displayAllMessages = function(){
 		var newTweet = this.messagesList[i].generateMessage();
 
 		this.columnContentHTML.appendChild(newTweet);
+		newTweet.style.transform = "scaleY(1)";
 		this.messagesList[i].applyTweetStatus();
 	};
 }
@@ -354,9 +355,15 @@ MessagesColumn.prototype.displayOneMessage = function(message){
 	var newTweet = message.generateMessage();
 	if(this.columnContentHTML.childNodes[0]){
 		this.columnContentHTML.insertBefore(newTweet, this.columnContentHTML.childNodes[0]);
+		setTimeout(function(){
+			newTweet.style.transform = "scaleY(1)";
+		},50);
 	}
 	else{
 		this.columnContentHTML.appendChild(newTweet);
+		setTimeout(function(){
+			newTweet.style.transform = "scaleY(1)";
+		},50);
 	}
 
 	// Limit number of messages displayed
