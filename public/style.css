@@ -268,7 +268,7 @@ body {
     background-color: #333333;
 }
 
-.tweets-column {
+.tweets-column, #plusColumn {
     list-style-type: none;
     width: 25%;
     background-color: #333333;
@@ -444,8 +444,13 @@ body {
     left: -20px;
 }
 
-.tweets-column-panel-list-twitterLists {
-
+.tweets-column-panel-list-twitterLists-button {
+    background-color: #119955;
+    border: medium none;
+    border-radius: 5px;
+    color: white;
+    margin-left: 10px;
+    padding: 5px 15px;
 }
 
 .listChoiceAlreadyExist {
@@ -457,7 +462,7 @@ body {
     display: none;
 }
 
-#tweets-column-user .tweets-column-panel-list-second, #tweets-column-user .tweets-column-panel-list-twitterLists , #tweets-column-user .tweets-column-panel-list-hashtagsBlock {
+#tweets-column-home .tweets-column-panel-list-second, #tweets-column-home .tweets-column-panel-list-twitterLists , #tweets-column-home .tweets-column-panel-list-hashtagsBlock {
     display: none;
 }
 
@@ -581,6 +586,29 @@ body {
 
 .tweet-link-image-none {
     display: none;
+}
+
+/**  ADD COLUMN COLUMN **/
+#plusColumn {
+    width: 100px;
+    min-width: 8%;
+}
+
+#plusColumnButton{
+    background-color: transparent;
+    border: none;
+    color: #4d4d4d;
+    font-size: 1.5em;
+    left: 50%;
+    position: relative;
+    top: 100px;
+    padding: 0;
+    left: calc(50% - 30px);
+    width: 60px;
+}
+
+#plusColumnButton .fa-plus{
+    color: white;
 }
 
 /** STATISTICS **/

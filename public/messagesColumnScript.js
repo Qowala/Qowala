@@ -8,9 +8,10 @@
  * @param {String} id               Column ID from social network
  * @param {String} columnHeaderName Column name from social network
  */
-function MessagesColumn(id, columnHeaderName){
+function MessagesColumn(id, columnHeaderName, MessagesDisplay){
 	this.id = id;
-	this.twitterLists = [];
+	this.availableLists = [];
+	this.MessagesDisplay = MessagesDisplay;
 
 	this.columnHeaderName = columnHeaderName;
 	this.columnHTML = null;
@@ -34,10 +35,10 @@ function MessagesColumn(id, columnHeaderName){
  * @param  {[type]} listsObject [description]
  * @return {[type]}             [description]
  */
-MessagesColumn.prototype.updateTwitterLists = function(listsObject){
-	this.twitterLists = [];
+MessagesColumn.prototype.updateAvailableLists = function(listsObject){
+	this.availableLists = [];
 	for (var i = 0; i < listsObject.length; i++) {
-		this.twitterLists.push(
+		this.availableLists.push(
 			{
 				slug: listsObject[i].slug,
 				name: listsObject[i].name,
@@ -155,6 +156,12 @@ MessagesColumn.prototype.generateColumn = function(){
 	/** LISTS **/
 
 	this.generateColumnTwitterLists();
+
+	var listChoiceButton = document.createElement('button');
+	listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button';
+	listChoiceButton.textContent = "Display";
+
+	this.twitterListsDOM.appendChild(listChoiceButton);
 	
 	panelList.appendChild(this.twitterListsDOM);
 
@@ -182,13 +189,15 @@ MessagesColumn.prototype.generateColumn = function(){
 		this.twitterListsDOM.style.display = "none";
 	}
 
+	/** DELETE **/
+
 	/** TWEETS **/
 
 	var newTweetColumnTweets = document.createElement('ul');
 	newTweetColumnTweets.setAttribute('class', 'tweets');
 	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
 
-	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch);
+	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton);
 
 	newTweetColumnPanel.appendChild(panelList);
 
@@ -198,6 +207,8 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumn.appendChild(newTweetColumnHeader);
 	newTweetColumn.appendChild(newTweetColumnPanel);
 	newTweetColumn.appendChild(newTweetColumnTweets);
+
+	console.log('Column ', this.id, 'generated');
 
 	this.columnHTML = newTweetColumn;
 	this.columnContentHTML = newTweetColumnTweets;
@@ -211,25 +222,30 @@ MessagesColumn.prototype.generateColumn = function(){
  * @return {Object} Generated list
  */
 MessagesColumn.prototype.generateColumnTwitterLists = function(){
+	var previousList = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-twitterLists');
+
 	var twitterListsDOM = document.createElement('li');
 	twitterListsDOM.className = 'tweets-column-panel-list-twitterLists';
 
 	var listChoice = document.createElement('select');
 	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
 
-	for (var i = 0; i < this.twitterLists.length; i++) {
+	for (var i = 0; i < this.availableLists.length; i++) {
 		var option = document.createElement('option');
-		option.textContent = this.twitterLists[i].name;
-		if(this.twitterLists[i].slug == this.id){
+		option.textContent = this.availableLists[i].name;
+		if(this.availableLists[i].slug == this.id){
 			option.setAttribute('selected', 'true');
-		}
-		if(this.twitterLists[i].exist){
-			option.className = "listChoiceAlreadyExist";
 		}
 		listChoice.appendChild(option);
 	};
 
-	twitterListsDOM.appendChild(listChoice);
+	if(previousList != undefined){
+		previousList.replaceChild(listChoice, previousList.firstChild);
+	}
+	else{
+		twitterListsDOM.appendChild(listChoice);
+	}
+
 	this.twitterListsDOM = twitterListsDOM;
 }
 
@@ -239,7 +255,7 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
  * @param {Object]} newTweetColumnImageSwitch [description]
  * @param {Object} listsOrTagsSwitch          [description]
  */
-MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch){
+MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton){
 	buttonOpenOptions.addEventListener('click', function(){
 		this.openPanel();
 	}.bind(this));
@@ -250,6 +266,10 @@ MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnIm
 
 	listsOrTagsSwitch.addEventListener('change', function(){
 		this.switchListsOrHashtags();
+	}.bind(this));
+
+	listChoiceButton.addEventListener('click', function(){
+		this.addListToDisplay();
 	}.bind(this));
 }
 
@@ -315,6 +335,53 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
 		this.twitterListsDOM.style.display = "none";
 	}
 }
+
+MessagesColumn.prototype.addListToDisplay = function(){
+	var selectList = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-twitterLists-select');
+	var chosenList = selectList.value;
+	var alreadyAffected = false;
+
+	if(selectList.getAttribute('exist') === 'true'){
+		alreadyAffected = true;
+		console.log('already exist! ');
+	}
+
+
+	console.log('Chosen list: ', chosenList);
+	for (var i = 0; i < this.availableLists.length; i++) {
+		if(this.availableLists[i].name === chosenList){
+			for (var y = 0; y < this.MessagesDisplay.enabledListsList.length; y++) {
+				if(this.MessagesDisplay.enabledListsList[y].columnId === this.id){
+					alreadyAffected = true;
+					this.MessagesDisplay.enabledListsList[y].slug = this.availableLists[i].slug;
+				}
+			}
+
+			for (var y = 0; y < this.MessagesDisplay.columnsLayout.length; y++) {
+				if(this.MessagesDisplay.columnsLayout[y].id === this.id){
+					alreadyAffected = true;
+					this.MessagesDisplay.columnsLayout[y].name = this.availableLists[i].name;
+					this.MessagesDisplay.columnsLayout[y].type = 'list';
+				}
+			}
+
+			this.MessagesDisplay.useList(this.id, this.availableLists[i].slug);
+			this.MessagesDisplay.addUsedListToTwitterLists(this.availableLists[i].slug);
+		}	
+	};
+
+	this.columnHeaderName = chosenList;
+
+	var previousHeaderName = document.querySelector('#tweets-column-' + this.id + ' h3');
+
+	previousHeaderName.textContent = this.columnHeaderName;
+
+	this.openPanel();
+
+	this.MessagesDisplay.updateListsToDisplay();
+	this.MessagesDisplay.updateColumnsLayout();
+	this.MessagesDisplay.displayColumnCreator();
+} 
 
 /**
  * Add a message to a column

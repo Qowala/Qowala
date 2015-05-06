@@ -6,6 +6,8 @@ var userSchema = mongoose.Schema({
 	profileImage: String,
 	listsTweetsCache: Object,
 	lists: Array,
+	enabledLists: Array,
+	columnsLayout: Array,
 	homeTimelineCache: Array
 });
 
@@ -52,11 +54,13 @@ exports.getUserName = function (userId, cb){
 			return ['error', {status: 500}];
 		} 
 		else {
-			if(user.name){
-				cb(user.name);
-			}
-			else{
-				cb('NONAME');
+			if(user){
+				if(user.name){
+					cb(user.name);
+				}
+				else{
+					cb('NONAME');
+				}
 			}
 		}
 	});
@@ -99,7 +103,9 @@ exports.getHomeTimelineCache = function (userId, cb){
 			return ['error', {status: 500}];
 		} 
 		else {
-			cb(user.homeTimelineCache);
+			if(user){
+				cb(user.homeTimelineCache);
+			}
 		}
 	});
 };
@@ -126,7 +132,9 @@ exports.getListsTweetsCache = function (userId, cb){
 			return ['error', {status: 500}];
 		} 
 		else {
-			cb(user.listsTweetsCache);
+			if(user){
+				cb(user.listsTweetsCache);
+			}
 		}
 	});
 };
@@ -154,7 +162,81 @@ exports.getUserListsCache = function (userId, cb){
 			return ['error', {status: 500}];
 		} 
 		else {
-			cb(user.lists);
+			if(user){
+				cb(user.lists);
+			}
 		}
 	});
 };
+
+/**
+ * Push the column's layout
+ * @param  {Number}  userId 		The users ID 
+ * @param  {Array}   columnsLayout  The users column's layout
+ * @return {Object}         		The user once created
+ */
+exports.pushColumnsLayout = function(userId, columnsLayout){
+	User.update({user: userId}, {columnsLayout: columnsLayout}, {}, function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get user's column's layout 
+ * @param  {Function} cb     Callback returning the column's layout
+ */
+exports.getColumnsLayout = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			if(user){
+				if(user.columnsLayout){
+					cb(user.columnsLayout);
+				}
+				else{
+					cb('');
+				}
+			}
+		}
+	});
+};
+
+
+/**
+ * Push the enabled lists
+ * @param  {Number}  userId The user's ID 
+ * @param  {Array}   enabledLists  The user's enabled lists
+ * @return {Object}         The user once created
+ */
+exports.pushEnabledLists = function(userId, enabledLists){
+	User.update({user: userId}, {enabledLists: enabledLists}, {}, function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get user's enabled lists
+ * @param  {Function} cb     Callback returning the enabled lists
+ */
+exports.getEnabledLists = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			if(user){
+				if(user.enabledLists){
+					cb(user.enabledLists);
+				}
+				else{
+					cb('');
+				}
+			}
+		}
+	});
+};
+

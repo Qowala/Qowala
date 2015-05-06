@@ -41,9 +41,10 @@ var dashboard = (function (socket){
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
 
 		// Generate the defaults columns
-		messagesDisplay.addColumn('user', 'Home');
-		messagesDisplay.addColumn('tracking', 'Tracking');
-		messagesDisplay.displayColumns();
+		messagesDisplay.createColumnCreator();
+		messagesDisplay.createUserColumn();
+		// messagesDisplay.addColumn('tracking', 'Tracking');
+		// messagesDisplay.displayColumns();
 
 		mainSidebar.init();
 
@@ -59,33 +60,33 @@ var dashboard = (function (socket){
 	}
 
 	var listen = function(){
+		socket.on('columnsLayout', function(columnsLayout){
+			console.log('Got columnsLayout : ', columnsLayout);
+			if(columnsLayout != ""){
+				console.log('Gonna process columnsLayout');
+				messagesDisplay.storeColumnsLayout(columnsLayout);
+				messagesDisplay.addAllColumns();
+			}
+		});
+
+		socket.on('enabledLists', function(enabledLists){
+			if(enabledLists != ""){
+				console.log('Gonna process enabledLists');
+				messagesDisplay.storeEnabledLists(enabledLists);
+			}
+		});
+
 		socket.on('tweet', function(message){
-			if(message.streamSource == 'user' || message.streamSource == 'tracking'){
-				var messageToDisplay = messagesDisplay.addOneMessage(message.tweet, message.streamSource);
-				if(messageToDisplay != undefined){
-					messagesDisplay.displayOneMessage(messageToDisplay);
-				}
-			}
-			else if(message.streamSource == 'lists'){
-				for (var list in message.tweet) {
-					var messagesToDisplay = messagesDisplay.addAllMessages(message.tweet[list], list);
-					if(messagesToDisplay != undefined){
-						messagesDisplay.displayAllMessages(messagesToDisplay);
-					}
-				}
-			}
+			messagesDisplay.processIncoming(message);
 		});
 
 		socket.on('lists-list', function(listsObject){
-			messagesDisplay.addColumnsTwitterLists(listsObject);
-			for (var i = 0; i < listsObject.length; i++) {
-				messagesDisplay.addColumn(listsObject[i].slug, listsObject[i].name);
-			};
-			messagesDisplay.displayColumns();
+			messagesDisplay.storeTwitterLists(listsObject);
 		});
 
 		socket.on('home-timeline', function(timeline){
-			var messagesToDisplay = messagesDisplay.addAllMessages(timeline, 'user');
+			console.log('got home timeline');
+			var messagesToDisplay = messagesDisplay.addAllMessages(timeline, 'home');
 			if(messagesToDisplay != undefined){
 				messagesDisplay.displayAllMessages(messagesToDisplay);
 			}
