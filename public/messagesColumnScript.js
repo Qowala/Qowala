@@ -26,6 +26,7 @@ function MessagesColumn(id, columnHeaderName, MessagesDisplay){
 	this.isListsOpen = true;
 	this.twitterListsDOM = null;
 	this.hashtagsBlock = null;
+	this.hashtagTrackInput = null;
 
 	this.messagesList = [];
 }
@@ -180,6 +181,8 @@ MessagesColumn.prototype.generateColumn = function(){
 	hashtagTrackInput.setAttribute('placeholder','Track...');
 	hashtagTrackInput.setAttribute('type','text');
 
+	this.hashtagTrackInput = hashtagTrackInput;
+
 	hashtagsBlock.appendChild(hashtagsBlockTitle);
 	hashtagsBlock.appendChild(hashtagTrackInput);
 
@@ -200,7 +203,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnTweets.setAttribute('class', 'tweets');
 	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
 
-	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton);
+	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput);
 
 	newTweetColumnPanel.appendChild(panelList);
 
@@ -258,7 +261,7 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
  * @param {Object]} newTweetColumnImageSwitch [description]
  * @param {Object} listsOrTagsSwitch          [description]
  */
-MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton){
+MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput){
 	buttonOpenOptions.addEventListener('click', function(){
 		this.openPanel();
 	}.bind(this));
@@ -274,6 +277,14 @@ MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnIm
 	listChoiceButton.addEventListener('click', function(){
 		this.addListToDisplay();
 	}.bind(this));
+
+	// 	Triggers the Enter button for tracking tags
+	hashtagTrackInput.addEventListener('keypress', function(e){
+		if (e.keyCode == 13) {
+			this.trackTag();
+	    }
+	}.bind(this));
+
 }
 
 /**
@@ -458,8 +469,20 @@ MessagesColumn.prototype.deleteMessage = function(message){
 			this.displayAllMessages();
 		}
 	};
-	
 }
+
+/**
+ * Sends tag tracking request
+ */
+MessagesColumn.prototype.trackTag = function(scope){
+	var tagObject = {};
+	console.log('hashtagTrackInput: ', this.hashtagTrackInput.value);
+	tagObject.tag = this.hashtagTrackInput.value;
+	this.hashtagTrackInput.value = "";
+	tagObject.userId = userId;
+	socket.emit('add tag', tagObject);
+}
+
 
 /**************************************************************************/
 /**                             Messages                                ***/
