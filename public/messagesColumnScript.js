@@ -176,6 +176,9 @@ MessagesColumn.prototype.generateColumn = function(){
 	hashtagsBlockTitle.textContent = "Add hashtag to track";
 
 	var hashtagTrackInput = document.createElement('input');
+	hashtagTrackInput.className = "tagInput";
+	hashtagTrackInput.setAttribute('placeholder','Track...');
+	hashtagTrackInput.setAttribute('type','text');
 
 	hashtagsBlock.appendChild(hashtagsBlockTitle);
 	hashtagsBlock.appendChild(hashtagTrackInput);
@@ -329,10 +332,12 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
 	if(this.isListsOpen){
 		this.hashtagsBlock.style.display = "none";
 		this.twitterListsDOM.style.display = "block";
+		console.log('Opening this.twitterListsDOM : ', this.twitterListsDOM);
 	}
 	else{
 		this.hashtagsBlock.style.display = "block";
 		this.twitterListsDOM.style.display = "none";
+		console.log('CLosing this.twitterListsDOM : ', this.twitterListsDOM);
 	}
 }
 

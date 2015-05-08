@@ -27,11 +27,11 @@ MainSidebar.prototype.init = function(){
 	var scope = this;
 
 	// Triggers the Enter button for tracking tags
-	this.inputTag.addEventListener('keypress', function(e){
-		if (e.keyCode == 13) {
-			trackTag(scope);
-	    }
-	});
+	// this.inputTag.addEventListener('keypress', function(e){
+	// 	if (e.keyCode == 13) {
+	// 		trackTag(scope);
+	//     }
+	// });
 
 	// Triggers a click on the button to open the message edition panel
 	this.buttonOpenMessageEdition.addEventListener('click', function(e){

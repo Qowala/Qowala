@@ -173,7 +173,7 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
 	else if(incoming.streamSource === 'lists'){
 		console.log('Got message from lists');
 		for (var list in incoming.tweet) {
-			console.log('Searching ', list, ' in ', this.enabledListsList);
+			// console.log('Searching ', list, ' in ', this.enabledListsList);
 			for (var i = 0; i < this.enabledListsList.length; i++) {
 				if(this.enabledListsList[i].id == list){
 					var messagesToDisplay = this.addAllMessages(incoming.tweet[list], this.enabledListsList[i].columnId);
@@ -340,7 +340,7 @@ MessagesDisplay.prototype.addOneMessage = function(message, streamDestination){
  * @return {Object} newMessage  Added message
  */
 MessagesDisplay.prototype.addAllMessages = function(allMessages, id){
-	console.log('Searching', id, ' in this.messagesColumnsList ', this.messagesColumnsList);
+	// console.log('Searching', id, ' in this.messagesColumnsList ', this.messagesColumnsList);
 	for (var y = 0; y < this.messagesColumnsList.length; y++) {
 		if(this.messagesColumnsList[y].id === id){
 			console.log('Found and gonna reset and display messages');
