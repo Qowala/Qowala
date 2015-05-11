@@ -498,25 +498,28 @@ MessagesColumn.prototype.trackTag = function(scope){
  * @param {String} profilePicture  URL to user's profile picture
  */
 function Message(message, streamSource, areImagesEnabled){
-	this.id = message.id_str;
-	this.authorUsername = message.user.screen_name;
-	this.authorPseudonym = message.user.name;
-	this.date = message.created_at;
+	this.id = message.retweeted_status ? message.retweeted_status.id_str : message.id_str;
+	this.retweeterAuthorUsername = message.user.name;
+	this.authorUsername = message.retweeted_status ? message.retweeted_status.user.screen_name : message.user.screen_name;
+	this.authorPseudonym = message.retweeted_status ? message.retweeted_status.user.name : message.user.name;
+	this.date = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;
 	this.displayedDate = '0 min';
-	this.friendlyDate = message.created_at;
+	this.friendlyDate = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;
 	this.dateHTML = null;
 	this.text = document.createTextNode('p');
-	this.text.textContent = message.text;
-	this.profilePicture = message.user.profile_image_url_https;
+	this.text.textContent = message.retweeted_status ? message.retweeted_status.text : message.text;
+	this.profilePicture = message.retweeted_status ? message.retweeted_status.user.profile_image_url_https : message.user.profile_image_url_https;
 	this.streamSource = streamSource
-	this.retweeted = message.retweeted;
+	this.retweeted = message.retweeted_status ? message.retweeted_status.retweeted : message.retweeted;
 	this.areImagesEnabled = areImagesEnabled;
 	this.image = null;
 
-	this.urls = message.entities.urls;
-	this.medias = message.entities.media;
-	this.hashtags = message.entities.hashtags;
-	this.user_mentions = message.entities.user_mentions;
+	this.isRetweet = message.retweeted_status ? true : false;
+
+	this.urls = message.retweeted_status ? message.retweeted_status.entities.urls : message.entities.urls;
+	this.medias = message.retweeted_status ? message.retweeted_status.entities.media : message.entities.media;
+	this.hashtags = message.retweeted_status ? message.retweeted_status.entities.hashtags : message.entities.hashtags;
+	this.user_mentions = message.retweeted_status ? message.retweeted_status.entities.user_mentions : message.entities.user_mentions;
 
 	setTimeout(function(){
 		this.timeUpdater = setInterval(function(){
@@ -535,6 +538,17 @@ Message.prototype.generateMessage = function(){
 	this.processText();
 
 	var newTweet = document.createElement('li');
+
+	if(this.isRetweet){
+		var newUserRetweeter = document.createElement('p');
+		newUserRetweeter.className = "tweet-retweeter";
+		newUserRetweeter.textContent = this.retweeterAuthorUsername + ' has retweeted';
+		var newRetweeterFont = document.createElement('i');
+		newRetweeterFont.setAttribute('class', 'fa fa-retweet');
+		console.log('Is a retweeted tweet');
+		newUserRetweeter.insertBefore(newRetweeterFont, newUserRetweeter.firstChild);
+		newTweet.appendChild(newUserRetweeter);
+	}
 
 	var newLinkAuthorImg = document.createElement('a');
 	newLinkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.authorUsername);

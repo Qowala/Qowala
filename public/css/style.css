@@ -624,6 +624,16 @@ input[type="text"].tagInput:-ms-input-placeholder {
     font-size: 2em;
 }
 
+.tweet-retweeter {
+    font-size: 0.9em;
+    margin: 0 0 5px;
+}
+
+.tweet-retweeter .fa-retweet {
+    color: #119955;
+    margin-right: 10px;
+}
+
 .tweet-image, .tweet-image-extended{
     border-radius: 10px;
     display: block;
