@@ -659,6 +659,16 @@ input[type="text"].tagInput:-ms-input-placeholder {
     display: none;
 }
 
+#largeImagePopup{
+    position: fixed;
+    background-color: #C2C2C2;
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 2;
+    display: none;
+}
+
+
 /**  ADD COLUMN COLUMN **/
 #plusColumn {
     width: 100px;
