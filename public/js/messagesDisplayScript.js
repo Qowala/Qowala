@@ -126,6 +126,11 @@ MessagesDisplay.prototype.addUsedListToTwitterLists = function(id){
 
 }
 
+/**
+ * Use a list
+ * @param  {String} columnId Column's id
+ * @param  {String} slug     List's slug
+ */
 MessagesDisplay.prototype.useList = function(columnId, slug){
 	for (var i = 0; i < this.twitterLists.length; i++) {
 		if(this.twitterLists[i].slug == slug){
@@ -147,7 +152,43 @@ MessagesDisplay.prototype.useList = function(columnId, slug){
 			this.availableLists.splice(i, 1);
 		}
 	};
+}
 
+/**
+ * Unuse a list
+ * @param  {String} columnId Column's id
+ * @param  {String} slug     List's slug
+ */
+MessagesDisplay.prototype.unUseList = function(columnId, slug){
+	for (var i = 0; i < this.twitterLists.length; i++) {
+		if(this.twitterLists[i].slug == slug){
+			this.twitterLists[i].exist = false;
+			
+			this.availableLists.push(
+			{
+				id: this.twitterLists[i].id,
+				slug: this.twitterLists[i].slug,
+				name: this.twitterLists[i].name,
+				exist: false
+			});
+
+			for (var y = 0; y < this.enabledListsList.length; y++) {
+				if(this.enabledListsList[y].id === columnId){
+					this.enabledListsList.splice(y, 1);
+				}
+			};
+			for (var y = 0; y < this.columnsLayout.length; y++) {
+				if(this.columnsLayout[y].id === columnId){
+					this.columnsLayout.splice(y, 1);
+				}
+			};
+		}
+	};
+
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		this.messagesColumnsList[i].updateAvailableLists(this.availableLists);
+	};	
+	console.log('List got unused');
 }
 
 /**

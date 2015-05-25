@@ -55,6 +55,14 @@ body {
     height: 100%
 }
 
+.classic-button {
+    background-color: #119955;
+    border: medium none;
+    border-radius: 5px;
+    color: white;
+    padding: 5px 15px;
+}
+
 #loginPopup {
     background-color: #595959;
     height: 180px;
@@ -411,6 +419,11 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding: 0 40px 10px;
 }
 
+.deleteColumnButton{
+    background-color: #901216;
+    margin-top: 15px
+}
+
 .tweets-column-panel-list li{
     list-style-type: none;
     text-align: center;
@@ -525,12 +538,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets-column-panel-list-twitterLists-button {
-    background-color: #119955;
-    border: medium none;
-    border-radius: 5px;
-    color: white;
     margin-left: 10px;
-    padding: 5px 15px;
 }
 
 .listChoiceAlreadyExist {
@@ -717,14 +725,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     display: none;
 }
 
-#retweetButton, #retweetCancelButton {
+#retweetButton, #retweetCancelButton{
     background-color: #901216;
-    border: medium none;
-    border-radius: 5px;
-    color: white;
     margin-left: 290px;
     margin-top: 15px;
-    padding: 5px 15px;
 }
 
 #retweetButton {
