@@ -76,6 +76,16 @@ MessagesColumn.prototype.generateColumn = function(){
 	var panelList = document.createElement('ul');
 	panelList.className = "tweets-column-panel-list";
 
+	/** DELETE BUTTON **/
+	var deleteParameter = document.createElement('li');
+
+	var deleteColumnButton = document.createElement('button');
+	deleteColumnButton.className = 'deleteColumnButton classic-button';
+	deleteColumnButton.textContent = 'Delete';
+
+	deleteParameter.appendChild(deleteColumnButton);
+	panelList.appendChild(deleteParameter);
+
 	/** FIRST PARAMETER **/
 
 	var firstParameter = document.createElement('li');
@@ -150,7 +160,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	this.generateColumnTwitterLists();
 
 	var listChoiceButton = document.createElement('button');
-	listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button';
+	listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button classic-button';
 	listChoiceButton.textContent = "Display";
 
 	this.twitterListsDOM.appendChild(listChoiceButton);
@@ -194,7 +204,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnTweets.setAttribute('class', 'tweets');
 	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
 
-	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput);
+	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput, deleteColumnButton);
 
 	newTweetColumnPanel.appendChild(panelList);
 
@@ -255,7 +265,7 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
  * @param {Object]} newTweetColumnImageSwitch [description]
  * @param {Object} listsOrTagsSwitch          [description]
  */
-MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput){
+MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput, deleteColumnButton){
 	buttonOpenOptions.addEventListener('click', function(){
 		this.openPanel();
 	}.bind(this));
@@ -277,6 +287,10 @@ MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnIm
 		if (e.keyCode == 13) {
 			this.trackTag();
 	    }
+	}.bind(this));
+
+	deleteColumnButton.addEventListener('click', function(){
+		this.deleteColumn();
 	}.bind(this));
 
 }
@@ -477,4 +491,11 @@ MessagesColumn.prototype.trackTag = function(scope){
 	this.hashtagTrackInput.value = "";
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
+}
+
+/**
+ * Deletes the column
+ */
+MessagesColumn.prototype.deleteColumn = function(){
+
 }
