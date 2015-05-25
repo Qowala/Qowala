@@ -10,7 +10,7 @@
  */
 function MessagesColumn(id, columnHeaderName, MessagesDisplay){
 	this.id = id;
-	this.availableLists = [];
+	this.twitterLists = [];
 	this.MessagesDisplay = MessagesDisplay;
 
 	this.columnHeaderName = columnHeaderName;
@@ -36,17 +36,8 @@ function MessagesColumn(id, columnHeaderName, MessagesDisplay){
  * @param  {[type]} listsObject [description]
  * @return {[type]}             [description]
  */
-MessagesColumn.prototype.updateAvailableLists = function(listsObject){
-	this.availableLists = [];
-	for (var i = 0; i < listsObject.length; i++) {
-		this.availableLists.push(
-			{
-				slug: listsObject[i].slug,
-				name: listsObject[i].name,
-				exist: listsObject[i].exist
-			}
-		);
-	};
+MessagesColumn.prototype.updateTwitterLists = function(listsObject){
+	this.twitterLists = listsObject;
 
 	this.generateColumnTwitterLists();
 }
@@ -236,13 +227,16 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 	var listChoice = document.createElement('select');
 	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
 
-	for (var i = 0; i < this.availableLists.length; i++) {
+	for (var i = 0; i < this.twitterLists.length; i++) {
+		// if(!this.twitterLists[i].exist){
+		console.log('twitterLists : ',this.twitterLists[i]);
 		var option = document.createElement('option');
-		option.textContent = this.availableLists[i].name;
-		if(this.availableLists[i].slug == this.id){
-			option.setAttribute('selected', 'true');
-		}
+		option.textContent = this.twitterLists[i].name;
+		// if(this.twitterLists[i].slug == this.id){
+		// 	option.setAttribute('selected', 'true');
+		// }
 		listChoice.appendChild(option);
+		// }
 	};
 
 	if(previousList != undefined){
@@ -367,25 +361,25 @@ MessagesColumn.prototype.addListToDisplay = function(){
 
 
 	console.log('Chosen list: ', chosenList);
-	for (var i = 0; i < this.availableLists.length; i++) {
-		if(this.availableLists[i].name === chosenList){
-			for (var y = 0; y < this.MessagesDisplay.enabledListsList.length; y++) {
-				if(this.MessagesDisplay.enabledListsList[y].columnId === this.id){
-					alreadyAffected = true;
-					this.MessagesDisplay.enabledListsList[y].slug = this.availableLists[i].slug;
-				}
-			}
+	for (var i = 0; i < this.twitterLists.length; i++) {
+		if(this.twitterLists[i].name === chosenList){
+			// for (var y = 0; y < this.MessagesDisplay.enabledListsList.length; y++) {
+			// 	if(this.MessagesDisplay.enabledListsList[y].columnId === this.id){
+			// 		alreadyAffected = true;
+			// 		this.MessagesDisplay.enabledListsList[y].slug = this.availableLists[i].slug;
+			// 	}
+			// }
 
-			for (var y = 0; y < this.MessagesDisplay.columnsLayout.length; y++) {
-				if(this.MessagesDisplay.columnsLayout[y].id === this.id){
-					alreadyAffected = true;
-					this.MessagesDisplay.columnsLayout[y].name = this.availableLists[i].name;
-					this.MessagesDisplay.columnsLayout[y].type = 'list';
-				}
-			}
+			// for (var y = 0; y < this.MessagesDisplay.columnsLayout.length; y++) {
+			// 	if(this.MessagesDisplay.columnsLayout[y].id === this.id){
+			// 		alreadyAffected = true;
+			// 		this.MessagesDisplay.columnsLayout[y].name = this.availableLists[i].name;
+			// 		this.MessagesDisplay.columnsLayout[y].type = 'list';
+			// 	}
+			// }
 
-			this.MessagesDisplay.useList(this.id, this.availableLists[i].slug);
-			this.MessagesDisplay.addUsedListToTwitterLists(this.availableLists[i].slug);
+			this.MessagesDisplay.useList(this.twitterLists[i].id, this.id);
+			// this.MessagesDisplay.addUsedListToTwitterLists(this.availableLists[i].slug);
 		}	
 	};
 
@@ -397,8 +391,8 @@ MessagesColumn.prototype.addListToDisplay = function(){
 
 	this.openPanel();
 
-	this.MessagesDisplay.updateListsToDisplay();
-	this.MessagesDisplay.updateColumnsLayout();
+	// this.MessagesDisplay.updateListsToDisplay();
+	// this.MessagesDisplay.updateColumnsLayout();
 } 
 
 /**

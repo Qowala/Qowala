@@ -69,19 +69,13 @@ var dashboard = (function (socket){
 			}
 		});
 
-		socket.on('enabledLists', function(enabledLists){
-			if(enabledLists != ""){
-				console.log('Gonna process enabledLists');
-				messagesDisplay.storeEnabledLists(enabledLists);
-			}
-		});
-
 		socket.on('tweet', function(message){
 			messagesDisplay.processIncoming(message);
 		});
 
 		socket.on('lists-list', function(listsObject){
 			messagesDisplay.storeTwitterLists(listsObject);
+			messagesDisplay.updateColumnsTwitterLists();
 		});
 
 		socket.on('home-timeline', function(timeline){
