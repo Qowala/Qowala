@@ -10,6 +10,7 @@ var socket = io();
  */
 var mapping = {
 	buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
+	buttonAddColumn: document.getElementById('buttonAddColumn'),
 	messageEditionPanel: document.getElementById('messageEditionPanel'),
 	messageTextarea: document.getElementById('messageTextarea'),
 	numberCharactersLeft: document.getElementById('numberCharactersLeft'),
@@ -36,12 +37,11 @@ var dashboard = (function (socket){
 	var init = function(mapping, callback){
 
 		// Create the main components of the application
-		mainSidebar = new MainSidebar(mapping);
-		statisticsSidebar = new StatisticsSidebar();
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
+		mainSidebar = new MainSidebar(mapping, messagesDisplay.createBlankColumn.bind(messagesDisplay));
+		statisticsSidebar = new StatisticsSidebar();
 
 		// Generate the defaults columns
-		messagesDisplay.createColumnCreator();
 		messagesDisplay.createUserColumn();
 		// messagesDisplay.addColumn('tracking', 'Tracking');
 		// messagesDisplay.displayColumns();

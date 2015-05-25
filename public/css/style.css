@@ -148,7 +148,7 @@ body {
     z-index: 2;
 }
 
-#buttonOpenMessageEdition {
+#buttonOpenMessageEdition, #buttonAddColumn {
     background-color: #119955;
     border: medium none;
     color: white;
@@ -159,6 +159,21 @@ body {
     font-size: 2.2em;
     width: 50px;
     display: block;
+    position: relative;
+}
+
+#buttonAddColumn .fa.fa-columns {
+    bottom: 8px;
+    font-size: 0.7em;
+    left: 10px;
+    position: absolute;
+}
+
+#buttonAddColumn .fa.fa-plus {
+    font-size: 0.5em;
+    position: absolute;
+    right: 5px;
+    top: 6px;
 }
 
 #messageEditionPanel{

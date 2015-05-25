@@ -11,7 +11,6 @@
  * @param {Object} columnsListHTML   Reference to the HTML container for all the columns
  */
 function MessagesDisplay(columnsListHTML){
-	this.columnCreator = null;
 	this.columnsId = 0;
 	this.messagesColumnsList = [];
 	this.messagesColumnsHTML = columnsListHTML;
@@ -94,7 +93,6 @@ MessagesDisplay.prototype.addAllColumns = function(){
 	this.messagesColumnsHTML.innerHTML = "";
 
 	this.createUserColumn();
-	this.createColumnCreator();
 	
 	for (var i = 0; i < this.columnsLayout.length; i++) {
 		if(this.columnsLayout[i].type != 'home'){
@@ -106,7 +104,7 @@ MessagesDisplay.prototype.addAllColumns = function(){
 
 			console.log('Created: ', column);
 
-			this.messagesColumnsHTML.insertBefore(generatedColumn, this.messagesColumnsHTML.lastChild);
+			this.messagesColumnsHTML.appendChild(generatedColumn);
 		}
 	};
 
@@ -199,8 +197,7 @@ MessagesDisplay.prototype.createBlankColumn = function(){
 
 	console.log('Created: ', column);
 
-	this.hideColumnCreator(); 
-	this.messagesColumnsHTML.insertBefore(generatedColumn, this.messagesColumnsHTML.lastChild);
+	this.messagesColumnsHTML.appendChild(generatedColumn);
 }
 
 /**
@@ -243,58 +240,7 @@ MessagesDisplay.prototype.createUserColumn = function(){
 
 	var generatedColumn = column.generateColumn();
 
-	this.messagesColumnsHTML.insertBefore(generatedColumn, this.messagesColumnsHTML.lastChild);
-}
-
-/**
- * Creates the button to add new columns
- */
-MessagesDisplay.prototype.createColumnCreator = function(){
-	var column = document.createElement('li');
-	column.className = 'tweets-column';
-	column.setAttribute('id', 'plusColumn');
-
-	var button = document.createElement('button');
-	button.setAttribute('id', 'plusColumnButton');
-
-	var stack = document.createElement('span');
-	stack.className = 'fa-stack fa-lg';
-
-	var firstIcon = document.createElement('i');
-	firstIcon.className = 'fa fa-circle fa-stack-2x';
-
-	var secondIcon = document.createElement('i');
-	secondIcon.className = 'fa fa-plus fa-stack-1x';
-
-	stack.appendChild(firstIcon);
-	stack.appendChild(secondIcon);
-
-	button.appendChild(stack);
-
-	button.addEventListener('click', function(e){
-			this.createBlankColumn();
-	}.bind(this));
-
-	column.appendChild(button);
-	this.messagesColumnsHTML.appendChild(column);
-
-	this.columnCreator = column;
-
-}
-
-/**
- * Displays the column creator
- * @return {[type]} [description]
- */
-MessagesDisplay.prototype.displayColumnCreator = function(){
-	this.columnCreator.style.display = 'block';
-}
-/**
- * Hides the column creator
- * @return {[type]} [description]
- */
-MessagesDisplay.prototype.hideColumnCreator = function(){
-	this.columnCreator.style.display = 'none';
+	this.messagesColumnsHTML.insertBefore(generatedColumn, this.messagesColumnsHTML.firstChild);
 }
 
 /**

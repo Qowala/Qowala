@@ -1,8 +1,10 @@
 /**
  * Displays the main controls
  */
-function MainSidebar(mapping){
+function MainSidebar(mapping, createBlankColumn){
 	this.buttonOpenMessageEdition = mapping.buttonOpenMessageEdition;
+	this.buttonAddColumn = mapping.buttonAddColumn;
+	this.createBlankColumn = createBlankColumn;
 	this.isMessageEditionPanelOpen = false;
 	this.messageEditionPanel = mapping.messageEditionPanel;
 	this.messageTextarea = mapping.messageTextarea;
@@ -36,6 +38,11 @@ MainSidebar.prototype.init = function(){
 	// Triggers a click on the button to open the message edition panel
 	this.buttonOpenMessageEdition.addEventListener('click', function(e){
 		this.openMessageEdition();
+	}.bind(this));
+
+	// Triggers a click on the button to add new column
+	this.buttonAddColumn.addEventListener('click', function(e){
+		this.createBlankColumn();
 	}.bind(this));
 
 	// Triggers a click on the button to send a message

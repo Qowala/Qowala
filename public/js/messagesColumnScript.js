@@ -396,7 +396,6 @@ MessagesColumn.prototype.addListToDisplay = function(){
 
 	this.MessagesDisplay.updateListsToDisplay();
 	this.MessagesDisplay.updateColumnsLayout();
-	this.MessagesDisplay.displayColumnCreator();
 } 
 
 /**
