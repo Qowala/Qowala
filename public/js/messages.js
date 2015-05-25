@@ -456,5 +456,17 @@ Message.prototype.enlargeImage = function(){
 		console.log('height: ', height);
 		popup.style.top = height;
 		popup.style.display = 'block';
+
+		function closeImagePopup(e){
+			columnsList.removeEventListener('click', closeImagePopup, true);
+			e.stopPropagation();
+			e.preventDefault();
+			var popup = document.getElementById('largeImagePopup');
+			popup.style.display = 'none';
+		}
+
+		var columnsList = document.getElementById('tweets-columns-list');
+		columnsList.addEventListener('click', closeImagePopup, true);
+
 	}	
 }

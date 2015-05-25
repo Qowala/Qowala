@@ -666,6 +666,11 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding: 20px;
     z-index: 2;
     display: none;
+    -moz-transition: all ease-in 0.35s; 
+    -webkit-transition: all ease-in 0.35s;  
+    -ms-transition: all ease-in 0.35s;  
+    -o-transition: all ease-in 0.35s;  
+    transition: all ease-in 0.35s;
 }
 
 
