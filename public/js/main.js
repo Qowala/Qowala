@@ -73,6 +73,10 @@ var dashboard = (function (socket){
 			messagesDisplay.processIncoming(message);
 		});
 
+		socket.on('tag list', function(tagList){
+			console.log('Got tag list: ', tagList)
+		});
+
 		socket.on('lists-list', function(listsObject){
 			messagesDisplay.storeTwitterLists(listsObject);
 			messagesDisplay.updateColumnsTwitterLists();

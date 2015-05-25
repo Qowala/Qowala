@@ -484,13 +484,16 @@ MessagesColumn.prototype.deleteMessage = function(message){
 /**
  * Sends tag tracking request
  */
-MessagesColumn.prototype.trackTag = function(scope){
+MessagesColumn.prototype.trackTag = function(){
 	var tagObject = {};
 	console.log('hashtagTrackInput: ', this.hashtagTrackInput.value);
 	tagObject.tag = this.hashtagTrackInput.value;
+	tagObject.tag = tagObject.tag.toLowerCase();
 	this.hashtagTrackInput.value = "";
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
+	// console.log('Emitting, ', tagObject);
+	this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
 }
 
 /**
