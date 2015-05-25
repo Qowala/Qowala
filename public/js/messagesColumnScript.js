@@ -340,14 +340,17 @@ MessagesColumn.prototype.enableImages = function(){
  */
 MessagesColumn.prototype.switchListsOrHashtags = function(){
 	this.isListsOpen = !this.isListsOpen;
+
+	var hashtagsBlock = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-hashtagsBlock');
+	var twitterListsDOM = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-twitterLists');
 	if(this.isListsOpen){
-		this.hashtagsBlock.style.display = "none";
-		this.twitterListsDOM.style.display = "block";
+		hashtagsBlock.style.display = "none";
+		twitterListsDOM.style.display = "block";
 		console.log('Opening this.twitterListsDOM : ', this.twitterListsDOM);
 	}
 	else{
-		this.hashtagsBlock.style.display = "block";
-		this.twitterListsDOM.style.display = "none";
+		hashtagsBlock.style.display = "block";
+		twitterListsDOM.style.display = "none";
 		console.log('CLosing this.twitterListsDOM : ', this.twitterListsDOM);
 	}
 }
