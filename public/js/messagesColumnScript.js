@@ -497,5 +497,5 @@ MessagesColumn.prototype.trackTag = function(scope){
  * Deletes the column
  */
 MessagesColumn.prototype.deleteColumn = function(){
-
+	this.MessagesDisplay.deleteColumn(this.id);
 }
