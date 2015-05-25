@@ -567,7 +567,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-text{
-	font-size: 0.9em;
+    font-size: 0.9em;
     margin: 8px 0 10px;
     word-wrap: break-word;
 }
@@ -602,12 +602,12 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-url, .tweet-link-image{
-	color: #2aa3d6;
-	text-decoration: none;
+    color: #2aa3d6;
+    text-decoration: none;
 }
 
 .tweet-url:hover, .tweet-link-image:hover{
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .tweet-retweet-button, .tweet-retweet-button-active {
@@ -663,7 +663,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     display: none;
 }
 
-#largeImagePopup{
+#largeImagePopup, #tweetConfirmationPopup{
     position: fixed;
     background-color: #C2C2C2;
     border-radius: 20px;
@@ -677,6 +677,45 @@ input[type="text"].tagInput:-ms-input-placeholder {
     transition: all ease-in 0.35s;
 }
 
+#tweetConfirmationPopup{
+    background-color: #595959;
+    width: 500px;
+    margin: auto;
+    top: calc(50% - 200px);
+    left: calc(50% - 250px);
+}
+
+#tweetConfirmationPopup h3{
+    text-align: center;
+    color: white;
+}
+
+#tweetConfirmationPopup .tweet-text{
+    color: white;
+}
+
+#tweetConfirmationPopup .tweet-authorScreenName{
+    color: #26ae6a;
+}
+
+#tweetConfirmationPopup .tweet-date, #tweetConfirmationPopup .tweet-retweeter, #tweetConfirmationPopup .tweet-retweet-button, #tweetConfirmationPopup .tweet-retweet-button-active{
+    display: none;
+}
+
+#retweetButton, #retweetCancelButton {
+    background-color: #901216;
+    border: medium none;
+    border-radius: 5px;
+    color: white;
+    margin-left: 290px;
+    margin-top: 15px;
+    padding: 5px 15px;
+}
+
+#retweetButton {
+    background-color: #119955;
+    margin-left: 20px;
+}
 
 /**  ADD COLUMN COLUMN **/
 #plusColumn {

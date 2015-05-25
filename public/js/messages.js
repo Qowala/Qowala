@@ -52,6 +52,8 @@ Message.prototype.generateMessage = function(){
 	this.processText();
 
 	var newTweet = document.createElement('li');
+	// Be careful to change it to id_str when it will be updated
+	newTweet.setAttribute('name', 'tweet-' + this.id);
 
 	if(this.isRetweet){
 		var newUserRetweeter = document.createElement('p');
@@ -155,13 +157,53 @@ Message.prototype.sendRetweet = function(){
 		console.log('Gonna send delete tweet with id: ', this.id);
 		socket.emit('delete retweet', this.id);
 		this.retweeted = false;
+		this.applyTweetStatus();
 	}
 	else{
-		console.log('Gonna send retweet with id: ', this.id);
-		socket.emit('retweet', this.id);
-		this.retweeted = true;
+		var tweetConfirmationPopup = document.getElementById('tweetConfirmationPopup');
+		var tweetView = document.getElementById('tweetView');
+		var retweetCancelButton = document.getElementById('retweetCancelButton');
+		var retweetButton = document.getElementById('retweetButton');
+		var tweet = document.getElementsByName('tweet-' + this.id);
+		var clone = tweet[0].cloneNode(true);
+
+		tweetView.innerHTML = clone.innerHTML;
+
+		tweetConfirmationPopup.style.display = 'block';
+
+		function removeAllListeners(){
+			columnsList.removeEventListener('click', closeRetweetPopup, true);
+			retweetCancelButton.removeEventListener('click', closeRetweetPopup, true);
+			retweetButton.removeEventListener('click', bindedFunction, true);
+		}
+
+		function closeRetweetPopup(e){
+			e.stopPropagation();
+			e.preventDefault();
+			removeAllListeners();
+			var popup = document.getElementById('tweetConfirmationPopup');
+			popup.style.display = 'none';
+		}
+
+		var columnsList = document.getElementById('tweets-columns-list');
+		columnsList.addEventListener('click', closeRetweetPopup, true);
+		retweetCancelButton.addEventListener('click', closeRetweetPopup, true);
+
+		function sendRetweetCommand(e){
+			socket.emit('retweet', this.id);
+			this.retweeted = true;
+			removeAllListeners();
+			console.log('Gonna send retweet with id: ', this.id);
+			var popup = document.getElementById('tweetConfirmationPopup');
+			popup.style.display = 'none';
+			this.applyTweetStatus();
+		}
+
+		var bindedFunction = (sendRetweetCommand).bind(this)
+
+		retweetButton.addEventListener('click', bindedFunction, true);
+
 	}
-	this.applyTweetStatus();
 }
 
 /**
