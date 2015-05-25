@@ -108,6 +108,10 @@ body {
     width: 120px;
 }
 
+#logo img{
+    max-width: 100px;
+}
+
 .logo-q{
     color: #119955;
     font-family: "pt_serifbold", sans-serif;
