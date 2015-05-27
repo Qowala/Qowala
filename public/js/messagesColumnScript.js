@@ -547,7 +547,13 @@ MessagesColumn.prototype.trackTag = function(){
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
 	// console.log('Emitting, ', tagObject);
-	this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
+	if(this.type != 'tracking'){
+		console.log('Update as it is first tracking')
+		this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
+	}
+	else{
+		this.MessagesDisplay.updateHashtagsColumnsLayout(this.id, tagObject.tag);
+	}
 }
 
 /**

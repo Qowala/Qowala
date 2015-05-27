@@ -131,7 +131,7 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 	var exist = false
 	for (var y = 0; y < this.columnsLayout.length; y++) {
 		if(this.columnsLayout[y].id === columnId){
-			this.columnsLayout[y].name = 'Tracking';
+			this.columnsLayout[y].name = '#' + hashtag;
 			this.columnsLayout[y].type = 'tracking';
 			this.columnsLayout[y].listId = null;
 			this.columnsLayout[y].hashtags.push(hashtag);
@@ -141,7 +141,7 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 	if(!exist){
 		this.columnsLayout.push({
 			id: columnId,
-			name: 'Tracking',
+			name: '#' + hashtag,
 			type: 'tracking',
 			hashtags: [hashtag]
 		});
@@ -149,7 +149,18 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		if(this.messagesColumnsList[i].id === columnId){
-			this.messagesColumnsList[i].changeName('Tracking');
+			this.messagesColumnsList[i].changeName('#' + hashtag);
+			this.messagesColumnsList[i].type = 'tracking';
+		}
+	};
+
+	this.updateColumnsLayout();
+}
+
+MessagesDisplay.prototype.updateHashtagsColumnsLayout = function(columnId, hashtag){
+	for (var y = 0; y < this.columnsLayout.length; y++) {
+		if(this.columnsLayout[y].id === columnId){
+			this.columnsLayout[y].hashtags.push(hashtag);
 		}
 	};
 
@@ -202,15 +213,15 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
 					for (var z = 0; z < incoming.updatedTags.length; z++) {
 						if(this.columnsLayout[i].hashtags[y] == incoming.updatedTags[z]){
 							var messageToDisplay = this.addOneMessage(incoming.tweet, this.columnsLayout[i].id);
+							if(messageToDisplay != undefined){
+								this.displayOneMessage(messageToDisplay);
+							}		
 						}
 					};
 				};
 				
 			}
 		};
-		if(messageToDisplay != undefined){
-			this.displayOneMessage(messageToDisplay);
-		}		
 	}
 	else if(incoming.streamSource === 'lists'){
 		console.log('Got message from lists');
