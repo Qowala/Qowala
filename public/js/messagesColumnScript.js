@@ -8,10 +8,11 @@
  * @param {String} id               Column ID from social network
  * @param {String} columnHeaderName Column name from social network
  */
-function MessagesColumn(id, columnHeaderName, MessagesDisplay){
+function MessagesColumn(id, columnHeaderName, type, MessagesDisplay){
 	this.id = id;
 	this.twitterLists = [];
 	this.MessagesDisplay = MessagesDisplay;
+	this.type = type;
 
 	this.columnHeaderName = columnHeaderName;
 	this.columnHTML = null;
@@ -190,7 +191,7 @@ MessagesColumn.prototype.generateColumn = function(){
 
 	panelList.appendChild(hashtagsBlock);
 
-	if(this.id == 'tracking'){
+	if(this.type == 'tracking'){
 		this.isListsOpen = false;
 		listsOrTagsSwitchInput.setAttribute('checked', true);
 		this.hashtagsBlock.style.display = "block";

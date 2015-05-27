@@ -77,7 +77,10 @@ MessagesDisplay.prototype.addAllColumns = function(){
 	for (var i = 0; i < this.columnsLayout.length; i++) {
 		if(this.columnsLayout[i].type != 'home'){
 			this.columnsId++;
-			var column = new MessagesColumn(this.columnsLayout[i].id , this.columnsLayout[i].name, this);
+			var column = new MessagesColumn(this.columnsLayout[i].id , 
+											this.columnsLayout[i].name, 
+											this.columnsLayout[i].type, 
+											this);
 			this.messagesColumnsList.push(column);
 			column.updateTwitterLists(this.twitterLists);
 			var generatedColumn = column.generateColumn();
@@ -193,7 +196,6 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
 		}
 	}
 	else if(incoming.streamSource === 'tracking'){
-		console.log('tracking: ', incoming.updatedTags);
 		for (var i = 0; i < this.columnsLayout.length; i++) {
 			if(this.columnsLayout[i].type === 'tracking'){
 				for (var y = 0; y < this.columnsLayout[i].hashtags.length; y++) {
@@ -231,7 +233,10 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
  */
 MessagesDisplay.prototype.createBlankColumn = function(){
 	this.columnsId++;
-	var column = new MessagesColumn(this.columnsId , 'New column', this);
+	var column = new MessagesColumn(this.columnsId , 
+									'New column', 
+									'None', 
+									this);
 	this.messagesColumnsList.push(column);
 	console.log('this.twitterLists : ', this.twitterLists);
 	this.updateColumnsTwitterLists();
