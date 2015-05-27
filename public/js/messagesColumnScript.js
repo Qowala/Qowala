@@ -56,6 +56,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.id);
 
 	var newTweetColumnTitle = document.createElement('h3');
+	newTweetColumnTitle.setAttribute('contentEditable', 'true');
 	newTweetColumnTitle.textContent = this.columnHeaderName;
 
 	var newTweetColumnParametersButton = document.createElement('button');
@@ -204,7 +205,17 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnTweets.setAttribute('class', 'tweets');
 	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
 
-	this.addEvent(newTweetColumnParametersButton, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput, deleteColumnButton);
+	var elementsToAddEventListener = {
+		newTweetColumnParametersButton: newTweetColumnParametersButton,
+		newTweetColumnImageSwitch: newTweetColumnImageSwitch,
+		listsOrTagsSwitch: listsOrTagsSwitch,
+		listChoiceButton: listChoiceButton,
+		hashtagTrackInput: hashtagTrackInput,
+		deleteColumnButton: deleteColumnButton,
+		newTweetColumnTitle: newTweetColumnTitle
+	};
+
+	this.addEvent(elementsToAddEventListener);
 
 	newTweetColumnPanel.appendChild(panelList);
 
@@ -260,39 +271,81 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 }
 
 /**
+ * Change column's name
+ * @param  {String} name Column name to set
+ */
+MessagesColumn.prototype.changeName = function(name){
+	this.columnHeaderName = name;
+	var title = this.columnHeaderHTML.getElementsByTagName('h3');
+	title[0].textContent = name;
+
+	for (var i = 0; i < this.MessagesDisplay.columnsLayout.length; i++) {
+		if(this.MessagesDisplay.columnsLayout[i].id === this.id){
+			this.MessagesDisplay.columnsLayout[i].name = name;
+		}
+	};
+}
+
+/**
+ * Change column's name in columns layout
+ */
+MessagesColumn.prototype.changeColumnsLayoutName = function(){
+	var title = this.columnHeaderHTML.getElementsByTagName('h3');
+	name = title[0].textContent;
+
+	this.columnHeaderName = name;
+
+	for (var i = 0; i < this.MessagesDisplay.columnsLayout.length; i++) {
+		if(this.MessagesDisplay.columnsLayout[i].id === this.id){
+			this.MessagesDisplay.columnsLayout[i].name = name;
+			this.MessagesDisplay.updateColumnsLayout();
+		}
+	};
+}
+
+
+
+/**
  * Add events on buttons and other inputs
  * @param {Object} buttonOpenOptions          [description]
  * @param {Object]} newTweetColumnImageSwitch [description]
  * @param {Object} listsOrTagsSwitch          [description]
  */
-MessagesColumn.prototype.addEvent = function(buttonOpenOptions, newTweetColumnImageSwitch, listsOrTagsSwitch, listChoiceButton, hashtagTrackInput, deleteColumnButton){
-	buttonOpenOptions.addEventListener('click', function(){
+MessagesColumn.prototype.addEvent = function(elementsToAddEventListener){
+	this.buttonOpenOptions.addEventListener('click', function(){
 		this.openPanel();
 	}.bind(this));
 
-	newTweetColumnImageSwitch.addEventListener('change', function(){
+	elementsToAddEventListener.newTweetColumnImageSwitch.addEventListener('change', function(){
 		this.enableImages();
 	}.bind(this));
 
-	listsOrTagsSwitch.addEventListener('change', function(){
+	elementsToAddEventListener.listsOrTagsSwitch.addEventListener('change', function(){
 		this.switchListsOrHashtags();
 	}.bind(this));
 
-	listChoiceButton.addEventListener('click', function(){
+	elementsToAddEventListener.listChoiceButton.addEventListener('click', function(){
 		this.addListToDisplay();
 	}.bind(this));
 
 	// 	Triggers the Enter button for tracking tags
-	hashtagTrackInput.addEventListener('keypress', function(e){
+	elementsToAddEventListener.hashtagTrackInput.addEventListener('keypress', function(e){
 		if (e.keyCode == 13) {
 			this.trackTag();
 	    }
 	}.bind(this));
 
-	deleteColumnButton.addEventListener('click', function(){
+	elementsToAddEventListener.deleteColumnButton.addEventListener('click', function(){
 		this.deleteColumn();
 	}.bind(this));
-
+		
+	elementsToAddEventListener.newTweetColumnTitle.addEventListener('keypress', function(e){
+		if (e.keyCode == 13) {
+			this.changeColumnsLayoutName();
+			e.preventDefault();
+			return false;
+	    }
+	}.bind(this));
 }
 
 /**

@@ -144,6 +144,12 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 		});
 	}
 
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id === columnId){
+			this.messagesColumnsList[i].changeName('Tracking');
+		}
+	};
+
 	this.updateColumnsLayout();
 }
 
