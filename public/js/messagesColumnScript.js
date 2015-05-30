@@ -93,14 +93,16 @@ MessagesColumn.prototype.generateColumn = function(){
 	panelList.className = "tweets-column-panel-list";
 
 	/** DELETE BUTTON **/
-	var deleteParameter = document.createElement('li');
+	if(this.type != "home"){
+		var deleteParameter = document.createElement('li');
 
-	var deleteColumnButton = document.createElement('button');
-	deleteColumnButton.className = 'deleteColumnButton classic-button';
-	deleteColumnButton.textContent = 'Delete';
+		var deleteColumnButton = document.createElement('button');
+		deleteColumnButton.className = 'deleteColumnButton classic-button';
+		deleteColumnButton.textContent = 'Delete';
 
-	deleteParameter.appendChild(deleteColumnButton);
-	panelList.appendChild(deleteParameter);
+		deleteParameter.appendChild(deleteColumnButton);
+		panelList.appendChild(deleteParameter);
+	}
 
 	/** FIRST PARAMETER **/
 
@@ -382,9 +384,11 @@ MessagesColumn.prototype.addEvent = function(elementsToAddEventListener){
 	    }
 	}.bind(this));
 
-	elementsToAddEventListener.deleteColumnButton.addEventListener('click', function(){
-		this.deleteColumn();
-	}.bind(this));
+	if(elementsToAddEventListener.deleteColumnButton){
+		elementsToAddEventListener.deleteColumnButton.addEventListener('click', function(){
+			this.deleteColumn();
+		}.bind(this));
+	}
 		
 	elementsToAddEventListener.newTweetColumnTitle.addEventListener('keypress', function(e){
 		if (e.keyCode == 13) {
