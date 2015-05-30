@@ -235,7 +235,7 @@ body {
     background-color: #4cc783;
 }
 
-#tagInputWrapper::before {
+#saperator::before {
     border-top: 1px solid #8d8e8d;
     content: " ";
     display: block;
@@ -292,21 +292,35 @@ input[type="text"].tagInput:-ms-input-placeholder {
   -webkit-user-drag: element;
 }
 
-.draggableTag:before{
-    content: "..";
-    position: relative;
-    right: 4px;
+.tweets-column-panel-list-hashtagsList {
+    padding: 0;
 }
 
-.draggableTag{
+.tweets-column-panel-list-hashtagsBlock h4 {
+    border-bottom: 1px solid white;
+    color: #119955;
+    margin: 1.33em auto;
+    padding-bottom: 10px;
+    width: 220px;
+}
+.tweets-column-panel-list-hashtagsList .hashtag {
     background-color: #119955;
-    width: 100px;
-    height: 20px;
-    text-align: center;
     border-radius: 15px;
-    margin: 10px auto;
-    padding: 2px 0 5px 4px;
     list-style-type: none;
+    margin: 10px auto;
+    min-height: 20px;
+    padding: 4px 0 5px 5px;
+    text-align: center;
+    width: 100px;
+}
+
+.hashtag-delete-button {
+    background-color: transparent;
+    border: medium none;
+    color: white;
+    position: absolute;
+    right: -30px;
+    top: 5px;
 }
 
 #toggleButton {

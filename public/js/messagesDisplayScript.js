@@ -83,6 +83,7 @@ MessagesDisplay.prototype.addAllColumns = function(){
 											this);
 			this.messagesColumnsList.push(column);
 			column.updateTwitterLists(this.twitterLists);
+			column.updateHashtagsList(this.columnsLayout[i].hashtags);
 			var generatedColumn = column.generateColumn();
 
 			console.log('Created: ', column);
@@ -108,6 +109,13 @@ MessagesDisplay.prototype.useList = function(twitterListId, columnId){
 						this.columnsLayout[y].name = this.twitterLists[i].name;
 						this.columnsLayout[y].type = 'list';
 						this.columnsLayout[y].listId = twitterListId;
+						this.columnsLayout[y].hashtags = []
+						for (var z = 0; z < this.messagesColumnsList.length; z++) {
+							if(this.messagesColumnsList[z].id === columnId){
+								this.messagesColumnsList[z].type = 'list';
+								this.messagesColumnsList[z].updateHashtagsList(this.columnsLayout[y].hashtags);
+							}
+						};
 						break loop;
 					}
 				};
@@ -129,6 +137,7 @@ MessagesDisplay.prototype.useList = function(twitterListId, columnId){
 
 MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 	var exist = false
+	var hashtagsArray = [];
 	for (var y = 0; y < this.columnsLayout.length; y++) {
 		if(this.columnsLayout[y].id === columnId){
 			this.columnsLayout[y].name = '#' + hashtag;
@@ -136,6 +145,7 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 			this.columnsLayout[y].listId = null;
 			this.columnsLayout[y].hashtags.push(hashtag);
 			exist = true;
+			hashtagsArray = this.columnsLayout[y].hashtags;
 		}
 	};
 	if(!exist){
@@ -145,26 +155,80 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 			type: 'tracking',
 			hashtags: [hashtag]
 		});
+		hashtagsArray = this.columnsLayout[y].hashtags;
 	}
 
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		if(this.messagesColumnsList[i].id === columnId){
 			this.messagesColumnsList[i].changeName('#' + hashtag);
 			this.messagesColumnsList[i].type = 'tracking';
+			this.messagesColumnsList[i].updateHashtagsList(hashtagsArray);
 		}
 	};
 
+	console.log('Setting up the column as hashtag');
+	this.updateListsToDisplay();
 	this.updateColumnsLayout();
+	this.updateColumnsTwitterLists();
+	this.updateTagsToDisplay();
 }
 
-MessagesDisplay.prototype.updateHashtagsColumnsLayout = function(columnId, hashtag){
+/**
+ * Add hashtag to track
+ * @param {[type]} columnId [description]
+ * @param {[type]} hashtag  [description]
+ */
+MessagesDisplay.prototype.addHashtag = function(columnId, hashtag){
+
+	var hashtagsArray = [];
+	loop:
 	for (var y = 0; y < this.columnsLayout.length; y++) {
 		if(this.columnsLayout[y].id === columnId){
+			for (var i = 0; i < this.columnsLayout[y].hashtags.length; i++) {
+				if(this.columnsLayout[y].hashtags[i] == hashtag){
+					break loop;
+				}
+			};
 			this.columnsLayout[y].hashtags.push(hashtag);
+			hashtagsArray = this.columnsLayout[y].hashtags;
 		}
 	};
 
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].id === columnId){
+			this.messagesColumnsList[i].updateHashtagsList(hashtagsArray);
+		}
+	};
+	console.log('Updating the column hashtag after adding');
 	this.updateColumnsLayout();
+	this.updateTagsToDisplay();
+}
+
+/**
+ * Remove hashtag to track
+ * @param  {[type]} columnId [description]
+ * @param  {[type]} hashtag  [description]
+ * @return {[type]}          [description]
+ */
+MessagesDisplay.prototype.removeHashtag = function(columnId, hashtag){
+	var hashtagsArray = [];
+	for (var y = 0; y < this.columnsLayout.length; y++) {
+		if(this.columnsLayout[y].id === columnId){
+			if(this.columnsLayout[y].hashtags.indexOf(hashtag)){
+				this.columnsLayout[y].hashtags.splice(this.columnsLayout[y].hashtags.indexOf(hashtag), 1);
+				hashtagsArray = this.columnsLayout[y].hashtags;
+				console.log('Updating the column hashtag after removing');
+				this.updateColumnsLayout();
+				this.updateTagsToDisplay();
+				for (var y = 0; y < this.messagesColumnsList.length; y++) {
+					if(this.messagesColumnsList[y].id === columnId){
+						this.messagesColumnsList[y].updateHashtagsList(hashtagsArray);
+					}
+				};
+			}
+		}
+	};
+
 }
 
 /**
@@ -190,8 +254,9 @@ MessagesDisplay.prototype.deleteColumn = function(columnId){
 	this.updateListsToDisplay();
 	this.updateColumnsLayout();
 	this.updateColumnsTwitterLists();
+	this.updateTagsToDisplay();
 
-	console.log('Column deleted');
+	console.log('Column ' + columnId + ' deleted from columnsLayout: ', this.columnsLayout);
 }
 
 /**
@@ -244,12 +309,16 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
  */
 MessagesDisplay.prototype.createBlankColumn = function(){
 	this.columnsId++;
+	for (var i = 0; i < this.columnsLayout.length; i++) {
+		while(this.columnsLayout[i].id === this.columnsId){
+			this.columnsId++;
+		}
+	};
 	var column = new MessagesColumn(this.columnsId , 
 									'New column', 
 									'None', 
 									this);
 	this.messagesColumnsList.push(column);
-	console.log('this.twitterLists : ', this.twitterLists);
 	this.updateColumnsTwitterLists();
 	var generatedColumn = column.generateColumn();
 
@@ -412,6 +481,24 @@ MessagesDisplay.prototype.updateListsToDisplay = function(){
 	socket.emit('update lists request', listsToRequest);
 	console.log('emitting ', listsToRequest);
 	return listsToRequest;
+}
+
+/**
+ * Sends to server the all the tags to be requested
+ */
+MessagesDisplay.prototype.updateTagsToDisplay = function(){
+	var tagsToRequest = [];
+
+	for (var i = 0; i < this.columnsLayout.length; i++) {
+		if(this.columnsLayout[i].type === 'tracking'){
+			for (var y = 0; y < this.columnsLayout[i].hashtags.length; y++) {
+				tagsToRequest.push(this.columnsLayout[i].hashtags[y]);
+			};
+		}
+	};
+	socket.emit('update tags request', tagsToRequest);
+	console.log('emitting ', tagsToRequest);
+	return tagsToRequest;
 }
 
 /**

@@ -8,7 +8,8 @@ var userSchema = mongoose.Schema({
 	lists: Array,
 	enabledLists: Array,
 	columnsLayout: Array,
-	homeTimelineCache: Array
+	homeTimelineCache: Array,
+	enabledTags: Array
 });
 
 var User = mongoose.model('User', userSchema);
@@ -231,6 +232,41 @@ exports.getEnabledLists = function (userId, cb){
 			if(user){
 				if(user.enabledLists){
 					cb(user.enabledLists);
+				}
+				else{
+					cb('');
+				}
+			}
+		}
+	});
+};
+
+/**
+ * Push the enabled tagss
+ * @param  {Number}  userId 		The user's ID 
+ * @param  {Array}   enabledTags   The user's tags lists
+ * @return {Object}         		The user once created
+ */
+exports.pushEnabledTags = function(userId, enabledTags){
+	User.update({user: userId}, {enabledTags: enabledTags}, {}, function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get user's enabled tags
+ * @param  {Function} cb     Callback returning the enabled lists
+ */
+exports.getEnabledTags = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		} 
+		else {
+			if(user){
+				if(user.enabledTags){
+					cb(user.enabledTags);
 				}
 				else{
 					cb('');

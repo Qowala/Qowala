@@ -11,6 +11,7 @@
 function MessagesColumn(id, columnHeaderName, type, MessagesDisplay){
 	this.id = id;
 	this.twitterLists = [];
+	this.hashtagsList = [];
 	this.MessagesDisplay = MessagesDisplay;
 	this.type = type;
 
@@ -44,6 +45,17 @@ MessagesColumn.prototype.updateTwitterLists = function(listsObject){
 }
 
 /**
+ * [updateHasgtagsList description]
+ * @param  {[type]} listsObject [description]
+ * @return {[type]}             [description]
+ */
+MessagesColumn.prototype.updateHashtagsList = function(listsObject){
+	this.hashtagsList = listsObject;
+
+	this.generateHashtagsList();
+}
+
+/**
  * Generate column
  * @return {Object} generated column
  */
@@ -57,7 +69,9 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnHeader.setAttribute('id', 'tweets-column-header-' + this.id);
 
 	var newTweetColumnTitle = document.createElement('h3');
-	newTweetColumnTitle.setAttribute('contentEditable', 'true');
+	if(this.type == "tracking"){
+		newTweetColumnTitle.setAttribute('contentEditable', 'true');
+	}
 	newTweetColumnTitle.textContent = this.columnHeaderName;
 
 	var newTweetColumnParametersButton = document.createElement('button');
@@ -186,8 +200,11 @@ MessagesColumn.prototype.generateColumn = function(){
 
 	this.hashtagTrackInput = hashtagTrackInput;
 
+	var hashtagsList = this.generateHashtagsList();
+
 	hashtagsBlock.appendChild(hashtagsBlockTitle);
 	hashtagsBlock.appendChild(hashtagTrackInput);
+	hashtagsBlock.appendChild(hashtagsList);
 
 	panelList.appendChild(hashtagsBlock);
 
@@ -250,15 +267,9 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
 
 	for (var i = 0; i < this.twitterLists.length; i++) {
-		// if(!this.twitterLists[i].exist){
-		console.log('twitterLists : ',this.twitterLists[i]);
 		var option = document.createElement('option');
 		option.textContent = this.twitterLists[i].name;
-		// if(this.twitterLists[i].slug == this.id){
-		// 	option.setAttribute('selected', 'true');
-		// }
 		listChoice.appendChild(option);
-		// }
 	};
 
 	if(previousList != undefined){
@@ -269,6 +280,41 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 	}
 
 	this.twitterListsDOM = twitterListsDOM;
+}
+
+MessagesColumn.prototype.generateHashtagsList = function(){
+
+	var previousList = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-hashtagsList');
+
+	var hashtagsBlock = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-hashtagsBlock');
+
+	var hashtagsList = document.createElement('ul');
+	hashtagsList.className = 'tweets-column-panel-list-hashtagsList';
+
+	for (var i = 0; i < this.hashtagsList.length; i++) {
+		var hashtag = document.createElement('li');
+		var deleteButton = document.createElement('button');
+		var cross = document.createElement('i');
+		cross.className = "fa fa-times";
+
+		deleteButton.className = "hashtag-delete-button";
+		hashtag.className = 'hashtag';
+		hashtag.textContent = this.hashtagsList[i];
+		hashtagsList.appendChild(hashtag);
+		deleteButton.appendChild(cross);
+		hashtag.appendChild(deleteButton);
+
+		deleteButton.addEventListener('click', function(e){
+			this.untrackTag(e);
+		}.bind(this));
+	};
+
+	if(previousList != undefined){
+		console.log('previousList: ', previousList);
+		hashtagsBlock.replaceChild(hashtagsList, hashtagsBlock.lastChild);
+	}
+
+	return hashtagsList;
 }
 
 /**
@@ -349,6 +395,7 @@ MessagesColumn.prototype.addEvent = function(elementsToAddEventListener){
 	}.bind(this));
 }
 
+
 /**
  * Opens and closes the panel
  */
@@ -394,7 +441,6 @@ MessagesColumn.prototype.enableImages = function(){
 			allLinksImages[i].className = "tweet-link-image";
 		};
 	}
-	// this.displayAllMessages();
 }
 
 /**
@@ -408,12 +454,10 @@ MessagesColumn.prototype.switchListsOrHashtags = function(){
 	if(this.isListsOpen){
 		hashtagsBlock.style.display = "none";
 		twitterListsDOM.style.display = "block";
-		console.log('Opening this.twitterListsDOM : ', this.twitterListsDOM);
 	}
 	else{
 		hashtagsBlock.style.display = "block";
 		twitterListsDOM.style.display = "none";
-		console.log('CLosing this.twitterListsDOM : ', this.twitterListsDOM);
 	}
 }
 
@@ -431,23 +475,7 @@ MessagesColumn.prototype.addListToDisplay = function(){
 	console.log('Chosen list: ', chosenList);
 	for (var i = 0; i < this.twitterLists.length; i++) {
 		if(this.twitterLists[i].name === chosenList){
-			// for (var y = 0; y < this.MessagesDisplay.enabledListsList.length; y++) {
-			// 	if(this.MessagesDisplay.enabledListsList[y].columnId === this.id){
-			// 		alreadyAffected = true;
-			// 		this.MessagesDisplay.enabledListsList[y].slug = this.availableLists[i].slug;
-			// 	}
-			// }
-
-			// for (var y = 0; y < this.MessagesDisplay.columnsLayout.length; y++) {
-			// 	if(this.MessagesDisplay.columnsLayout[y].id === this.id){
-			// 		alreadyAffected = true;
-			// 		this.MessagesDisplay.columnsLayout[y].name = this.availableLists[i].name;
-			// 		this.MessagesDisplay.columnsLayout[y].type = 'list';
-			// 	}
-			// }
-
 			this.MessagesDisplay.useList(this.twitterLists[i].id, this.id);
-			// this.MessagesDisplay.addUsedListToTwitterLists(this.availableLists[i].slug);
 		}	
 	};
 
@@ -458,9 +486,6 @@ MessagesColumn.prototype.addListToDisplay = function(){
 	previousHeaderName.textContent = this.columnHeaderName;
 
 	this.openPanel();
-
-	// this.MessagesDisplay.updateListsToDisplay();
-	// this.MessagesDisplay.updateColumnsLayout();
 } 
 
 /**
@@ -540,20 +565,37 @@ MessagesColumn.prototype.deleteMessage = function(message){
  */
 MessagesColumn.prototype.trackTag = function(){
 	var tagObject = {};
-	console.log('hashtagTrackInput: ', this.hashtagTrackInput.value);
 	tagObject.tag = this.hashtagTrackInput.value;
-	tagObject.tag = tagObject.tag.toLowerCase();
 	this.hashtagTrackInput.value = "";
+	tagObject.tag = tagObject.tag.toLowerCase();
+	if(tagObject.tag.substring(0, 1) == '#'){
+		tagObject.tag = tagObject.tag.slice(1);
+	}
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
-	// console.log('Emitting, ', tagObject);
 	if(this.type != 'tracking'){
 		console.log('Update as it is first tracking')
 		this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
 	}
 	else{
-		this.MessagesDisplay.updateHashtagsColumnsLayout(this.id, tagObject.tag);
+		this.MessagesDisplay.addHashtag(this.id, tagObject.tag);
 	}
+}
+
+/**
+ * Delete hashtag from column
+ * @return {[type]} [description]
+ */
+MessagesColumn.prototype.untrackTag = function(e){
+	var tagObject = {};
+	console.log('Its parent content: ', e.target.parentNode.textContent);
+	tagObject.tag = e.target.parentNode.textContent;
+	tagObject.tag = tagObject.tag.toLowerCase();
+	if(tagObject.tag.substring(0, 1) == '#'){
+		tagObject.tag = tagObject.tag.slice(1);
+	}
+	tagObject.userId = userId;
+	this.MessagesDisplay.removeHashtag(this.id, tagObject.tag);
 }
 
 /**
