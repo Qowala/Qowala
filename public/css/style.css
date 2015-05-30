@@ -73,10 +73,9 @@ body {
     border-bottom: 1px solid #119955;
     content: " ";
     display: block;
-    left: 32px;
+    margin: 0 auto;
     padding-bottom: 30px;
-    position: relative;
-    width: 120px;
+    width: 70px;
 }
 
 #logo img{
@@ -91,7 +90,7 @@ body {
     padding: 30px 10px 10px;
     position: fixed;
     top: 0;
-    width: 172px;
+    width: 100px;
     z-index: 2;
 }
 
@@ -180,7 +179,7 @@ body {
     display: block;
     margin: 0 auto;
     padding-top: 20px;
-    width: 120px;
+    width: 70px;
 }
 
 input[type="text"].tagInput {
@@ -275,7 +274,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     border: none;
     color: #d18933;
     position: absolute;
-    left: 58px;
+    left: 20px;
     bottom: 80px;
     width: 80px;
     text-align: center;
@@ -299,8 +298,8 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 #tweets-columns-list {
     position: relative;
-    right: -192px;
-    width: calc(100% - 192px);
+    right: -120px;
+    width: calc(100% - 120px);
     padding: 0;
     display: inline-flex;
     margin-top: 0;
