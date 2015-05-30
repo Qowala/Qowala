@@ -235,7 +235,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding: 0;
 }
 
-.tweets-column-panel-list-hashtagsBlock h4 {
+.tweets-column-panel-list h4 {
     border-bottom: 1px solid white;
     color: #119955;
     margin: 1.33em auto;
@@ -491,6 +491,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets-column-panel-list-twitterLists-button {
+    margin-bottom: 17px;
     margin-left: 10px;
 }
 

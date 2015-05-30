@@ -175,8 +175,9 @@ MessagesColumn.prototype.generateColumn = function(){
 	
 	/** LISTS **/
 
+	
 	this.generateColumnTwitterLists();
-
+	
 	var listChoiceButton = document.createElement('button');
 	listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button classic-button';
 	listChoiceButton.textContent = "Display";
@@ -265,6 +266,10 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 	var twitterListsDOM = document.createElement('li');
 	twitterListsDOM.className = 'tweets-column-panel-list-twitterLists';
 
+	var listsBlockTitle = document.createElement('h4');
+	listsBlockTitle.textContent = "Choose list to display";
+	twitterListsDOM.appendChild(listsBlockTitle);
+
 	var listChoice = document.createElement('select');
 	listChoice.className = 'tweets-column-panel-list-twitterLists-select';
 
@@ -275,7 +280,7 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 	};
 
 	if(previousList != undefined){
-		previousList.replaceChild(listChoice, previousList.firstChild);
+		previousList.replaceChild(listChoice, previousList.childNodes[1]);
 	}
 	else{
 		twitterListsDOM.appendChild(listChoice);
