@@ -1,18 +1,28 @@
 Qowala live
 ===========
 
-Qowala live is a Twitter client that can track tweets with specified hashtags. You can get the frequency of each hashtags and the percentage of languages using the hashtags.
+Qowala live is an open source Twitter client to display your home timeline, your lists and tracked tweets with specified hashtags. 
 
-### Qowala live v0.3 functionalities:
+### Official instance:
 
-- Multi-client with Twitter authentication
+The official instance server is at : https://live.qowala.eu
+
+### Git repositories:
+
+They are two mirrored git repositories of the project:
+
+- Framasoft: https://git.framasoft.org/KillianKemps/Qowala-live
+- Github: https://github.com/KillianKemps/Qowala-live
+
+### Qowala live v1.0 functionalities:
+
+- One pod for several users
 - Display user's timeline
-- Display all user's lists
+- Display user's lists
 - Track tweets according hashtags
-- See tweets statistics : number of tweets per min and proportion of tweets languages
-- Stop and play the stream
+- Send tweets
 
-![Qowala live Screenshot](http://www.killiankemps.fr/data/images/screenshot_qowala-live_v0_3.png)
+![Qowala live Screenshot](http://www.killiankemps.fr/data/images/capture-d-ecran-2015-05-31-a-20.17.19.png)
 
 ### How to install Qowala live
 
@@ -20,12 +30,12 @@ Qowala live is a Twitter client that can track tweets with specified hashtags. Y
 
 - Give your application Read & Write permissions on Twitter Application Management Dashboard
 
-![Twitter App Manager](https://lut.im/qAlAvLX3/hYTfULdb)
+![Twitter App Manager](http://www.killiankemps.fr/data/images/qowala-live-twitter-settings.png)
 
 - For the callback URL in **config/twitter.json** you have to put the domain name where the app will be hosted and add to it '/auth/twitter/callback'.
 
 ##### Ubuntu 14.04 process:
-- Automatically: You can just launch the **KoalasLiveTweet_InstallationScript.sh**, it will do automatically what is below
+- Automatically: You can just launch the **Qowala-live_InstallationScript.sh**, it will do automatically what is below
 - Manually: Follow below instructions
 
 ###### Install NodeJS
