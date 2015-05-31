@@ -398,6 +398,13 @@ Message.prototype.processText = function(){
 
 		for (var i = 0; i < urls_indices.length; i++) {
 			var splittedText = tweetText.substring(urls_indices[i].indices[1]) + " ";
+			
+			splittedText = splittedText.replace(/&amp;/g, '&');
+			splittedText = splittedText.replace(/&gt;/g, '>');
+			splittedText = splittedText.replace(/&lt;/g, '<');
+			splittedText = splittedText.replace(/&quot;/g, '"');
+			splittedText = splittedText.replace(/&#39;/g, "'");
+
 		 	var firstPart = document.createTextNode(splittedText);	
 
 			if(urls_indices[i].indices[0] == 139){
