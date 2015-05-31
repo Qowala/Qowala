@@ -70,7 +70,7 @@ MainSidebar.prototype.openMessageEdition = function(){
 
 		this.messageEditionPanel.style.left = '-' + width +'px';
 		this.messageEditionPanel.style.width = width + 'px';
-		this.messageEditionPanel.style.left = 192 + 'px';
+		this.messageEditionPanel.style.left = 120 + 'px';
 
 	}
 	else{
