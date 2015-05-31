@@ -247,7 +247,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumn.appendChild(newTweetColumnPanel);
 	newTweetColumn.appendChild(newTweetColumnTweets);
 
-	console.log('Column ', this.id, 'generated');
+	console.log('Column ', this.id, ' generated');
 
 	this.columnHTML = newTweetColumn;
 	this.columnContentHTML = newTweetColumnTweets;
@@ -317,7 +317,7 @@ MessagesColumn.prototype.generateHashtagsList = function(){
 	};
 
 	if(previousList != undefined){
-		console.log('previousList: ', previousList);
+		// console.log('previousList: ', previousList);
 		hashtagsBlock.replaceChild(hashtagsList, hashtagsBlock.lastChild);
 	}
 
@@ -477,11 +477,11 @@ MessagesColumn.prototype.addListToDisplay = function(){
 
 	if(selectList.getAttribute('exist') === 'true'){
 		alreadyAffected = true;
-		console.log('already exist! ');
+		// console.log('already exist! ');
 	}
 
 
-	console.log('Chosen list: ', chosenList);
+	// console.log('Chosen list: ', chosenList);
 	for (var i = 0; i < this.twitterLists.length; i++) {
 		if(this.twitterLists[i].name === chosenList){
 			this.MessagesDisplay.useList(this.twitterLists[i].id, this.id);
@@ -583,7 +583,7 @@ MessagesColumn.prototype.trackTag = function(){
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
 	if(this.type != 'tracking'){
-		console.log('Update as it is first tracking')
+		// console.log('Update as it is first tracking')
 		this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
 	}
 	else{
@@ -597,7 +597,7 @@ MessagesColumn.prototype.trackTag = function(){
  */
 MessagesColumn.prototype.untrackTag = function(e){
 	var tagObject = {};
-	console.log('Its parent content: ', e.target.parentNode.textContent);
+	// console.log('Its parent content: ', e.target.parentNode.textContent);
 	tagObject.tag = e.target.parentNode.textContent;
 	tagObject.tag = tagObject.tag.toLowerCase();
 	if(tagObject.tag.substring(0, 1) == '#'){

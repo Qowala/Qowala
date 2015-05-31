@@ -52,7 +52,7 @@ MessagesDisplay.prototype.updateColumnsTwitterLists = function(){
 
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		this.messagesColumnsList[i].updateTwitterLists(availableLists);
-		console.log('updating twitterLists to ', this.messagesColumnsList[i]);
+		// console.log('updating twitterLists to ', this.messagesColumnsList[i]);
 	};	
 
 	return availableLists;
@@ -86,7 +86,7 @@ MessagesDisplay.prototype.addAllColumns = function(){
 			column.updateHashtagsList(this.columnsLayout[i].hashtags);
 			var generatedColumn = column.generateColumn();
 
-			console.log('Created: ', column);
+			// console.log('Created: ', column);
 
 			this.messagesColumnsHTML.appendChild(generatedColumn);
 		}
@@ -166,7 +166,7 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 		}
 	};
 
-	console.log('Setting up the column as hashtag');
+	// console.log('Setting up the column as hashtag');
 	this.updateListsToDisplay();
 	this.updateColumnsLayout();
 	this.updateColumnsTwitterLists();
@@ -199,7 +199,7 @@ MessagesDisplay.prototype.addHashtag = function(columnId, hashtag){
 			this.messagesColumnsList[i].updateHashtagsList(hashtagsArray);
 		}
 	};
-	console.log('Updating the column hashtag after adding');
+	// console.log('Updating the column hashtag after adding');
 	this.updateColumnsLayout();
 	this.updateTagsToDisplay();
 }
@@ -217,7 +217,7 @@ MessagesDisplay.prototype.removeHashtag = function(columnId, hashtag){
 			if(this.columnsLayout[y].hashtags.indexOf(hashtag)){
 				this.columnsLayout[y].hashtags.splice(this.columnsLayout[y].hashtags.indexOf(hashtag), 1);
 				hashtagsArray = this.columnsLayout[y].hashtags;
-				console.log('Updating the column hashtag after removing');
+				// console.log('Updating the column hashtag after removing');
 				this.updateColumnsLayout();
 				this.updateTagsToDisplay();
 				for (var y = 0; y < this.messagesColumnsList.length; y++) {
@@ -289,7 +289,7 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
 		};
 	}
 	else if(incoming.streamSource === 'lists'){
-		console.log('Got message from lists');
+		// console.log('Got message from lists');
 		for (var list in incoming.tweet) {
 			// console.log('Searching ', list, ' in ', this.columnsLayout);
 			for (var i = 0; i < this.columnsLayout.length; i++) {
@@ -322,7 +322,7 @@ MessagesDisplay.prototype.createBlankColumn = function(){
 	this.updateColumnsTwitterLists();
 	var generatedColumn = column.generateColumn();
 
-	console.log('Created: ', column);
+	// console.log('Created: ', column);
 
 	this.messagesColumnsHTML.appendChild(generatedColumn);
 }
@@ -348,7 +348,7 @@ MessagesDisplay.prototype.createUserColumn = function(){
 	if(!alreadyExist){
 		var column = new MessagesColumn(type, columnHeaderName, this);
 
-		console.log('Created: ', column);
+		// console.log('Created: ', column);
 
 		this.messagesColumnsList.push(column);
 		this.columnsLayout.push({
@@ -416,7 +416,7 @@ MessagesDisplay.prototype.addAllMessages = function(allMessages, id){
 	// console.log('Searching', id, ' in this.messagesColumnsList ', this.messagesColumnsList);
 	for (var y = 0; y < this.messagesColumnsList.length; y++) {
 		if(this.messagesColumnsList[y].id === id){
-			console.log('Found and gonna reset and display messages');
+			// console.log('Found and gonna reset and display messages');
 			// Reset the messages list before adding new ones
 			this.messagesColumnsList[y].messagesList = [];
 			for (var z = 0; z < allMessages.length; z++) {
@@ -479,7 +479,7 @@ MessagesDisplay.prototype.updateListsToDisplay = function(){
 		}
 	};
 	socket.emit('update lists request', listsToRequest);
-	console.log('emitting ', listsToRequest);
+	// console.log('emitting ', listsToRequest);
 	return listsToRequest;
 }
 
@@ -497,7 +497,7 @@ MessagesDisplay.prototype.updateTagsToDisplay = function(){
 		}
 	};
 	socket.emit('update tags request', tagsToRequest);
-	console.log('emitting ', tagsToRequest);
+	// console.log('emitting ', tagsToRequest);
 	return tagsToRequest;
 }
 

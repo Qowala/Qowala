@@ -52,7 +52,7 @@ var dashboard = (function (socket){
 		socket.on('connect', function () {
 			if(userId != undefined){
 				socket.emit('auth', userId);
-				console.log('Fires auth');
+				// console.log('Fires auth');
 			}
 		});
 
@@ -61,9 +61,9 @@ var dashboard = (function (socket){
 
 	var listen = function(){
 		socket.on('columnsLayout', function(columnsLayout){
-			console.log('Got columnsLayout : ', columnsLayout);
+			// console.log('Got columnsLayout : ', columnsLayout);
 			if(columnsLayout != ""){
-				console.log('Gonna process columnsLayout');
+				// console.log('Gonna process columnsLayout');
 				messagesDisplay.storeColumnsLayout(columnsLayout);
 				messagesDisplay.addAllColumns();
 			}
@@ -79,7 +79,7 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('home-timeline', function(timeline){
-			console.log('got home timeline');
+			// console.log('got home timeline');
 			var messagesToDisplay = messagesDisplay.addAllMessages(timeline, 'home');
 			if(messagesToDisplay != undefined){
 				messagesDisplay.displayAllMessages(messagesToDisplay);
@@ -91,12 +91,12 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('numberConnectedUsers', function(numberConnectedUsers){
-			console.log('Receive update message: ', numberConnectedUsers);
+			// console.log('Receive update message: ', numberConnectedUsers);
 			mainSidebar.updateNumberConnectedUsers(numberConnectedUsers);
 		});
 
 		socket.on('disconnect', function(){
-			console.log('Got disconnect');
+			console.log('Got disconnected');
 		})
 	}
 

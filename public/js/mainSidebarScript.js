@@ -57,7 +57,7 @@ MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers
 		koalaPlural.textContent = "s";
 	}
 
-	console.log('updating the number');
+	// console.log('updating the number');
 }
 
 /**

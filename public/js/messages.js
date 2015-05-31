@@ -193,7 +193,7 @@ Message.prototype.sendRetweet = function(){
 			socket.emit('retweet', this.id);
 			this.retweeted = true;
 			removeAllListeners();
-			console.log('Gonna send retweet with id: ', this.id);
+			// console.log('Gonna send retweet with id: ', this.id);
 			var popup = document.getElementById('tweetConfirmationPopup');
 			popup.style.display = 'none';
 			this.applyTweetStatus();
@@ -215,7 +215,7 @@ Message.prototype.applyTweetStatus = function(){
 		for (var i = 0; i < retweetButtons.length; i++) {
 			retweetButtons[i].removeAttribute("class");
 			retweetButtons[i].setAttribute('class', 'tweet-retweet-button-active');
-			console.log('Updated concerning retweet');
+			// console.log('Updated concerning retweet');
 		};
 	}
 	else{
@@ -223,7 +223,7 @@ Message.prototype.applyTweetStatus = function(){
 		for (var i = 0; i < retweetButtons.length; i++) {
 			retweetButtons[i].removeAttribute("class");
 			retweetButtons[i].setAttribute('class', 'tweet-retweet-button');
-			console.log('Updated concerning retweet');
+			// console.log('Updated concerning retweet');
 		};	
 	}
 }
@@ -311,7 +311,7 @@ Message.prototype.updateTime = function(test){
 	}
 
 	if(test){
-		console.log('Being recalled');
+		// console.log('Being recalled');
 	}
 
 	this.displayedDate = toBeDisplayed; 
@@ -482,7 +482,7 @@ Message.prototype.enlargeImage = function(){
 	var srcAttribute = this.image.getAttribute('src');
 	var src = srcAttribute.substring(0, srcAttribute.lastIndexOf(':'));
 	var size = srcAttribute.substring(srcAttribute.lastIndexOf(':'), srcAttribute.length);
-	console.log('size: ', size);
+	// console.log('size: ', size);
 	if(size == ':thumb'){
 		this.image.setAttribute('src', src + ':medium');
 		this.image.className += " tweet-image-extended";
@@ -498,11 +498,11 @@ Message.prototype.enlargeImage = function(){
 		// 20 is added because of the padding of the parent element
 		var halfWidth = width / 2 + 20;
 		var left = 'calc(50% - ' + halfWidth + 'px)';
-		console.log('left: ', left);
+		// console.log('left: ', left);
 		popup.style.left = left;
 		var halfHeight = height / 2 + 20;
 		var height = 'calc(50% - ' + halfHeight + 'px)';
-		console.log('height: ', height);
+		// console.log('height: ', height);
 		popup.style.top = height;
 		popup.style.display = 'block';
 
