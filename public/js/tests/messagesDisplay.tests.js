@@ -115,7 +115,7 @@ describe("messagesDisplay", function(){
 	});
 
 	describe("updateColumnsTwitterLists()", function(){
-		beforeEach(function() { 
+		beforeEach(function(){ 
 			this.messagesDisplay = new MessagesDisplay();
 			this.messagesDisplay.twitterLists = [
 				{id:'599583255113891841'},
@@ -151,6 +151,56 @@ describe("messagesDisplay", function(){
 	});
 
 	describe("removeHashtag()", function(){
+		beforeEach(function(){ 
+			this.messagesDisplay = new MessagesDisplay();
+			this.messagesDisplay.columnsLayout = [
+				{
+					id: 1,
+					hashtags: ['hashtag', 'anotherHashtag']
+				},
+				{
+					id: 2,
+				},
+			];
 
+			var column = new MessagesColumn(
+				1, 
+				'testColumn', 
+				'tracking', 
+				this.messagesDisplay
+			);
+			this.messagesDisplay.messagesColumnsList.push(column);
+			var columnTwo = new MessagesColumn(
+				2, 
+				'AnotherTestColumn', 
+				'list', 
+				this.messagesDisplay
+			);
+			this.messagesDisplay.messagesColumnsList.push(columnTwo);
+
+			this.messagesDisplay.updateColumnsLayout = function(){
+				console.log('Execute function updateColumnsLayout()');
+			}
+			this.messagesDisplay.updateTagsToDisplay = function(){
+				console.log('Execute function updateTagsToDisplay()');
+			}
+		});
+
+		it("should remove hashtag from columnsLayout", function(){
+			this.messagesDisplay.removeHashtag(1, 'hashtag');
+
+			expect(this.messagesDisplay.columnsLayout).toBeDefined();
+			expect(this.messagesDisplay.columnsLayout).not.toBe(null);
+			expect(this.messagesDisplay.columnsLayout).toEqual([
+				{
+					id: 1,
+					hashtags: ['anotherHashtag']
+				},
+				{
+					id: 2,
+				},
+			]);
+			
+		});
 	});
 });

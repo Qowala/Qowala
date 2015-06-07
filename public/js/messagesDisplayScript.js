@@ -212,9 +212,10 @@ MessagesDisplay.prototype.addHashtag = function(columnId, hashtag){
  */
 MessagesDisplay.prototype.removeHashtag = function(columnId, hashtag){
 	var hashtagsArray = [];
+	// console.log('Trying to remove hashtag ', hashtag);
 	for (var y = 0; y < this.columnsLayout.length; y++) {
 		if(this.columnsLayout[y].id === columnId){
-			if(this.columnsLayout[y].hashtags.indexOf(hashtag)){
+			if(this.columnsLayout[y].hashtags.indexOf(hashtag) != -1){
 				this.columnsLayout[y].hashtags.splice(this.columnsLayout[y].hashtags.indexOf(hashtag), 1);
 				hashtagsArray = this.columnsLayout[y].hashtags;
 				// console.log('Updating the column hashtag after removing');
@@ -228,7 +229,6 @@ MessagesDisplay.prototype.removeHashtag = function(columnId, hashtag){
 			}
 		}
 	};
-
 }
 
 /**
@@ -497,7 +497,7 @@ MessagesDisplay.prototype.updateTagsToDisplay = function(){
 		}
 	};
 	socket.emit('update tags request', tagsToRequest);
-	// console.log('emitting ', tagsToRequest);
+	console.log('emitting ', tagsToRequest);
 	return tagsToRequest;
 }
 
