@@ -150,6 +150,150 @@ describe("messagesDisplay", function(){
 
 	});
 
+	describe("createUserColumn()", function(){
+		beforeEach(function(){
+			this.messagesDisplay = new MessagesDisplay();
+			this.messagesDisplay.messagesColumnsHTML = document.createElement('div');
+			this.messagesDisplay.columnsLayout = [];
+
+			MessagesColumn.prototype.updateTwitterLists = function(){
+				console.log('Execute function updateTwitterLists()');
+			}
+			MessagesColumn.prototype.updateHashtagsList = function(){
+				console.log('Execute function updateHashtagsList()');
+			}
+		});
+
+		it("should create home timeline if does not exist", function(){
+			var homeColumnSample = new MessagesColumn(
+				'home',
+				'Home',
+				'home',
+				this.messagesDisplay
+			);
+			var messagesColumnsHTMLSample = document.createElement('div');
+
+			genHomeColumn = homeColumnSample.generateColumn();
+
+			messagesColumnsHTMLSample.appendChild(genHomeColumn);
+
+			this.messagesDisplay.createUserColumn()
+
+			expect(this.messagesDisplay.columnsLayout).toBeDefined();
+			expect(this.messagesDisplay.columnsLayout).not.toBe(null);
+			expect(this.messagesDisplay.columnsLayout).toEqual([
+				{
+					id: 'home',
+					name: 'Home',
+					type: 'home'
+				},
+			]);
+			expect(this.messagesDisplay.messagesColumnsHTML).toEqual(messagesColumnsHTMLSample);
+		});
+
+		it("should only generate home timeline if its only registered", function(){
+			this.messagesDisplay.columnsLayout = [
+				{
+					id: 'home',
+					name: 'Home',
+					type: 'home'
+				},
+			];
+			var homeColumnSample = new MessagesColumn(
+				'home',
+				'Home',
+				'home',
+				this.messagesDisplay
+			);
+			var messagesColumnsHTMLSample = document.createElement('div');
+
+			genHomeColumn = homeColumnSample.generateColumn();
+
+			messagesColumnsHTMLSample.appendChild(genHomeColumn);
+
+			this.messagesDisplay.createUserColumn()
+
+			expect(this.messagesDisplay.columnsLayout).toBeDefined();
+			expect(this.messagesDisplay.columnsLayout).not.toBe(null);
+			expect(this.messagesDisplay.columnsLayout).toEqual([
+				{
+					id: 'home',
+					name: 'Home',
+					type: 'home'
+				},
+			]);
+			expect(this.messagesDisplay.messagesColumnsHTML).toEqual(messagesColumnsHTMLSample);
+		});
+	});
+
+	describe("addAllColumns()", function(){
+		beforeEach(function(){
+			this.messagesDisplay = new MessagesDisplay();
+			this.messagesDisplay.messagesColumnsHTML = document.createElement('div');
+			this.messagesDisplay.columnsLayout = [
+				{
+					id: 1,
+					name: "Home",
+					type: "home"
+				},
+				{
+					id: 2,
+					name: "AnotherTestColumn",
+					type: "list"
+				},
+				{
+					id: 3,
+					name: "AnotherTestColumn",
+					hashtags: ['hashtag', 'anotherHashtag'],
+					type: "tracking"
+				},
+			];
+
+			MessagesColumn.prototype.updateTwitterLists = function(){
+				console.log('Execute function updateTwitterLists()');
+			}
+			MessagesColumn.prototype.updateHashtagsList = function(){
+				console.log('Execute function updateHashtagsList()');
+			}
+		});
+
+		it("should add all columns", function(){
+			var homeColumn = new MessagesColumn(
+				'home',
+				'Home',
+				'home',
+				this.messagesDisplay
+			);
+			var columnTwo = new MessagesColumn(
+				2,
+				'AnotherTestColumn',
+				'list',
+				this.messagesDisplay
+			);
+			var columnThree = new MessagesColumn(
+				3,
+				'AnotherTestColumn',
+				'tracking',
+				this.messagesDisplay
+			);
+			var messagesColumnsHTMLSample = document.createElement('div');
+
+			genHomeColumn = homeColumn.generateColumn();
+			genColumnTwo = columnTwo.generateColumn();
+			genColumnThree = columnThree.generateColumn();
+
+			messagesColumnsHTMLSample.appendChild(genHomeColumn);
+			messagesColumnsHTMLSample.appendChild(genColumnTwo);
+			messagesColumnsHTMLSample.appendChild(genColumnThree);
+
+			this.messagesDisplay.addAllColumns();
+
+			expect(this.messagesDisplay.messagesColumnsHTML).toBeDefined();
+			expect(this.messagesDisplay.messagesColumnsHTML).not.toBe(null);
+			expect(this.messagesDisplay.messagesColumnsHTML).toEqual(messagesColumnsHTMLSample);
+		});
+	});
+
 	describe("removeHashtag()", function(){
 		beforeEach(function(){ 
 			this.messagesDisplay = new MessagesDisplay();

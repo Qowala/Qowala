@@ -76,7 +76,13 @@ MessagesDisplay.prototype.addAllColumns = function(){
 	
 	for (var i = 0; i < this.columnsLayout.length; i++) {
 		if(this.columnsLayout[i].type != 'home'){
-			this.columnsId++;
+			if(this.columnsId < this.columnsLayout[i].id){
+				this.columnsId = this.columnsLayout[i].id;
+			}
+			else{
+				this.columnsId++;
+			}
+
 			var column = new MessagesColumn(this.columnsLayout[i].id , 
 											this.columnsLayout[i].name, 
 											this.columnsLayout[i].type, 
@@ -338,31 +344,35 @@ MessagesDisplay.prototype.createUserColumn = function(){
 	var type = 'home';
 
 
-	var alreadyExist = false;
+	var alreadyRegistered = false;
 	for (var i = 0; i < this.columnsLayout.length; i++) {
 		if(this.columnsLayout[i].type === type){
-			alreadyExist = true;
+			alreadyRegistered = true;
 		}
 	};
 
-	if(!alreadyExist){
-		var column = new MessagesColumn(type, columnHeaderName, this);
+	var column = new MessagesColumn(type, columnHeaderName, type, this);
+	if(!alreadyRegistered){
 
 		// console.log('Created: ', column);
 
-		this.messagesColumnsList.push(column);
 		this.columnsLayout.push({
-			id: column.id,
+			id: type,
 			name: columnHeaderName,
 			type: type
 		});
 	}
-	else{
-		for (var i = 0; i < this.messagesColumnsList.length; i++) {
-			if(this.messagesColumnsList[i].type = type){
-				var column = this.messagesColumnsList[i];
-			}
-		};
+
+	var alreadyExist = false;
+	for (var i = 0; i < this.messagesColumnsList.length; i++) {
+		if(this.messagesColumnsList[i].type === type){
+			var alreadyExist = true;
+			var column = this.messagesColumnsList[i];
+		}
+	};
+
+	if(!alreadyExist){
+		this.messagesColumnsList.push(column);
 	}
 
 	var generatedColumn = column.generateColumn();
