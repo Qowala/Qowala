@@ -390,6 +390,19 @@ Message.prototype.processText = function(){
 		return  b.indices[0] - a.indices[0];
 	}
 
+	/**
+	 * Search for escaped special characters and transform them
+	 * @param {String} text Unescaped text
+	 */
+	function unescapeHTML(text){
+		text = text.replace(/&amp;/g, '&');
+		text = text.replace(/&gt;/g, '>');
+		text = text.replace(/&lt;/g, '<');
+		text = text.replace(/&quot;/g, '"');
+		text = text.replace(/&#39;/g, "'");
+		return text;
+	}
+
 	// Sort the indices from bigger to smaller
 	urls_indices.sort(compareIndicesInversed);
 
@@ -399,11 +412,7 @@ Message.prototype.processText = function(){
 		for (var i = 0; i < urls_indices.length; i++) {
 			var splittedText = tweetText.substring(urls_indices[i].indices[1]) + " ";
 			
-			splittedText = splittedText.replace(/&amp;/g, '&');
-			splittedText = splittedText.replace(/&gt;/g, '>');
-			splittedText = splittedText.replace(/&lt;/g, '<');
-			splittedText = splittedText.replace(/&quot;/g, '"');
-			splittedText = splittedText.replace(/&#39;/g, "'");
+			splittedText = unescapeHTML(splittedText);
 
 		 	var firstPart = document.createTextNode(splittedText);	
 
@@ -462,12 +471,14 @@ Message.prototype.processText = function(){
 
 		 	if(i == urls_indices.length - 1){
 				splittedText = tweetText.substring(0, urls_indices[i].indices[0]);
+				splittedText = unescapeHTML(splittedText);
 		 		var firstPart = document.createTextNode(splittedText);
 		 		parsedText.insertBefore(firstPart, parsedText.firstChild);
 		 	}
 		};
 	}
 	else {
+		tweetText = unescapeHTML(tweetText);
  		var firstPart = document.createTextNode(tweetText);
  		parsedText.appendChild(firstPart);
 	}
