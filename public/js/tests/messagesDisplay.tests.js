@@ -65,7 +65,8 @@ describe("messagesDisplay", function(){
 				id: 6,
 				name: 'TestName',
 				type: 'list', 
-				listId: '599583255113891841'
+				listId: '599583255113891841',
+				hashtags: []
 			}]));
 		});
 
@@ -106,7 +107,8 @@ describe("messagesDisplay", function(){
 					id: 6,
 					name: 'TestName',
 					type: 'list', 
-					listId: '599583255113891841'
+					listId: '599583255113891841',
+					hashtags: []
 				}
 			]);
 		});
@@ -145,6 +147,10 @@ describe("messagesDisplay", function(){
 				{id:'599583255113891842'}
 			]);
 		});
+
+	});
+
+	describe("removeHashtag()", function(){
 
 	});
 });
