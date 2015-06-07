@@ -583,7 +583,7 @@ MessagesColumn.prototype.trackTag = function(){
 	tagObject.userId = userId;
 	socket.emit('add tag', tagObject);
 	if(this.type != 'tracking'){
-		console.log('Update as it is first tracking')
+		// console.log('Update as it is first tracking')
 		this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
 	}
 	else{
@@ -597,7 +597,7 @@ MessagesColumn.prototype.trackTag = function(){
  */
 MessagesColumn.prototype.untrackTag = function(e){
 	var tagObject = {};
-	console.log('Its parent content: ', e.target.parentNode.textContent);
+	// console.log('Its parent content: ', e.target.parentNode.textContent);
 	tagObject.tag = e.target.parentNode.textContent;
 	tagObject.tag = tagObject.tag.toLowerCase();
 	if(tagObject.tag.substring(0, 1) == '#'){
