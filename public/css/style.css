@@ -110,16 +110,16 @@ body {
 
 #buttonAddColumn .fa.fa-columns {
     bottom: 8px;
-    font-size: 0.7em;
+    font-size: 0.95em;
     left: 10px;
     position: absolute;
 }
 
 #buttonAddColumn .fa.fa-plus {
-    font-size: 0.5em;
+    font-size: 0.3em;
     position: absolute;
-    right: 5px;
-    top: 6px;
+    right: 13px;
+    top: 22px;
 }
 
 #messageEditionPanel{
