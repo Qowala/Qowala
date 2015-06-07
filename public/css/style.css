@@ -244,12 +244,15 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweets-column-panel-list-hashtagsList .hashtag {
     background-color: #119955;
     border-radius: 15px;
+    display: inline-block;
     list-style-type: none;
     margin: 10px auto;
     min-height: 20px;
-    padding: 4px 0 5px 5px;
+    padding: 4px 8px 5px;
     text-align: center;
-    width: 100px;
+    min-width: 120px;
+    max-width: 90%;
+    word-wrap: break-word;
 }
 
 .hashtag-delete-button {
