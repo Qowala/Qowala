@@ -53,11 +53,11 @@ They are two mirrored git repositories of the project:
     npm install
     
 ###### Run the app
-    nodejs app.js
+    nodejs server.js
 
 ##### Production mode
     sudo npm install -g forever
-    forever -l forever.log -ao stdout.log -e stderr.log start app.js
+    forever -l forever.log -ao stdout.log -e stderr.log start server.js
     
 *NodeJS installation process inspired by Digital Ocean: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server*
 
@@ -77,7 +77,7 @@ Then run
     vagrant ssh
     cd /vagrant/
     npm install
-    node app.js
+    node server.js
     
 You will then be able to access the client in your browser at **http://192.168.12.34:8080/**
 
