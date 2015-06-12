@@ -1,7 +1,9 @@
 Qowala live
 ===========
 
-Qowala live is an open source Twitter client to display your home timeline, your lists and tracked tweets with specified hashtags. 
+Qowala live is an open source Twitter client that wishes to give you control on your usage of social networks.
+
+Created and coded by Killian Kemps and designed by Adrien Touminet.
 
 ### Official instance:
 
@@ -19,8 +21,9 @@ They are two mirrored git repositories of the project:
 - One pod for several users
 - Display user's timeline
 - Display user's lists
-- Track tweets according hashtags
+- Track tweets by hashtags
 - Send tweets
+- Retweet tweets
 
 ![Qowala live Screenshot](http://www.killiankemps.fr/data/images/capture-d-ecran-2015-05-31-a-20.17.19.png)
 
