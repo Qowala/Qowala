@@ -429,9 +429,9 @@ MessagesDisplay.prototype.addAllMessages = function(allMessages, id){
 			// console.log('Found and gonna reset and display messages');
 			// Reset the messages list before adding new ones
 			this.messagesColumnsList[y].messagesList = [];
-			for (var z = 0; z < allMessages.length; z++) {
-				this.messagesColumnsList[y].addMessage(allMessages[z], allMessages);
-			}
+			for (var i = allMessages.length - 1; i >= 0; i--) {
+				this.messagesColumnsList[y].addMessage(allMessages[i], allMessages);
+			};
 			return {streamSource: this.messagesColumnsList[y].id};
 		}
 	}
@@ -467,8 +467,9 @@ MessagesDisplay.prototype.displayAllMessages = function(message){
  */
 MessagesDisplay.prototype.deleteMessage = function(message){
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
-		if(this.messagesColumnsList[i].id == message.streamSource){
+		if(this.messagesColumnsList[i].type !== 'list'){
 			this.messagesColumnsList[i].deleteMessage(message);
+			console.log('Column where to delete found');
 		}
 	};
 }

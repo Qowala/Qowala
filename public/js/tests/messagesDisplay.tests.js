@@ -347,4 +347,100 @@ describe("messagesDisplay", function(){
 			
 		});
 	});
+
+	describe("deleteMessage()", function(){
+		beforeEach(function(){
+			this.messagesDisplay = new MessagesDisplay();
+			this.messagesDisplay.messagesColumnsList = [];
+		});
+
+		it("should delete the message from the User MessagesColumnList",
+			function(){
+
+			var column = new MessagesColumn(
+				'home',
+				'Home',
+				'user',
+				this.messagesDisplay
+			);
+			column.messagesList = [{id_str: '599583255113891843'}];
+			this.messagesDisplay.messagesColumnsList.push(column);
+			this.messagesDisplay.messagesColumnsList[0]
+				.columnContentHTML = document.createElement('div');
+
+			this.messagesDisplay.deleteMessage({
+				streamSource: 'home',
+				tweet: {
+					delete: {
+						status: {
+							id_str: '599583255113891843'
+						}
+					}
+				}
+			});
+
+			expect(this.messagesDisplay.messagesColumnsList[0].messagesList)
+				.toEqual([]);
+
+		});
+
+		it("should delete the message from the tracking MessagesColumnList",
+			function(){
+
+			var column = new MessagesColumn(
+				2,
+				'Hashtag',
+				'tracking',
+				this.messagesDisplay
+			);
+
+			column.addMessage({
+				id_str: '599583255113891841',
+				user: 'John',
+				entities: {},
+			},
+			'tracking', false);
+			column.addMessage({
+				id_str: '599583255113891842',
+				user: 'John',
+				entities: {},
+			},
+			'tracking', false);
+			column.addMessage({
+				id_str: '599583255113891843',
+				user: 'John',
+				entities: {},
+			},
+			'tracking', false);
+
+			var stateBeforeDeletion = column.messagesList;
+
+			this.messagesDisplay.messagesColumnsList.push(column);
+			this.messagesDisplay.messagesColumnsList[0]
+				.columnContentHTML = document.createElement('div');
+
+			expect(stateBeforeDeletion.length).toEqual(3);
+
+			this.messagesDisplay.deleteMessage({
+				streamSource: 'tracking',
+				tweet: {
+					delete: {
+						status: {
+							id_str: '599583255113891842'
+						}
+					}
+				}
+			});
+
+			expect(stateBeforeDeletion.length).toEqual(2);
+			expect(this.messagesDisplay.messagesColumnsList[0].messagesList)
+				.toEqual(
+				[
+					stateBeforeDeletion[0],
+					stateBeforeDeletion[1]
+				]
+			);
+			expect(stateBeforeDeletion[0]).not.toEqual(stateBeforeDeletion[1]);
+		});
+	});
 });

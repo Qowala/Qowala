@@ -520,7 +520,7 @@ MessagesColumn.prototype.addMessage = function(message, streamSource){
  */
 MessagesColumn.prototype.displayAllMessages = function(){
 	this.columnContentHTML.innerHTML = "";
-	for (var i = this.messagesList.length -1; i >= 0; i--) {
+	for (var i = 0; i < this.messagesList.length; i++) {
 		var newTweet = this.messagesList[i].generateMessage();
 
 		this.columnContentHTML.appendChild(newTweet);
