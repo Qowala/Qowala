@@ -71,6 +71,7 @@ MessagesDisplay.prototype.storeColumnsLayout = function(columnsLayout){
  */
 MessagesDisplay.prototype.addAllColumns = function(){
 	this.messagesColumnsHTML.innerHTML = "";
+	this.messagesColumnsList = [];
 
 	this.createUserColumn();
 	
