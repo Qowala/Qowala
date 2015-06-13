@@ -8,7 +8,8 @@
 
 /**
  * MessageDisplay's class
- * @param {Object} columnsListHTML   Reference to the HTML container for all the columns
+ * @param {Object} columnsListHTML   Reference to the HTML container
+ *                                   for all the columns
  */
 function MessagesDisplay(columnsListHTML){
 	this.columnsId = 0;
@@ -52,7 +53,6 @@ MessagesDisplay.prototype.updateColumnsTwitterLists = function(){
 
 	for (var i = 0; i < this.messagesColumnsList.length; i++) {
 		this.messagesColumnsList[i].updateTwitterLists(availableLists);
-		// console.log('updating twitterLists to ', this.messagesColumnsList[i]);
 	};	
 
 	return availableLists;
@@ -64,6 +64,61 @@ MessagesDisplay.prototype.updateColumnsTwitterLists = function(){
  */
 MessagesDisplay.prototype.storeColumnsLayout = function(columnsLayout){
 	this.columnsLayout = columnsLayout;
+}
+
+/**
+ * Process incoming message and directs to the corresponding logic
+ * @param  {Object} incoming [description]
+ * @return {[type]}          [description]
+ */
+MessagesDisplay.prototype.processIncoming = function(incoming){
+	if (incoming.streamSource === 'user' ) {
+		var messageToDisplay = this.addOneMessage(incoming.tweet, 'home');
+		if(messageToDisplay !== undefined){
+			this.displayOneMessage(messageToDisplay);
+		}
+	}
+	else if (incoming.streamSource === 'tracking') {
+		for (var i = 0; i < this.columnsLayout.length; i++) {
+			if(this.columnsLayout[i].type === 'tracking') {
+				for (var z = 0; z < incoming.updatedTags.length; z++) {
+					var hashtags = this.columnsLayout[i].hashtags;
+					if (hashtags.indexOf(incoming.updatedTags[z]) !== -1) {
+						var messageToDisplay = this.addOneMessage(
+							incoming.tweet,
+							this.columnsLayout[i].id
+						);
+						if(messageToDisplay !== undefined){
+							this.displayOneMessage(messageToDisplay);
+						}
+					}
+				};
+			}
+		};
+	}
+	else if (incoming.streamSource === 'lists') {
+		// console.log('Got message from lists');
+		for (var list in incoming.tweet) {
+			// console.log('Searching ', list, ' in ', this.columnsLayout);
+			for (var i = 0; i < this.columnsLayout.length; i++) {
+				if(this.columnsLayout[i].listId) {
+					var listId = this.columnsLayout[i].listId.toString();
+				}
+				else {
+					var listId = null;
+				}
+				if(listId === list){
+					var messagesToDisplay = this.addAllMessages(
+						incoming.tweet[list],
+						this.columnsLayout[i].id
+					);
+					if(messagesToDisplay !== undefined){
+						this.displayAllMessages(messagesToDisplay);
+					}
+				}
+			}
+		}
+	}
 }
 
 /**
@@ -120,7 +175,9 @@ MessagesDisplay.prototype.useList = function(twitterListId, columnId){
 						for (var z = 0; z < this.messagesColumnsList.length; z++) {
 							if(this.messagesColumnsList[z].id === columnId){
 								this.messagesColumnsList[z].type = 'list';
-								this.messagesColumnsList[z].updateHashtagsList(this.columnsLayout[y].hashtags);
+								this.messagesColumnsList[z].updateHashtagsList(
+									this.columnsLayout[y].hashtags
+								);
 							}
 						};
 						break loop;
@@ -264,51 +321,6 @@ MessagesDisplay.prototype.deleteColumn = function(columnId){
 	this.updateTagsToDisplay();
 
 	console.log('Column ' + columnId + ' deleted from columnsLayout: ', this.columnsLayout);
-}
-
-/**
- * Process incoming message and directs to the corresponding logic
- * @param  {Object} incoming [description]
- * @return {[type]}          [description]
- */
-MessagesDisplay.prototype.processIncoming = function(incoming){
-	if(incoming.streamSource === 'user' ){
-		var messageToDisplay = this.addOneMessage(incoming.tweet, 'home');
-		if(messageToDisplay != undefined){
-			this.displayOneMessage(messageToDisplay);
-		}
-	}
-	else if(incoming.streamSource === 'tracking'){
-		for (var i = 0; i < this.columnsLayout.length; i++) {
-			if(this.columnsLayout[i].type === 'tracking'){
-				for (var y = 0; y < this.columnsLayout[i].hashtags.length; y++) {
-					for (var z = 0; z < incoming.updatedTags.length; z++) {
-						if(this.columnsLayout[i].hashtags[y] == incoming.updatedTags[z]){
-							var messageToDisplay = this.addOneMessage(incoming.tweet, this.columnsLayout[i].id);
-							if(messageToDisplay != undefined){
-								this.displayOneMessage(messageToDisplay);
-							}		
-						}
-					};
-				};
-				
-			}
-		};
-	}
-	else if(incoming.streamSource === 'lists'){
-		// console.log('Got message from lists');
-		for (var list in incoming.tweet) {
-			// console.log('Searching ', list, ' in ', this.columnsLayout);
-			for (var i = 0; i < this.columnsLayout.length; i++) {
-				if(this.columnsLayout[i].listId == list){
-					var messagesToDisplay = this.addAllMessages(incoming.tweet[list], this.columnsLayout[i].id);
-					if(messagesToDisplay != undefined){
-						this.displayAllMessages(messagesToDisplay);
-					}
-				}
-			}
-		}
-	}
 }
 
 /**
