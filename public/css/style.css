@@ -244,14 +244,13 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweets-column-panel-list-hashtagsList .hashtag {
     background-color: #119955;
     border-radius: 15px;
-    display: inline-block;
+    display: block;
     list-style-type: none;
     margin: 10px auto;
     min-height: 20px;
     padding: 4px 8px 5px;
     text-align: center;
-    min-width: 120px;
-    max-width: 90%;
+    max-width: 60%;
     word-wrap: break-word;
 }
 
