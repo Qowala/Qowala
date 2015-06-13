@@ -21,6 +21,7 @@ function Message(message, streamSource, areImagesEnabled){
 	this.friendlyDate = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;
 	this.dateHTML = null;
 	this.text = document.createTextNode('p');
+	this.hasBeenTextAlreadyProcessed = false;
 	this.text.textContent = message.retweeted_status ? message.retweeted_status.text : message.text;
 	this.profilePicture = message.retweeted_status ? message.retweeted_status.user.profile_image_url_https : message.user.profile_image_url_https;
 	this.streamSource = streamSource
@@ -323,167 +324,178 @@ Message.prototype.updateTime = function(test){
  * @return {[type]} [description]
  */
 Message.prototype.processText = function(){
+	if(!this.hasBeenTextAlreadyProcessed){
+		// Array where to store all URLs of the tweet
+		var urls_indices = [];
 
-	// Array where to store all URLs of the tweet
-	var urls_indices = [];
+		// Copy of the original text
+		var tweetText = this.text.textContent;
 
-	// Copy of the original text
-	var tweetText = this.text.textContent;
-
-	// Parse all URLs from the Tweet object to be sort in a array
-	if(this.urls) {
-		for (var i = 0; i < this.urls.length; i++) {
-			var urlIndice = {
-				expanded_url: this.urls[i].expanded_url, 
-				url: this.urls[i].url, 
-				indices: this.urls[i].indices,
-				media: false
-			};
-			urls_indices.push(urlIndice);		
+		// Parse all URLs from the Tweet object to be sort in a array
+		if(this.urls) {
+			for (var i = 0; i < this.urls.length; i++) {
+				var urlIndice = {
+					expanded_url: this.urls[i].expanded_url,
+					url: this.urls[i].url,
+					indices: this.urls[i].indices,
+					media: false
+				};
+				urls_indices.push(urlIndice);
+			}
 		}
-	}
-	// Parse all media URLs from the Tweet object to be sort in a array
-	if(this.medias) {
-		for (var i = 0; i < this.medias.length; i++) {
-			var urlIndice = {
-				expanded_url: this.medias[i].expanded_url, 
-				media_url: this.medias[i].media_url_https, 
-				url: this.medias[i].url, 
-				indices: this.medias[i].indices,
-				largeSize: this.medias[i].sizes.large,
-				media: true
+		// Parse all media URLs from the Tweet object to be sort in a array
+		if(this.medias) {
+			for (var i = 0; i < this.medias.length; i++) {
+				var urlIndice = {
+					expanded_url: this.medias[i].expanded_url,
+					media_url: this.medias[i].media_url_https,
+					url: this.medias[i].url,
+					indices: this.medias[i].indices,
+					largeSize: this.medias[i].sizes.large,
+					media: true
+				};
+				urls_indices.push(urlIndice);
 			};
-			urls_indices.push(urlIndice);
-		}; 
-	}
+		}
 
-	if(this.hashtags) {
-		for (var i = 0; i < this.hashtags.length; i++) {
-			var urlIndice = {
-				url: 'https://twitter.com/hashtag/' + this.hashtags[i].text, 
-				text: '#' + this.hashtags[i].text, 
-				indices: this.hashtags[i].indices,
-				hashtag: true
+		if(this.hashtags) {
+			for (var i = 0; i < this.hashtags.length; i++) {
+				var urlIndice = {
+					url: 'https://twitter.com/hashtag/' + this.hashtags[i].text,
+					text: '#' + this.hashtags[i].text,
+					indices: this.hashtags[i].indices,
+					hashtag: true
+				};
+				urls_indices.push(urlIndice);
 			};
-			urls_indices.push(urlIndice);
-		}; 
-	}
+		}
 
-	if(this.user_mentions) {
-		for (var i = 0; i < this.user_mentions.length; i++) {
-			var urlIndice = {
-				url: 'https://twitter.com/' + this.user_mentions[i].screen_name, 
-				text: '@' + this.user_mentions[i].screen_name, 
-				indices: this.user_mentions[i].indices,
-				user_mentions: true
+		if(this.user_mentions) {
+			for (var i = 0; i < this.user_mentions.length; i++) {
+				var urlIndice = {
+					url: 'https://twitter.com/' + this.user_mentions[i].screen_name,
+					text: '@' + this.user_mentions[i].screen_name,
+					indices: this.user_mentions[i].indices,
+					user_mentions: true
+				};
+				urls_indices.push(urlIndice);
 			};
-			urls_indices.push(urlIndice);
-		}; 
-	}
-	/**
-	 * Compare the indices from bigger to smaller
-	 * @param  {Array} a [Indices of first element]
-	 * @param  {Array} b [Indices of first element]
-	 * @return {Integer}   [Comparison result]
-	 */
-	function compareIndicesInversed(a, b){
-		return  b.indices[0] - a.indices[0];
-	}
+		}
+		/**
+		 * Compare the indices from bigger to smaller
+		 * @param  {Array} a [Indices of first element]
+		 * @param  {Array} b [Indices of first element]
+		 * @return {Integer}   [Comparison result]
+		 */
+		function compareIndicesInversed(a, b){
+			return  b.indices[0] - a.indices[0];
+		}
 
-	/**
-	 * Search for escaped special characters and transform them
-	 * @param {String} text Unescaped text
-	 */
-	function unescapeHTML(text){
-		text = text.replace(/&amp;/g, '&');
-		text = text.replace(/&gt;/g, '>');
-		text = text.replace(/&lt;/g, '<');
-		text = text.replace(/&quot;/g, '"');
-		text = text.replace(/&#39;/g, "'");
-		return text;
-	}
+		/**
+		 * Search for escaped special characters and transform them
+		 * @param {String} text Unescaped text
+		 */
+		function unescapeHTML(text){
+			text = text.replace(/&amp;/g, '&');
+			text = text.replace(/&gt;/g, '>');
+			text = text.replace(/&lt;/g, '<');
+			text = text.replace(/&quot;/g, '"');
+			text = text.replace(/&#39;/g, "'");
+			return text;
+		}
 
-	// Sort the indices from bigger to smaller
-	urls_indices.sort(compareIndicesInversed);
+		// Sort the indices from bigger to smaller
+		urls_indices.sort(compareIndicesInversed);
 
-	var parsedText = document.createElement('p');
-	if(urls_indices[0]){
+		var parsedText = document.createElement('p');
+		if(urls_indices[0]){
 
-		for (var i = 0; i < urls_indices.length; i++) {
-			var splittedText = tweetText.substring(urls_indices[i].indices[1]) + " ";
-			
-			splittedText = unescapeHTML(splittedText);
+			for (var i = 0; i < urls_indices.length; i++) {
+				var splittedText = tweetText
+					.substring(urls_indices[i].indices[1]) + " ";
 
-		 	var firstPart = document.createTextNode(splittedText);	
+				splittedText = unescapeHTML(splittedText);
 
-			if(urls_indices[i].indices[0] == 139){
-				tweetText = tweetText.substring(0, tweetText.lastIndexOf(' ') + 1);
-			}
-			else{
-				tweetText = tweetText.substring(0, urls_indices[i].indices[0]);
-			}
+				var firstPart = document.createTextNode(splittedText);
 
-			var link = document.createElement('a');
-		 	link.setAttribute('target', "_blank");
-		 	link.className = 'tweet-url';
-
-		 	if(urls_indices[i].hashtag || urls_indices[i].user_mentions){
-			 	link.setAttribute('href', urls_indices[i].url);
-			 	link.textContent = urls_indices[i].text;
-		 	}
-		 	else{
-				if(urls_indices[i].expanded_url.length > 35){
-					var displayUrl = urls_indices[i].expanded_url.slice(0, 32);
-					displayUrl += '...';
-				}
-				else {
-					var displayUrl = urls_indices[i].expanded_url;
-				}
-			 	link.setAttribute('href', urls_indices[i].expanded_url);
-			 	link.textContent = displayUrl;
-		 	}
-
-			if(urls_indices[i].media){
-				var image = document.createElement('img');
-				image.setAttribute('src', urls_indices[i].media_url + ':thumb');
-				image.setAttribute('fullsize', urls_indices[i].largeSize.h + '/' + urls_indices[i].largeSize.w);
-
-				if(this.areImagesEnabled){
-					image.className = "tweet-image";
-			 		link.className = "tweet-link-image-none";
+				if(urls_indices[i].indices[0] == 139){
+					tweetText = tweetText
+						.substring(0, tweetText.lastIndexOf(' ') + 1);
 				}
 				else{
-					image.className = "tweet-image-none";
-		 			link.className = "tweet-link-image";
+					tweetText = tweetText
+						.substring(0, urls_indices[i].indices[0]);
 				}
 
-				// Put an event to enlarge the image
-		 		image.addEventListener('click', function(){
-		 			this.enlargeImage();
-		 		}.bind(this), false);
+				var link = document.createElement('a');
+				link.setAttribute('target', "_blank");
+				link.className = 'tweet-url';
 
-		 		this.image = image;
-		 		parsedText.appendChild(image);
-			}
-		 	
-		 	parsedText.insertBefore(firstPart, parsedText.firstChild);
-	 		parsedText.insertBefore(link, parsedText.firstChild);
+				if(urls_indices[i].hashtag || urls_indices[i].user_mentions){
+					link.setAttribute('href', urls_indices[i].url);
+					link.textContent = urls_indices[i].text;
+				}
+				else{
+					if(urls_indices[i].expanded_url.length > 35){
+						var displayUrl = urls_indices[i].expanded_url
+							.slice(0, 32);
+						displayUrl += '...';
+					}
+					else {
+						var displayUrl = urls_indices[i].expanded_url;
+					}
+					link.setAttribute('href', urls_indices[i].expanded_url);
+					link.textContent = displayUrl;
+				}
 
-		 	if(i == urls_indices.length - 1){
-				splittedText = tweetText.substring(0, urls_indices[i].indices[0]);
-				splittedText = unescapeHTML(splittedText);
-		 		var firstPart = document.createTextNode(splittedText);
-		 		parsedText.insertBefore(firstPart, parsedText.firstChild);
-		 	}
-		};
+				if(urls_indices[i].media){
+					var image = document.createElement('img');
+					image.setAttribute('src',
+						urls_indices[i].media_url + ':thumb');
+					image.setAttribute('fullsize',
+						urls_indices[i].largeSize.h +
+						'/' +
+						urls_indices[i].largeSize.w);
+
+					if(this.areImagesEnabled){
+						image.className = "tweet-image";
+						link.className = "tweet-link-image-none";
+					}
+					else{
+						image.className = "tweet-image-none";
+						link.className = "tweet-link-image";
+					}
+
+					// Put an event to enlarge the image
+					image.addEventListener('click', function(){
+						this.enlargeImage();
+					}.bind(this), false);
+
+					this.image = image;
+					parsedText.appendChild(image);
+				}
+
+				parsedText.insertBefore(firstPart, parsedText.firstChild);
+				parsedText.insertBefore(link, parsedText.firstChild);
+
+				if(i == urls_indices.length - 1){
+					splittedText = tweetText.substring(0,
+						urls_indices[i].indices[0]);
+					splittedText = unescapeHTML(splittedText);
+					var firstPart = document.createTextNode(splittedText);
+					parsedText.insertBefore(firstPart, parsedText.firstChild);
+				}
+			};
+		}
+		else {
+			tweetText = unescapeHTML(tweetText);
+			var firstPart = document.createTextNode(tweetText);
+			parsedText.appendChild(firstPart);
+		}
+
+		this.text = parsedText;
+		this.hasBeenTextAlreadyProcessed = true;
 	}
-	else {
-		tweetText = unescapeHTML(tweetText);
- 		var firstPart = document.createTextNode(tweetText);
- 		parsedText.appendChild(firstPart);
-	}
-
-	this.text = parsedText;
 }
 
 /**
