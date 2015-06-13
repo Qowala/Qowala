@@ -24,5 +24,8 @@
     "karma-chai": "^0.1.0",
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.5"
+  },
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run"
   }
 }
