@@ -12,7 +12,7 @@
  * @param {String} profilePicture  URL to user's profile picture
  */
 function Message(message, streamSource, areImagesEnabled){
-	this.id = message.retweeted_status ? message.retweeted_status.id_str : message.id_str;
+	this.id_str = message.retweeted_status ? message.retweeted_status.id_str : message.id_str;
 	this.retweeterAuthorUsername = message.user.name;
 	this.authorUsername = message.retweeted_status ? message.retweeted_status.user.screen_name : message.user.screen_name;
 	this.authorPseudonym = message.retweeted_status ? message.retweeted_status.user.name : message.user.name;
@@ -53,7 +53,7 @@ Message.prototype.generateMessage = function(){
 
 	var newTweet = document.createElement('li');
 	// Be careful to change it to id_str when it will be updated
-	newTweet.setAttribute('name', 'tweet-' + this.id);
+	newTweet.setAttribute('name', 'tweet-' + this.id_str);
 
 	if(this.isRetweet){
 		var newUserRetweeter = document.createElement('p');
@@ -94,7 +94,7 @@ Message.prototype.generateMessage = function(){
 	newContent.setAttribute('class', 'tweet-text');
 
 	var newRetweetButton = document.createElement('button');
-	newRetweetButton.setAttribute('name', 'retweet-' + this.id);
+	newRetweetButton.setAttribute('name', 'retweet-' + this.id_str);
 	newRetweetButton.setAttribute('class', 'tweet-retweet-button');
 
 	var newRetweetFont = document.createElement('i');
@@ -154,8 +154,8 @@ Message.prototype.addEvent = function(retweetButton){
 Message.prototype.sendRetweet = function(){
 
 	if(this.retweeted){
-		console.log('Gonna send delete tweet with id: ', this.id);
-		socket.emit('delete retweet', this.id);
+		console.log('Gonna send delete tweet with id_str: ', this.id_str);
+		socket.emit('delete retweet', this.id_str);
 		this.retweeted = false;
 		this.applyTweetStatus();
 	}
@@ -164,7 +164,7 @@ Message.prototype.sendRetweet = function(){
 		var tweetView = document.getElementById('tweetView');
 		var retweetCancelButton = document.getElementById('retweetCancelButton');
 		var retweetButton = document.getElementById('retweetButton');
-		var tweet = document.getElementsByName('tweet-' + this.id);
+		var tweet = document.getElementsByName('tweet-' + this.id_str);
 		var clone = tweet[0].cloneNode(true);
 
 		tweetView.innerHTML = clone.innerHTML;
@@ -190,10 +190,10 @@ Message.prototype.sendRetweet = function(){
 		retweetCancelButton.addEventListener('click', closeRetweetPopup, true);
 
 		function sendRetweetCommand(e){
-			socket.emit('retweet', this.id);
+			socket.emit('retweet', this.id_str);
 			this.retweeted = true;
 			removeAllListeners();
-			// console.log('Gonna send retweet with id: ', this.id);
+			// console.log('Gonna send retweet with id_str: ', this.id_str);
 			var popup = document.getElementById('tweetConfirmationPopup');
 			popup.style.display = 'none';
 			this.applyTweetStatus();
@@ -211,7 +211,7 @@ Message.prototype.sendRetweet = function(){
  */
 Message.prototype.applyTweetStatus = function(){
 	if(this.retweeted){
-		retweetButtons = document.getElementsByName('retweet-' + this.id);
+		retweetButtons = document.getElementsByName('retweet-' + this.id_str);
 		for (var i = 0; i < retweetButtons.length; i++) {
 			retweetButtons[i].removeAttribute("class");
 			retweetButtons[i].setAttribute('class', 'tweet-retweet-button-active');
@@ -219,7 +219,7 @@ Message.prototype.applyTweetStatus = function(){
 		};
 	}
 	else{
-		retweetButtons = document.getElementsByName('retweet-' + this.id);
+		retweetButtons = document.getElementsByName('retweet-' + this.id_str);
 		for (var i = 0; i < retweetButtons.length; i++) {
 			retweetButtons[i].removeAttribute("class");
 			retweetButtons[i].setAttribute('class', 'tweet-retweet-button');

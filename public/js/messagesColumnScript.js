@@ -561,7 +561,7 @@ MessagesColumn.prototype.displayOneMessage = function(message){
  */
 MessagesColumn.prototype.deleteMessage = function(message){
 	for (var i = 0; i < this.messagesList.length; i++) {
-		if(this.messagesList[i].id == message.tweet.delete.status.id_str){
+		if(this.messagesList[i].id_str === message.tweet.delete.status.id_str){
 			console.log('Message to be deleted found');
 			this.messagesList.splice(i, 1);
 			this.displayAllMessages();
