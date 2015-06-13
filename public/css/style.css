@@ -219,17 +219,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding: 0;
 }
 
-/* Prevent the text contents of draggable elements from being selectable. */
-[draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  /* Required to make elements draggable in old WebKit */
-  -khtml-user-drag: element;
-  -webkit-user-drag: element;
-}
-
 .tweets-column-panel-list-hashtagsList {
     padding: 0;
 }
