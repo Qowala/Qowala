@@ -96,6 +96,24 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
 			}
 		};
 	}
+	else if (incoming.streamSource === 'search-timeline') {
+		for (var i = 0; i < this.columnsLayout.length; i++) {
+			if(this.columnsLayout[i].type === 'tracking') {
+				var hashtags = this.columnsLayout[i].hashtags;
+				if (hashtags.indexOf(incoming.keyword.slice(1)) !== -1) {
+					var tweets = incoming.tweet.statuses;
+					for (var j = tweets.length - 1; j >= 0; j--) {
+						var messageToDisplay = this
+							.addOneMessage(
+								tweets[j],
+								this.columnsLayout[i].id
+							);
+						this.displayOneMessage(messageToDisplay);
+					};
+				}
+			}
+		}
+	}
 	else if (incoming.streamSource === 'lists') {
 		// console.log('Got message from lists');
 		for (var list in incoming.tweet) {

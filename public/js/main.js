@@ -80,7 +80,10 @@ var dashboard = (function (socket){
 
 		socket.on('home-timeline', function(timeline){
 			// console.log('got home timeline');
-			var messagesToDisplay = messagesDisplay.addAllMessages(timeline, 'home');
+			var messagesToDisplay = messagesDisplay.addAllMessages(
+					timeline,
+					'home'
+				);
 			if(messagesToDisplay != undefined){
 				messagesDisplay.displayAllMessages(messagesToDisplay);
 			}

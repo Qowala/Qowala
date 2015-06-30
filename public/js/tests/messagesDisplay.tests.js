@@ -443,4 +443,62 @@ describe("messagesDisplay", function(){
 			expect(stateBeforeDeletion[0]).not.toEqual(stateBeforeDeletion[1]);
 		});
 	});
+
+	describe("processIncoming()", function(){
+		beforeEach(function(){
+			this.messagesDisplay = new MessagesDisplay();
+			this.messagesDisplay.messagesColumnsList = [];
+		});
+
+		it("should add message going to search-timeline", function(){
+
+			var column = new MessagesColumn(
+				2,
+				'Hashtag',
+				'tracking',
+				this.messagesDisplay
+			);
+
+			this.messagesDisplay.columnsLayout = [
+				{
+					id: 2,
+					name: "Hashtag",
+					hashtags: ['test', 'anotherHashtag'],
+					type: "tracking"
+				},
+			];
+
+
+			var incoming = {
+				keyword: '#test',
+				streamSource: 'search-timeline',
+				tweet: {
+					statuses:[
+						{
+							id_str: '5',
+							user: 'John',
+							text: 'Some content',
+							entities: {}
+						},
+						{
+							id_str: '6',
+							user: 'Alice',
+							text: 'Some content',
+							entities: {}
+						}
+					]
+				}
+			}
+
+			this.messagesDisplay.messagesColumnsList.push(column);
+			this.messagesDisplay.messagesColumnsList[0]
+				.columnContentHTML = document.createElement('div');
+
+			this.messagesDisplay.processIncoming(incoming);
+
+			expect(this.messagesDisplay.messagesColumnsList[0].messagesList.length)
+				.toEqual(2);
+		});
+
+	});
 });

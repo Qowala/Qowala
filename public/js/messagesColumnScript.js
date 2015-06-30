@@ -581,7 +581,7 @@ MessagesColumn.prototype.trackTag = function(){
 		tagObject.tag = tagObject.tag.slice(1);
 	}
 	tagObject.userId = userId;
-	socket.emit('add tag', tagObject);
+	socket.emit('searchTweet', '#' + tagObject.tag);
 	if(this.type != 'tracking'){
 		// console.log('Update as it is first tracking')
 		this.MessagesDisplay.useHashtag(this.id, tagObject.tag);
