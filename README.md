@@ -72,17 +72,20 @@ The recommanded way to launch the app for development is to use **Vagrant**.
 In the Qowala live's directory do
 
     vagrant up
-    
-Make sure that **MongoDB** and **NodeJS** are installed (follow instructions above).
 
-Then run
-    
+Then access to the VM
+
     vagrant ssh
+
+Move the directory containing your files
+
     cd /vagrant/
-    npm install
-    node server.js
+
+Start the server
+
+    nodejs server.js
     
-You will then be able to access the client in your browser at **http://192.168.12.34:8080/**
+You will then be able to access the client in your browser at **http://192.168.12.34:8080/** (The IP address can be changed in the Vagrantfile)
 
 # Project released under MIT License
 
