@@ -1,3 +1,5 @@
+process.title = 'qowalalive';
+
 var express = require('express');
 var routes = require('./routes');
 var expressLayouts = require('express-ejs-layouts');
