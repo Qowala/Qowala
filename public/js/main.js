@@ -85,7 +85,7 @@ var dashboard = (function (socket){
 					'home'
 				);
 			if(messagesToDisplay != undefined){
-				messagesDisplay.displayAllMessages(messagesToDisplay);
+				messagesDisplay.displayAllMessagesOnePerOne(messagesToDisplay);
 			}
 		});
 

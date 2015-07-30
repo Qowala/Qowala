@@ -6,6 +6,7 @@ var userSchema = mongoose.Schema({
 	profileImage: String,
 	listsTweetsCache: Object,
 	lists: Array,
+	listsIndex: Object,
 	enabledLists: Array,
 	columnsLayout: Array,
 	homeTimelineCache: Array,
@@ -135,6 +136,36 @@ exports.getListsTweetsCache = function (userId, cb){
 		else {
 			if(user){
 				cb(user.listsTweetsCache);
+			}
+		}
+	});
+};
+
+/**
+ * Puts the tweets coming from the lists in cache
+ * @param  {Number}  userId The users ID to create
+ * @return {Object}         The user once created
+ */
+exports.pushListsIndex = function(userId, listsIndex){
+	User.update({user: userId}, {listsIndex: listsIndex}, {},
+		function(err, numberAffected, rawResponse) {
+	    if (err) return [500, err];
+	    return rawResponse;
+	});
+};
+
+/**
+ * Get lists tweets cache
+ * @param  {Function} cb     Callback returning the lists tweets
+ */
+exports.getListsIndex = function (userId, cb){
+	User.findOne({user: userId}).exec(function(err, user) {
+		if (err) {
+			return ['error', {status: 500}];
+		}
+		else {
+			if(user){
+				cb(user.listsIndex);
 			}
 		}
 	});

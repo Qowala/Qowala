@@ -126,13 +126,18 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
 					var listId = null;
 				}
 				if(listId === list){
-					var messagesToDisplay = this.addAllMessages(
-						incoming.tweet[list],
-						this.columnsLayout[i].id
-					);
-					if(messagesToDisplay !== undefined){
-						this.displayAllMessages(messagesToDisplay);
-					}
+                    var messagesToDisplay = this.addAllMessages(
+                        incoming.tweet[list],
+                        this.columnsLayout[i].id
+                    );
+                    console.log('this.columnsLayout[i].id: ',
+                        this.columnsLayout[i].id)
+                    if(messagesToDisplay != undefined){
+                        console.log('displayAllMessagesOnePerOne');
+                        this.displayAllMessagesOnePerOne(
+                            messagesToDisplay
+                        );
+                    }
 				}
 			}
 		}
@@ -454,18 +459,22 @@ MessagesDisplay.prototype.addOneMessage = function(message, streamDestination){
  * @return {Object} newMessage  Added message
  */
 MessagesDisplay.prototype.addAllMessages = function(allMessages, id){
-	// console.log('Searching', id, ' in this.messagesColumnsList ', this.messagesColumnsList);
-	for (var y = 0; y < this.messagesColumnsList.length; y++) {
-		if(this.messagesColumnsList[y].id === id){
-			// console.log('Found and gonna reset and display messages');
-			// Reset the messages list before adding new ones
-			this.messagesColumnsList[y].messagesList = [];
-			for (var i = allMessages.length - 1; i >= 0; i--) {
-				this.messagesColumnsList[y].addMessage(allMessages[i], allMessages);
-			};
-			return {streamSource: this.messagesColumnsList[y].id};
-		}
-	}
+    //  console.log('Searching', id, ' in this.messagesColumnsList ',
+    //  this.messagesColumnsList);
+    for (var y = 0; y < this.messagesColumnsList.length; y++) {
+        if(this.messagesColumnsList[y].id === id){
+            console.log('They are ', allMessages.length,
+                ' messagesToAdd to ', id);
+            var messagesToDisplay = [];
+            for (var z = 0; z < allMessages.length; z++) {
+                messagesToDisplay.push(
+                    this.messagesColumnsList[y]
+                        .addMessage(allMessages[z], id)
+                );
+            }
+            return messagesToDisplay;
+        }
+    }
 }
 
 /**
@@ -490,6 +499,21 @@ MessagesDisplay.prototype.displayAllMessages = function(message){
 			this.messagesColumnsList[i].displayAllMessages();
 		}
 	};
+}
+
+/**
+ * Communicate all messages display command to the concerning column
+ * @param  {Object} message Message to be added
+ */
+MessagesDisplay.prototype.displayAllMessagesOnePerOne = function(messages){
+    console.log('Displaying displayAllMessagesOnePerOne: ', messages.length);
+    for (var i = 0; i < this.messagesColumnsList.length; i++) {
+        for (var y = messages.length - 1; y >= 0; y--) {
+            if(this.messagesColumnsList[i].id === messages[y].streamSource){
+                this.messagesColumnsList[i].displayOneMessage(messages[y]);
+            }
+        };
+    };
 }
 
 /**
