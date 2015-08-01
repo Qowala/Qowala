@@ -484,6 +484,8 @@ MessagesColumn.prototype.addListToDisplay = function(){
 	// console.log('Chosen list: ', chosenList);
 	for (var i = 0; i < this.twitterLists.length; i++) {
 		if(this.twitterLists[i].name === chosenList){
+			var listId = this.twitterLists[i].id;
+			socket.emit('get list cache', listId);
 			this.MessagesDisplay.useList(this.twitterLists[i].id, this.id);
 		}	
 	};
