@@ -182,7 +182,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button classic-button';
 	listChoiceButton.textContent = "Display";
 
-	this.twitterListsDOM.appendChild(listChoiceButton);
+	this.twitterListsDOM.childNodes[1].appendChild(listChoiceButton);
 	
 	panelList.appendChild(this.twitterListsDOM);
 
@@ -261,8 +261,8 @@ MessagesColumn.prototype.generateColumn = function(){
  * @return {Object} Generated list
  */
 MessagesColumn.prototype.generateColumnTwitterLists = function(){
-	var previousList = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-twitterLists');
-
+	var previousList = document.querySelector('#tweets-column-panel-' +
+		this.id + ' .tweets-column-panel-list-block');
 	var twitterListsDOM = document.createElement('li');
 	twitterListsDOM.className = 'tweets-column-panel-list-twitterLists';
 
@@ -280,10 +280,29 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
 	};
 
 	if(previousList != undefined){
-		previousList.replaceChild(listChoice, previousList.childNodes[1]);
+		var listsBlock = previousList;
+		previousList.replaceChild(listChoice, listsBlock.childNodes[0]);
+		var noListMessage = document.querySelector('#tweets-column-panel-' +
+			this.id + ' .tweets-column-panel-list-message');
 	}
 	else{
-		twitterListsDOM.appendChild(listChoice);
+		var listsBlock = document.createElement('div');
+		listsBlock.className = 'tweets-column-panel-list-block';
+		listsBlock.appendChild(listChoice);
+		twitterListsDOM.appendChild(listsBlock);
+		var noListMessage = document.createElement('p');
+		noListMessage.className = 'tweets-column-panel-list-message';
+		noListMessage.textContent = 'You have no available list to display';
+		twitterListsDOM.appendChild(noListMessage);
+	}
+
+	if(this.twitterLists.length < 1){
+		listsBlock.style.display = 'none';
+		noListMessage.style.display = 'block';
+	}
+	else {
+		listsBlock.style.display = 'block';
+		noListMessage.style.display = 'none';
 	}
 
 	this.twitterListsDOM = twitterListsDOM;
@@ -356,8 +375,6 @@ MessagesColumn.prototype.changeColumnsLayoutName = function(){
 		}
 	};
 }
-
-
 
 /**
  * Add events on buttons and other inputs
