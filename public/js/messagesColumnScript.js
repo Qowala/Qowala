@@ -23,6 +23,7 @@ function MessagesColumn(id, columnHeaderName, type, MessagesDisplay){
 	this.buttonOpenOptions = null;
 	this.panel = null;
 	this.isPanelOpen = false;
+	this.isSpinnerOpen = false;
 	this.areImagesEnabled = true;
 	this.imagesCheckbox = null;
 	this.isListsOpen = true;
@@ -220,6 +221,16 @@ MessagesColumn.prototype.generateColumn = function(){
 
 	/** DELETE **/
 
+	/** SPINNER **/
+	var columnSpinner = document.createElement('div');
+	columnSpinner.setAttribute('class', 'loadingProgressContainer');
+	columnSpinner.setAttribute('id', 'tweets-column-spinner-' + this.id);
+	var columnSpinnerLoad = document.createElement('div');
+	columnSpinnerLoad.setAttribute('class', 'loadingProgress');
+	columnSpinner.appendChild(columnSpinnerLoad);
+
+	this.columnSpinner = columnSpinner;
+
 	/** TWEETS **/
 
 	var newTweetColumnTweets = document.createElement('ul');
@@ -245,6 +256,7 @@ MessagesColumn.prototype.generateColumn = function(){
 	newTweetColumnHeader.appendChild(newTweetColumnParametersButton);
 	newTweetColumn.appendChild(newTweetColumnHeader);
 	newTweetColumn.appendChild(newTweetColumnPanel);
+	newTweetColumn.appendChild(columnSpinner);
 	newTweetColumn.appendChild(newTweetColumnTweets);
 
 	console.log('Column ', this.id, ' generated');
@@ -438,6 +450,32 @@ MessagesColumn.prototype.openPanel = function(){
 }
 
 /**
+ * Opens and closes the panel
+ */
+MessagesColumn.prototype.openSpinner = function(){
+	this.isSpinnerOpen = !this.isSpinnerOpen;
+	console.log('this.columnSpinner.childNodes[0]: ', this.columnSpinner.childNodes[0]);
+	if(this.isSpinnerOpen){
+		this.columnSpinner.style.transform = "scaleY(1)";
+		this.columnSpinner.childNodes[0].style.animationName = 'bounce_loadingProgress';
+	}
+	else{
+		this.closeSpinner();
+	}
+}
+
+/**
+ * Closes the panel
+ */
+MessagesColumn.prototype.closeSpinner = function(){
+	if(this.isSpinnerOpen){
+		this.isSpinnerOpen = false;
+		this.columnSpinner.style.transform = "scaleY(0)";
+		this.columnSpinner.childNodes[0].style.animationName = '';
+	}
+}
+
+/**
  * Enable/Disables images display
  */
 MessagesColumn.prototype.enableImages = function(){
@@ -494,11 +532,8 @@ MessagesColumn.prototype.addListToDisplay = function(){
 
 	if(selectList.getAttribute('exist') === 'true'){
 		alreadyAffected = true;
-		// console.log('already exist! ');
 	}
 
-
-	// console.log('Chosen list: ', chosenList);
 	for (var i = 0; i < this.twitterLists.length; i++) {
 		if(this.twitterLists[i].name === chosenList){
 			var listId = this.twitterLists[i].id;
@@ -514,6 +549,7 @@ MessagesColumn.prototype.addListToDisplay = function(){
 	previousHeaderName.textContent = this.columnHeaderName;
 
 	this.openPanel();
+	this.openSpinner();
 } 
 
 /**
@@ -572,6 +608,7 @@ MessagesColumn.prototype.displayOneMessage = function(message){
 	}
 
 	message.applyTweetStatus();
+	this.closeSpinner();
 }
 
 /**
@@ -608,6 +645,8 @@ MessagesColumn.prototype.trackTag = function(){
 	else{
 		this.MessagesDisplay.addHashtag(this.id, tagObject.tag);
 	}
+	this.openPanel();
+	this.openSpinner();
 }
 
 /**

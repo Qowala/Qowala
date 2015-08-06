@@ -170,6 +170,7 @@ MessagesDisplay.prototype.addAllColumns = function(){
 			column.updateTwitterLists(this.twitterLists);
 			column.updateHashtagsList(this.columnsLayout[i].hashtags);
 			var generatedColumn = column.generateColumn();
+			column.openSpinner();
 
 			// console.log('Created: ', column);
 
@@ -412,6 +413,7 @@ MessagesDisplay.prototype.createUserColumn = function(){
 	}
 
 	var generatedColumn = column.generateColumn();
+	column.openSpinner();
 
 	this.messagesColumnsHTML.insertBefore(generatedColumn, this.messagesColumnsHTML.firstChild);
 }

@@ -503,6 +503,108 @@ input[type="text"].tagInput:-ms-input-placeholder {
     display: inline-flex;
 }
 
+/*********************/
+/** Loading Spinner **/
+/*********************/
+
+.loadingProgressContainer{
+    width:100%;
+    height:5px;
+    overflow:hidden;
+    position: absolute;
+    background-color:rgb(17,153,85);
+    margin:auto;
+    border-radius:5px;
+        -o-border-radius:5px;
+        -ms-border-radius:5px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    -moz-transition: transform ease-in 0.15s;
+    -webkit-transition: transform ease-in 0.15s;
+    -ms-transition: transform ease-in 0.15s;
+    -o-transition: transform ease-in 0.15s;
+    transition: transform ease-in 0.15s;
+}
+
+.loadingProgress{
+    background-color:#333333;
+    margin-top:0;
+    margin-left:-100%;
+    animation-duration:1.8s;
+        -o-animation-duration:1.8s;
+        -ms-animation-duration:1.8s;
+        -webkit-animation-duration:1.8s;
+        -moz-animation-duration:1.8s;
+    animation-iteration-count:infinite;
+        -o-animation-iteration-count:infinite;
+        -ms-animation-iteration-count:infinite;
+        -webkit-animation-iteration-count:infinite;
+        -moz-animation-iteration-count:infinite;
+    animation-timing-function:linear;
+        -o-animation-timing-function:linear;
+        -ms-animation-timing-function:linear;
+        -webkit-animation-timing-function:linear;
+        -moz-animation-timing-function:linear;
+    width:100%;
+    height:5px;
+}
+
+@keyframes bounce_loadingProgress{
+    0%{
+        margin-left:-100%;
+    }
+
+    100%{
+        margin-left:100%;
+    }
+}
+
+@-o-keyframes bounce_loadingProgress{
+    0%{
+        margin-left:-100%;
+    }
+
+    100%{
+        margin-left:100%;
+    }
+}
+
+@-ms-keyframes bounce_loadingProgress{
+    0%{
+        margin-left:-100%;
+    }
+
+    100%{
+        margin-left:100%;
+    }
+}
+
+@-webkit-keyframes bounce_loadingProgress{
+    0%{
+        margin-left:-100%;
+    }
+
+    100%{
+        margin-left:100%;
+    }
+}
+
+@-moz-keyframes bounce_loadingProgress{
+    0%{
+        margin-left:-100%;
+    }
+
+    100%{
+        margin-left:100%;
+    }
+}
+
+/*************************/
+/** End Loading Spinner **/
+/*************************/
+
 .tweets {
     padding: 0;
     margin-top: 0;

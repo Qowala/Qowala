@@ -175,6 +175,8 @@ describe("messagesDisplay", function(){
 
 			genHomeColumn = homeColumnSample.generateColumn();
 
+			homeColumnSample.openSpinner();
+
 			messagesColumnsHTMLSample.appendChild(genHomeColumn);
 
 			this.messagesDisplay.createUserColumn()
@@ -208,6 +210,8 @@ describe("messagesDisplay", function(){
 			var messagesColumnsHTMLSample = document.createElement('div');
 
 			genHomeColumn = homeColumnSample.generateColumn();
+
+			homeColumnSample.openSpinner();
 
 			messagesColumnsHTMLSample.appendChild(genHomeColumn);
 
@@ -281,6 +285,10 @@ describe("messagesDisplay", function(){
 			genHomeColumn = homeColumn.generateColumn();
 			genColumnTwo = columnTwo.generateColumn();
 			genColumnThree = columnThree.generateColumn();
+
+			homeColumn.openSpinner();
+			columnTwo.openSpinner();
+			columnThree.openSpinner();
 
 			messagesColumnsHTMLSample.appendChild(genHomeColumn);
 			messagesColumnsHTMLSample.appendChild(genColumnTwo);
