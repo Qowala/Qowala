@@ -202,6 +202,8 @@ MessagesDisplay.prototype.useList = function(twitterListId, columnId){
 								this.messagesColumnsList[z].updateHashtagsList(
 									this.columnsLayout[y].hashtags
 								);
+								this.messagesColumnsList[i].emptyColumn();
+
 							}
 						};
 						break loop;
@@ -251,6 +253,7 @@ MessagesDisplay.prototype.useHashtag = function(columnId, hashtag){
 			this.messagesColumnsList[i].changeName('#' + hashtag);
 			this.messagesColumnsList[i].type = 'tracking';
 			this.messagesColumnsList[i].updateHashtagsList(hashtagsArray);
+			this.messagesColumnsList[i].emptyColumn();
 		}
 	};
 

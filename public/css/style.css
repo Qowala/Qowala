@@ -602,8 +602,22 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 /*************************/
-/** End Loading Spinner **/
+/**   Column tutorial   **/
 /*************************/
+
+
+.column-tutorial {
+    border: 2px solid #0D9955;
+    border-radius: 20px;
+    color: white;
+    margin: 50px auto;
+    text-align: center;
+    width: 80%;
+}
+
+.column-tutorial > p {
+    padding: 20px;
+}
 
 .tweets {
     padding: 0;
