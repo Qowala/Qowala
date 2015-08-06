@@ -231,11 +231,24 @@ MessagesColumn.prototype.generateColumn = function(){
 
 	this.columnSpinner = columnSpinner;
 
+
 	/** TWEETS **/
 
 	var newTweetColumnTweets = document.createElement('ul');
 	newTweetColumnTweets.setAttribute('class', 'tweets');
 	newTweetColumnTweets.setAttribute('id', 'tweets-' + this.id);
+
+	/** TUTORIAL **/
+	if(this.type === 'None'){
+		var tutorialDiv = document.createElement('div');
+		tutorialDiv.setAttribute('class', 'column-tutorial');
+		var tutorialP = document.createElement('p');
+		tutorialP.innerHTML = 'Your new column is empty. <br /><br /> Go to the \
+		                       <i class="fa fa-cog"></i> and track a hashtag or \
+		                       add one of your list to display.';
+		tutorialDiv.appendChild(tutorialP);
+		newTweetColumnTweets.appendChild(tutorialDiv);
+	}
 
 	var elementsToAddEventListener = {
 		newTweetColumnParametersButton: newTweetColumnParametersButton,
@@ -670,4 +683,12 @@ MessagesColumn.prototype.untrackTag = function(e){
  */
 MessagesColumn.prototype.deleteColumn = function(){
 	this.MessagesDisplay.deleteColumn(this.id);
+}
+
+/**
+ * Empty column
+ */
+MessagesColumn.prototype.emptyColumn = function(){
+	this.columnContentHTML.innerHTML = '';
+	this.messagesList = [];
 }
