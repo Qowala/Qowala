@@ -25,6 +25,22 @@ body {
     border-radius: 5px;
     color: white;
     padding: 5px 15px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
+}
+
+.classic-button:hover {
+    background-color: #16C46D;
+
 }
 
 #loginPopup {
@@ -54,11 +70,22 @@ body {
     text-decoration: none;
     padding: 8px 30px;
     color: white;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
 
 #welcome-button:hover{
-    color: black;
-    background-color: #F5F5F5;
+    background-color: #009DB8;
+    color: #FFFFFF;
 }
 
 #welcome-logo {
@@ -70,12 +97,16 @@ body {
 }
 
 #logo::after {
-    border-bottom: 1px solid #119955;
+    border-bottom: 1px solid #8d8e8d;
     content: " ";
     display: block;
     margin: 0 auto;
     padding-bottom: 30px;
     width: 70px;
+}
+
+#logo a {
+  width: 100px;
 }
 
 #logo img{
@@ -99,13 +130,36 @@ body {
     border: medium none;
     color: white;
     height: 50px;
-    margin: 50px auto;
+    margin-left: 25px;
     padding: 5px 0 0 7px;
     border-radius: 10px;
     font-size: 2.2em;
     width: 50px;
     display: block;
     position: relative;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
+}
+
+#buttonOpenMessageEdition:hover, #buttonAddColumn:hover {
+    background-color:#16C46D;
+}
+
+#buttonOpenMessageEdition {
+  margin-top: 40px;
+}
+
+#buttonAddColumn {
+  margin-top: 30px;
 }
 
 #buttonAddColumn .fa.fa-columns {
@@ -122,6 +176,24 @@ body {
     top: 22px;
 }
 
+#titleOpenMessageEdition {
+    position: relative;
+    font-size: 14px;
+    width: 100px;
+    height: 20px;
+    margin: 0px;
+    text-align: center;
+    margin-top: 14px;
+}
+
+#titleAddColumn {
+    position: relative;
+    font-size: 14px;
+    width: 100px;
+    margin-top: 14px;
+    text-align: center;
+}
+
 #messageEditionPanel{
     width: 10px;
     background-color: #afacac;
@@ -130,12 +202,12 @@ body {
     top: 95px;
     z-index: 1;
     left: -100px;
-    -moz-transition: left 1s; 
-    -webkit-transition: left 1s;  
-    -ms-transition: left 1s;  
-    -o-transition: left 1s;  
+    -moz-transition: left 1s;
+    -webkit-transition: left 1s;
+    -ms-transition: left 1s;
+    -o-transition: left 1s;
     transition: left 1s;
-}  
+}
 
 #messageEditionPanel p {
     color: black;
@@ -167,17 +239,34 @@ body {
     padding: 7px 20px;
     position: absolute;
     right: 10px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
 
 #sendTweetButton:disabled {
     background-color: #4cc783;
 }
 
-#saperator::before {
+
+#sendTweetButton:hover {
+    background-color:#16C46D;
+}
+
+#divider::before {
     border-top: 1px solid #8d8e8d;
     content: " ";
     display: block;
-    margin: 0 auto;
+    margin-top:30px;
+    margin-left: 13px;
     padding-top: 20px;
     width: 70px;
 }
@@ -200,17 +289,17 @@ input[type="text"].tagInput::-webkit-input-placeholder {
 }
 
 input[type="text"].tagInput:-moz-placeholder { /* Firefox 18- */
-   color: white;  
+   color: white;
    text-align: center;
 }
 
 input[type="text"].tagInput::-moz-placeholder {  /* Firefox 19+ */
-   color: white;  
+   color: white;
    text-align: center;
 }
 
-input[type="text"].tagInput:-ms-input-placeholder {  
-   color: white;  
+input[type="text"].tagInput:-ms-input-placeholder {
+   color: white;
    text-align: center;
 }
 
@@ -270,7 +359,23 @@ input[type="text"].tagInput:-ms-input-placeholder {
     width: 80px;
     text-align: center;
     text-decoration: none;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
+
+#mainSidebar a:hover {
+  color:#FFA525;
+}
+
 
 #logoutLink p {
     margin: 0;
@@ -335,7 +440,17 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #afacac;
     font-size: 1.6em;
     position: absolute;
-    right: 10px;
+    right: 10px;  -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
 
 .tweets-column-header-button:hover, .tweets-column-header-button-active {
@@ -351,10 +466,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     overflow: hidden;
     transform: scaleY(0);
     transform-origin: 50% 0;
-    -moz-transition: transform ease-in 0.35s; 
-    -webkit-transition: transform ease-in 0.35s;  
-    -ms-transition: transform ease-in 0.35s;  
-    -o-transition: transform ease-in 0.35s;  
+    -moz-transition: transform ease-in 0.35s;
+    -webkit-transition: transform ease-in 0.35s;
+    -ms-transition: transform ease-in 0.35s;
+    -o-transition: transform ease-in 0.35s;
     transition: transform ease-in 0.35s;
 }
 
@@ -364,8 +479,25 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .deleteColumnButton{
     background-color: #901216;
-    margin-top: 15px
+    margin-top: 15px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
+
+.deleteColumnButton:hover{
+    background-color: #BD181D;
+
+}
+
 
 .tweets-column-panel-list li{
     list-style-type: none;
@@ -389,7 +521,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     width: 0;
     height: 0;
     display: none;
-    opacity: 0; 
+    opacity: 0;
 }
 
 .switch > [type="checkbox"]:checked + label, .switch > [type="checkbox"]:not(:checked) + label {
@@ -398,7 +530,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     margin-right: 7px;
     /*margin-top: 7px;*/
     margin-bottom: 17px;
-    padding-right: 60px; 
+    padding-right: 60px;
 }
 
 .switch > [type="checkbox"]:checked + label:after, .switch > [type="checkbox"]:not(:checked) + label:after {
@@ -407,7 +539,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     width: 40px;
     height: 22px;
     position: absolute;
-    border-radius: 10px; 
+    border-radius: 10px;
 }
 
 .switch > [type="checkbox"]:checked + label + .switch-knob, .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
@@ -422,13 +554,13 @@ input[type="text"].tagInput:-ms-input-placeholder {
     -webkit-transition: right .1s ease-in, background-color .1s ease-in;
     -moz-transition: right .1s ease-in, background-color .1s ease-in;
     -o-transition: right .1s ease-in, background-color .1s ease-in;
-    -ms-transition: right .1s ease-in, background-color .1s ease-in; 
+    -ms-transition: right .1s ease-in, background-color .1s ease-in;
 }
 
 .switch > [type="checkbox"]:checked:focus + label:after, .switch > [type="checkbox"]:checked:focus + label + .switch-knob,
 .switch > [type="checkbox"]:not(:checked):focus + label:after,
 .switch > [type="checkbox"]:not(:checked):focus + label + .switch-knob {
-    box-shadow: 0 0 6px 0 #6fb5fb; 
+    box-shadow: 0 0 6px 0 #6fb5fb;
 }
 
 .switch > [type="checkbox"]:checked[disabled] + label, .switch > [type="checkbox"]:checked[disabled] + label:after, .switch > [type="checkbox"]:checked[disabled] + label + .switch-knob,
@@ -436,35 +568,35 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .switch > [type="checkbox"]:not(:checked)[disabled] + label:after,
 .switch > [type="checkbox"]:not(:checked)[disabled] + label + .switch-knob {
     cursor: not-allowed;
-    opacity: 0.4; 
+    opacity: 0.4;
 }
 
 .switch > [type="checkbox"]:checked + label:after {
-    background-color: #00955b; 
+    background-color: #00955b;
 }
 
 .switch > [type="checkbox"]:not(:checked) + label:after {
-    background-color: #dddddd; 
+    background-color: #dddddd;
 }
 
 .switch > [type="checkbox"]:checked + label + .switch-knob {
     right: 5px;
-    background-color: #cbcbcb; 
+    background-color: #cbcbcb;
 }
 
 .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
     right: 30px;
-    background-color: #898989; 
+    background-color: #898989;
 }
 
 /* Special switch for second parameter */
 
 .tweets-column-panel-list-second .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
-    background-color: #cbcbcb; 
+    background-color: #cbcbcb;
 }
 
 .tweets-column-panel-list-second .switch > [type="checkbox"]:not(:checked) + label:after {
-    background-color: #00955b; 
+    background-color: #00955b;
 }
 
 .tweets-column-panel-list-second p {
@@ -634,10 +766,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     position: relative;
     transform: scaleY(0);
     transform-origin: 50% 0;
-    -moz-transition: transform ease-in 0.1s; 
-    -webkit-transition: transform ease-in 0.1s;  
-    -ms-transition: transform ease-in 0.1s;  
-    -o-transition: transform ease-in 0.1s;  
+    -moz-transition: transform ease-in 0.1s;
+    -webkit-transition: transform ease-in 0.1s;
+    -ms-transition: transform ease-in 0.1s;
+    -o-transition: transform ease-in 0.1s;
     transition: transform ease-in 0.1s;
 }
 
@@ -687,10 +819,22 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweet-url, .tweet-link-image{
     color: #2aa3d6;
     text-decoration: none;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
 
 .tweet-url:hover, .tweet-link-image:hover{
-    text-decoration: underline;
+    text-decoration: none;
+    color: #4CCAFF;
 }
 
 .tweet-retweet-button, .tweet-retweet-button-active {
@@ -701,6 +845,17 @@ input[type="text"].tagInput:-ms-input-placeholder {
     right: 20px;
     bottom: 10px;
     padding: 0;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
 
 .tweet-retweet-button:hover, .tweet-retweet-button-active {
@@ -727,10 +882,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     margin: 10px auto 0;
     max-width: 100%;
     cursor: pointer;
-    -moz-transition: all ease-in 0.35s; 
-    -webkit-transition: all ease-in 0.35s;  
-    -ms-transition: all ease-in 0.35s;  
-    -o-transition: all ease-in 0.35s;  
+    -moz-transition: all ease-in 0.35s;
+    -webkit-transition: all ease-in 0.35s;
+    -ms-transition: all ease-in 0.35s;
+    -o-transition: all ease-in 0.35s;
     transition: all ease-in 0.35s;
 }
 
@@ -753,10 +908,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding: 20px;
     z-index: 2;
     display: none;
-    -moz-transition: all ease-in 0.35s; 
-    -webkit-transition: all ease-in 0.35s;  
-    -ms-transition: all ease-in 0.35s;  
-    -o-transition: all ease-in 0.35s;  
+    -moz-transition: all ease-in 0.35s;
+    -webkit-transition: all ease-in 0.35s;
+    -ms-transition: all ease-in 0.35s;
+    -o-transition: all ease-in 0.35s;
     transition: all ease-in 0.35s;
 }
 
@@ -789,11 +944,30 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: #901216;
     margin-left: 290px;
     margin-top: 15px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
 }
 
 #retweetButton {
     background-color: #119955;
     margin-left: 20px;
+}
+
+#retweetButton:hover {
+  background-color: #16C46D;
+}
+
+#retweetCancelButton:hover {
+  background-color:#BD181D;
 }
 
 /**  ADD COLUMN COLUMN **/
@@ -822,12 +996,12 @@ input[type="text"].tagInput:-ms-input-placeholder {
 /** STATISTICS **/
 
 #statistics tbody{
-	display: block;
+    display: block;
     margin-bottom: 55px;
 }
 
 #statistics tbody+tbody{
-	border-top: solid 1px white; 
+    border-top: solid 1px white;
 }
 
 #statistics tr {
@@ -856,22 +1030,22 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 #statistics .tag-lang li{
-	margin-right: 10px;
-	float: left;
+    margin-right: 10px;
+    float: left;
 }
 
 .tag-name{
-	font-weight: bold;
-	font-size: 0.9em;
+    font-weight: bold;
+    font-size: 0.9em;
 }
 
 .tag-frequency{
-	font-style: italic;
-	font-size: 0.9em
+    font-style: italic;
+    font-size: 0.9em
 }
 
 .tag-lang li+li{
-	margin-left: 30px;
+    margin-left: 30px;
 }
 
 
@@ -884,7 +1058,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 #sendTagButton:hover {
-	background-color: #F5F5F5;	
+    background-color: #F5F5F5;
 }
 
 /***********************/
