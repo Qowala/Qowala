@@ -16,6 +16,9 @@ They are two mirrored git repositories of the project:
 - Framasoft: https://git.framasoft.org/KillianKemps/Qowala-live
 - Github: https://github.com/KillianKemps/Qowala-live
 
+### Project management:
+We are using the open source Taiga project management tool. You can access it at https://tree.taiga.io/project/qowala-live/backlog to follow the development process and interact with us for issues, requests for enhancement, etc.
+
 ### Qowala live v1.0 functionalities:
 
 - One pod for several users
@@ -29,7 +32,8 @@ They are two mirrored git repositories of the project:
 
 ### How to install Qowala live
 
-- Rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* at http://apps.twitter.com after creating your own app).
+#### Qowala live configuration
+- Copy and rename **config/template_twitter.json** to **config/twitter.json** and put in your Twitter credentials (you can get the credentials on *Twitter Developer Website* at http://apps.twitter.com after creating your own app).
 
 - Give your application Read & Write permissions on Twitter Application Management Dashboard
 
@@ -37,9 +41,13 @@ They are two mirrored git repositories of the project:
 
 - For the callback URL in **config/twitter.json** you have to put the domain name where the app will be hosted and add to it '/auth/twitter/callback'.
 
+#### Qowala live easy installation
+
+Just launch the **Qowala-live_InstallationScript.sh**, it will do automatically what is below
+
+#### Qowala live manual installation
+
 ##### Ubuntu 14.04 process:
-- Automatically: You can just launch the **Qowala-live_InstallationScript.sh**, it will do automatically what is below
-- Manually: Follow below instructions
 
 ###### Install NodeJS
     curl -sL https://deb.nodesource.com/setup | sudo bash -
@@ -54,20 +62,20 @@ They are two mirrored git repositories of the project:
     
 ###### Install the dependencies
     npm install
-    
-###### Run the app
-    nodejs server.js
 
-##### Production mode
-    sudo npm install -g forever
-    forever -l forever.log -ao stdout.log -e stderr.log start server.js
-    
 *NodeJS installation process inspired by Digital Ocean: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server*
 
 *MongoDB installation process inspired by MongoDB.org http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/*
 
-#### To develop
-The recommanded way to launch the app for development is to use **Vagrant**.
+#### Qowala live Simple Run
+    nodejs server.js
+
+#### Qowala live Production mode
+    sudo npm install -g forever
+    forever -l forever.log -ao stdout.log -e stderr.log start server.js
+
+#### Qowala live Development mode
+Once the Qowala live configuration done as written above, the recommended way to launch the app for development is to use **Vagrant**. No need to install Qowala live, Vagrant will do it for you.
 
 In the Qowala live's directory do
 
