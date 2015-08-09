@@ -38,21 +38,25 @@ var dashboard = (function (socket){
 
 		// Create the main components of the application
 		messagesDisplay = new MessagesDisplay(mapping.columnsList);
-		mainSidebar = new MainSidebar(mapping, messagesDisplay.createBlankColumn.bind(messagesDisplay));
+		mainSidebar = new MainSidebar(
+			mapping,
+			messagesDisplay.createBlankColumn.bind(messagesDisplay)
+		);
 		statisticsSidebar = new StatisticsSidebar();
 
 		// Generate the defaults columns
-		messagesDisplay.createUserColumn();
-		// messagesDisplay.addColumn('tracking', 'Tracking');
-		// messagesDisplay.displayColumns();
-
 		mainSidebar.init();
+
+		// Disable inline-flex-box as it contains no columns
+		if(userId === undefined){
+			mapping.columnsList.style.display = "block";
+		}
 
 		// Emit a message to connect to the server
 		socket.on('connect', function () {
 			if(userId != undefined){
+				messagesDisplay.createUserColumn();
 				socket.emit('auth', userId);
-				// console.log('Fires auth');
 			}
 		});
 
@@ -61,9 +65,7 @@ var dashboard = (function (socket){
 
 	var listen = function(){
 		socket.on('columnsLayout', function(columnsLayout){
-			// console.log('Got columnsLayout : ', columnsLayout);
 			if(columnsLayout != ""){
-				// console.log('Gonna process columnsLayout');
 				messagesDisplay.storeColumnsLayout(columnsLayout);
 				messagesDisplay.addAllColumns();
 			}
@@ -79,7 +81,6 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('home-timeline', function(timeline){
-			// console.log('got home timeline');
 			var messagesToDisplay = messagesDisplay.addAllMessages(
 					timeline,
 					'home'
@@ -94,7 +95,6 @@ var dashboard = (function (socket){
 		});
 
 		socket.on('numberConnectedUsers', function(numberConnectedUsers){
-			// console.log('Receive update message: ', numberConnectedUsers);
 			mainSidebar.updateNumberConnectedUsers(numberConnectedUsers);
 		});
 
