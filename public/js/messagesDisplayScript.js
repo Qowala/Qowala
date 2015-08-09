@@ -371,6 +371,7 @@ MessagesDisplay.prototype.createBlankColumn = function(){
 	// console.log('Created: ', column);
 
 	this.messagesColumnsHTML.appendChild(generatedColumn);
+	window.scroll(window.scrollMaxX, 0);
 }
 
 /**
