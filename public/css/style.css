@@ -837,7 +837,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #4CCAFF;
 }
 
-.tweet-retweet-button, .tweet-retweet-button-active {
+.tweet-retweet-button, .tweet-retweet-button-active, .tweet-reply-button {
     background-color: transparent;
     border: none;
     color: #dddede;
@@ -858,12 +858,22 @@ input[type="text"].tagInput:-ms-input-placeholder {
     transition-property: color, background-color;
 }
 
-.tweet-retweet-button:hover, .tweet-retweet-button-active {
+.tweet-reply-button {
+    position: absolute;
+    right: 65px;
+}
+
+.tweet-retweet-button:hover, .tweet-retweet-button-active,
+.tweet-reply-button:hover {
     color: #119955;
 }
 
 .tweet-retweet-button i, .tweet-retweet-button-active i {
-    font-size: 2em;
+    font-size: 1.4em;
+}
+
+.tweet-reply-button i {
+    font-size: 1.15em;
 }
 
 .tweet-retweeter {

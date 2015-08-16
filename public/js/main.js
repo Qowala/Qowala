@@ -101,6 +101,14 @@ var dashboard = (function (socket){
 		socket.on('disconnect', function(){
 			console.log('Got disconnected');
 		})
+
+		// Internal listeners
+		document.addEventListener('prepareReply', function(reply){
+			mainSidebar.openMessageEdition(true);
+			mainSidebar.insertMessage('@' + reply.tweetRecipientUsername);
+			mainSidebar.tweetRecipient.tweetRecipientUsername = reply.tweetRecipientUsername;
+			mainSidebar.tweetRecipient.tweetRecipientId = reply.tweetRecipientId;
+		});
 	}
 
 	return {
@@ -113,7 +121,3 @@ var dashboard = (function (socket){
 dashboard.init(mapping, function(){
 	dashboard.listen();
 });
-
-
-
-

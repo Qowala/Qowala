@@ -79,7 +79,7 @@ Message.prototype.generateMessage = function(){
 	newDate.setAttribute('title', this.friendlyDate);
 	newDate.textContent = this.displayedDate;
 	this.dateHTML = newDate;
-	
+
 	var newLinkAuthor = document.createElement('a');
 	newLinkAuthor.setAttribute('class', 'tweet-authorname');
 	newLinkAuthor.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
@@ -101,16 +101,25 @@ Message.prototype.generateMessage = function(){
 	var newRetweetFont = document.createElement('i');
 	newRetweetFont.setAttribute('class', 'fa fa-retweet');
 
+	var replyButton = document.createElement('button');
+	replyButton.setAttribute('name', 'reply-' + this.id_str);
+	replyButton.setAttribute('class', 'tweet-reply-button');
+
+	var replyFont = document.createElement('i');
+	replyFont.setAttribute('class', 'fa fa-reply');
+
 	// Put event listener on elements
-	this.addEvent(newRetweetButton);
+	this.addEvent(newRetweetButton, replyButton);
 
 	newLinkAuthorImg.appendChild(newImg);
 	newRetweetButton.appendChild(newRetweetFont);
+	replyButton.appendChild(replyFont);
 	newTweet.appendChild(newLinkAuthorImg);
 	newTweet.appendChild(newLinkAuthor);
 	newTweet.appendChild(newAuthorScreenName);
 	newTweet.appendChild(newContent);
 	newTweet.appendChild(newDate);
+	newTweet.appendChild(replyButton);
 	newTweet.appendChild(newRetweetButton);
 
 	return newTweet;
@@ -143,9 +152,12 @@ Message.prototype.processDate = function(){
 /**
  * Add event listener on elements
  */
-Message.prototype.addEvent = function(retweetButton){
+Message.prototype.addEvent = function(retweetButton, replyButton){
 	retweetButton.addEventListener('click', function(e){
 			this.sendRetweet();
+	}.bind(this));
+	replyButton.addEventListener('click', function(e){
+			this.prepareReply();
 	}.bind(this));
 }
 
@@ -208,6 +220,17 @@ Message.prototype.sendRetweet = function(){
 }
 
 /**
+ * Prepare message trail to reply
+ */
+Message.prototype.prepareReply = function(){
+
+	var prepareReply = new Event('prepareReply');
+	prepareReply.tweetRecipientId = this.id_str;
+	prepareReply.tweetRecipientUsername = this.authorUsername;
+	document.dispatchEvent(prepareReply);
+}
+
+/**
  * Apply tweet's status on the display
  */
 Message.prototype.applyTweetStatus = function(){
@@ -225,7 +248,7 @@ Message.prototype.applyTweetStatus = function(){
 			retweetButtons[i].removeAttribute("class");
 			retweetButtons[i].setAttribute('class', 'tweet-retweet-button');
 			// console.log('Updated concerning retweet');
-		};	
+		};
 	}
 }
 
@@ -261,7 +284,7 @@ Message.prototype.updateTime = function(test){
 
 			var day = this.date.getDate();
 			day = day < 10 ? '0' + day : day;
-			
+
 			if(month == 0) {
 				var literalMonth = 'Jan';
 			}
@@ -315,7 +338,7 @@ Message.prototype.updateTime = function(test){
 		// console.log('Being recalled');
 	}
 
-	this.displayedDate = toBeDisplayed; 
+	this.displayedDate = toBeDisplayed;
 	//return toBeDisplayed;
 }
 
@@ -540,5 +563,5 @@ Message.prototype.enlargeImage = function(){
 		var columnsList = document.getElementById('tweets-columns-list');
 		columnsList.addEventListener('click', closeImagePopup, true);
 
-	}	
+	}
 }
