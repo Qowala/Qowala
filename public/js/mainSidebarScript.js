@@ -15,6 +15,8 @@ function MainSidebar(mapping, createBlankColumn){
 	this.tagContainer = mapping.tagContainer;
 	this.draggableTags = [];
 	this.numberConnectedUsersSpan = mapping.numberConnectedUsersSpan;
+	this.tweetRecipient = {'tweetRecipientUsername': '',
+	                       'tweetRecipientId': ''};
 
 	this.hashtagsToTrack = [];
 }
@@ -63,9 +65,9 @@ MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers
 /**
  * Opens and closes the message edition panel
  */
-MainSidebar.prototype.openMessageEdition = function(){
-	this.isMessageEditionPanelOpen = !this.isMessageEditionPanelOpen;
-	if(this.isMessageEditionPanelOpen){
+MainSidebar.prototype.openMessageEdition = function(openForce){
+	this.isMessageEditionPanelOpen = !this.isMessageEditionPanelOpen || openForce;
+	if(this.isMessageEditionPanelOpen || openForce){
 		var width = calculateWidth();
 
 		this.messageEditionPanel.style.left = '-' + width +'px';
@@ -89,7 +91,7 @@ MainSidebar.prototype.openMessageEdition = function(){
 		else{
 			var width = (window.innerWidth - 192) * 50/100;
 		}
-		
+
 		return width;
 	}
 }
@@ -129,9 +131,45 @@ MainSidebar.prototype.textareaListener = function(){
 MainSidebar.prototype.sendMessage = function(){
 	var message = this.messageTextarea.value;
 	if(message != "" && message.length <= 140){
-		// console.log('Going to send: ', message);
-		socket.emit('sendMessage', message);
+		if (this.tweetRecipient.tweetRecipientUsername !== '') {
+			var index = message.search(this.tweetRecipient.tweetRecipientUsername);
+			if (index !== 1) {
+				this.tweetRecipient.tweetRecipientId = '';
+			}
+			this.tweetRecipient.tweetRecipientUsername = '';
+		}
+		socket.emit('sendMessage', {
+			'message': message,
+      'in_reply_to_status_id': this.tweetRecipient.tweetRecipientId
+		});
 		this.messageTextarea.value = "";
 		this.openMessageEdition();
 	}
+}
+
+/**
+ * Insert text in message edition panel
+ */
+MainSidebar.prototype.insertMessage = function(message){
+	// Thank you to nemisj for his setCursor function http://stackoverflow.com/a/1867393
+	function setCursor(node,pos){
+    node = (typeof node == "string" || node instanceof String) ? document.getElementById(node) : node;
+    if(!node){
+        return false;
+    } else if(node.createTextRange){
+        var textRange = node.createTextRange();
+        textRange.collapse(true);
+        textRange.moveEnd(pos);
+        textRange.moveStart(pos);
+        textRange.select();
+        return true;
+    } else if(node.setSelectionRange){
+        node.setSelectionRange(pos,pos);
+        return true;
+    }
+    return false;
+	}
+	this.messageTextarea.value = message + ' ';
+	this.messageTextarea.focus();
+	setCursor(this.messageTextarea, this.messageTextarea.value.length);
 }
