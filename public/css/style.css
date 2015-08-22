@@ -43,7 +43,7 @@ body {
 
 }
 
-#loginPopup {
+#loginPopup, #deprecatedBrowserPopup {
     background-color: #595959;
     height: 230px;
     left: 50%;
@@ -59,8 +59,29 @@ body {
     color: white;
 }
 
+#deprecatedBrowserPopup {
+  display: none;
+}
+
 #loginPopup > p {
     margin-bottom: 50px;
+}
+
+.fa.fa-firefox, .fa.fa-chrome, .fa.fa-opera {
+    font-size: 3em;
+    margin: 10px 10px 0;
+}
+
+.fa.fa-opera {
+  color: #C61717;
+}
+
+.fa.fa-chrome {
+  color: #3FA9F5;
+}
+
+.fa.fa-firefox {
+  color: #F15A24;
 }
 
 #welcome-button {
