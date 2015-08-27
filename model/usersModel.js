@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
 	user: Number,
 	name: String,
+	username: String,
 	profileImage: String,
 	listsTweetsCache: Object,
 	lists: Array,
@@ -20,14 +21,14 @@ var User = mongoose.model('User', userSchema);
  * @param  {Number}  userId The users ID to create
  * @return {Object}         The user once created
  */
-exports.pushUser = function(userId, name, profileImage){
+exports.pushUser = function(userId, name, username, profileImage){
 	User.findOne({user: userId}).exec(function(err, user) {
 		if (err) {
 			return ['error', {status: 500}];
 		} 
 		else {
 			if(user == null){
-				var user = new User({user: userId, name: name, profileImage: profileImage});
+				var user = new User({user: userId, name: name, username: username, profileImage: profileImage});
 				user.save(function(err) {
 					if (err) return [500, err];
 					return user;
