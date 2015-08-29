@@ -134,7 +134,7 @@ body {
     max-width: 100px;
 }
 
-#mainSidebar {
+#mainSidebar, #notificationPanel {
     background-color: #1a1a1a;
     bottom: 0;
     color: white;
@@ -146,29 +146,94 @@ body {
     z-index: 2;
 }
 
+#notificationPanel{
+  background-color: #333333;
+  left: -330px;
+  width: 430px;
+  z-index: 1;
+  -moz-transition: left 1s;
+  -webkit-transition: left 1s;
+  -ms-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+}
+
+#notificationPanel h3 {
+  margin: 0;
+  text-align: center;
+}
+
+#notificationPanel > ul {
+  padding: 10px;
+}
+
+.notification {
+  background-color: #545454;
+  border-radius: 5px;
+  padding: 10px;
+  list-style-type: none;
+  margin: 20px 0;
+  padding: 15px 10px 10px;
+  position: relative;
+}
+
+.notification h4 {
+  color: #429D4F;
+  font-size: 0.95em;
+  margin: 0 0 10px 30px;
+  text-transform: uppercase;
+}
+
+.notification .fa {
+  font-size: 1.5em;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.notification .fa-twitter {
+  font-size: 1em;
+  position: absolute;
+  left: 15px;
+  top: 18px;
+  color: #3FA9F5;
+}
+
+.fa-star {
+  color: #E0E01E;
+}
+
+.fa-user-plus {
+  color: #19B8BF;
+}
+
+.notification .fa-retweet {
+  color: #41C463;
+}
+
 #buttonOpenMessageEdition, #buttonAddColumn {
-    background-color: #119955;
-    border: medium none;
-    color: white;
-    height: 50px;
-    margin-left: 25px;
-    padding: 5px 0 0 7px;
-    border-radius: 10px;
-    font-size: 2.2em;
-    width: 50px;
-    display: block;
-    position: relative;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
+  background-color: #119955;
+  border: medium none;
+  color: white;
+  height: 50px;
+  margin-left: 25px;
+  padding: 5px 0 0 7px;
+  border-radius: 10px;
+  font-size: 2.2em;
+  width: 50px;
+  display: block;
+  position: relative;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
 }
 
 #buttonOpenMessageEdition:hover, #buttonAddColumn:hover {

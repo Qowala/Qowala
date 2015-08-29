@@ -126,18 +126,18 @@ MessagesDisplay.prototype.processIncoming = function(incoming){
           var listId = null;
         }
         if(listId === list){
-                    var messagesToDisplay = this.addAllMessages(
-                        incoming.tweet[list],
-                        this.columnsLayout[i].id
-                    );
-                    console.log('this.columnsLayout[i].id: ',
-                        this.columnsLayout[i].id)
-                    if(messagesToDisplay != undefined){
-                        console.log('displayAllMessagesOnePerOne');
-                        this.displayAllMessagesOnePerOne(
-                            messagesToDisplay
-                        );
-                    }
+          var messagesToDisplay = this.addAllMessages(
+              incoming.tweet[list],
+              this.columnsLayout[i].id
+          );
+          console.log('this.columnsLayout[i].id: ',
+              this.columnsLayout[i].id);
+          if(messagesToDisplay != undefined){
+            console.log('displayAllMessagesOnePerOne');
+            this.displayAllMessagesOnePerOne(
+                messagesToDisplay
+            );
+          }
         }
       }
     }

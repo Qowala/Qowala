@@ -11,7 +11,9 @@ var socket = io();
 var mapping = {
   buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
   buttonAddColumn: document.getElementById('buttonAddColumn'),
+  buttonOpenNotificationPanel: document.getElementById('buttonOpenNotificationPanel'),
   messageEditionPanel: document.getElementById('messageEditionPanel'),
+  notificationPanel: document.getElementById('notificationPanel'),
   messageTextarea: document.getElementById('messageTextarea'),
   numberCharactersLeft: document.getElementById('numberCharactersLeft'),
   sendTweetButton: document.getElementById('sendTweetButton'),
@@ -42,6 +44,7 @@ var dashboard = (function (socket){
       mapping,
       messagesDisplay.createBlankColumn.bind(messagesDisplay)
     );
+    notificationPanel = new NotificationPanel(mapping);
     statisticsSidebar = new StatisticsSidebar();
 
     // Generate the defaults columns
@@ -83,6 +86,10 @@ var dashboard = (function (socket){
       messagesDisplay.processIncoming(message);
     });
 
+    socket.on('notification', function(notification){
+    notificationPanel.processNotification(notification);
+    });
+
     socket.on('lists-list', function(listsObject){
       messagesDisplay.storeTwitterLists(listsObject);
       messagesDisplay.updateColumnsTwitterLists();
@@ -116,6 +123,9 @@ var dashboard = (function (socket){
       mainSidebar.insertMessage('@' + reply.tweetRecipientUsername);
       mainSidebar.tweetRecipient.tweetRecipientUsername = reply.tweetRecipientUsername;
       mainSidebar.tweetRecipient.tweetRecipientId = reply.tweetRecipientId;
+    });
+    document.addEventListener('toggleNotificationPanel', function(force){
+      notificationPanel.toggleNotificationPanel(force);
     });
   }
 
