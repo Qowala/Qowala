@@ -11,7 +11,8 @@ var userSchema = mongoose.Schema({
   enabledLists: Array,
   columnsLayout: Array,
   homeTimelineCache: Array,
-  enabledTags: Array
+  enabledTags: Array,
+  notifications: Array
 });
 
 var User = mongoose.model('User', userSchema);
@@ -321,6 +322,54 @@ exports.getEnabledTags = function (userId, cb){
       if(user){
         if(user.enabledTags){
           cb(user.enabledTags);
+        }
+        else{
+          cb('');
+        }
+      }
+    }
+  });
+};
+
+/**
+ * Push the notifications
+ * @param  {Number}  userId          The user's ID
+ * @param  {Array}   notifications   The user's notifications
+ * @return {Object}                  Confirmation
+ */
+exports.pushNotifications = function(userId, notifications){
+  User.update({user: userId}, { $push : {notifications: notifications}}, {}, function(err, numberAffected, rawResponse) {
+      if (err) return [500, err];
+      return rawResponse;
+  });
+};
+
+/**
+ * Update the notifications
+ * @param  {Number}  userId          The user's ID
+ * @param  {Array}   notifications   The user's notifications
+ * @return {Object}                  Confirmation
+ */
+exports.updateNotifications = function(userId, notifications){
+  User.update({user: userId}, {notifications: notifications}, {}, function(err, numberAffected, rawResponse) {
+      if (err) return [500, err];
+      return rawResponse;
+  });
+};
+
+/**
+ * Get user's notifications
+ * @param  {Function} cb     Callback returning the notifications
+ */
+exports.getNotifications = function (userId, cb){
+  User.findOne({user: userId}).exec(function(err, user) {
+    if (err) {
+      return ['error', {status: 500}];
+    }
+    else {
+      if(user){
+        if(user.notifications){
+          cb(user.notifications);
         }
         else{
           cb('');

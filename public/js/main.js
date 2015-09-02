@@ -87,7 +87,13 @@ var dashboard = (function (socket){
     });
 
     socket.on('notification', function(notification){
-    notificationPanel.processNotification(notification);
+      notificationPanel.processNotification(notification);
+    });
+
+    socket.on('notifications history', function(notifications){
+      for (var i = 0; i < notifications.length; i++) {
+        notificationPanel.processNotification(notifications[i]);
+      }
     });
 
     socket.on('lists-list', function(listsObject){
