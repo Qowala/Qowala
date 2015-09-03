@@ -12,6 +12,7 @@ var mapping = {
   buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
   buttonAddColumn: document.getElementById('buttonAddColumn'),
   buttonOpenNotificationPanel: document.getElementById('buttonOpenNotificationPanel'),
+  notificationsCounter: document.getElementById('notificationsCounter'),
   messageEditionPanel: document.getElementById('messageEditionPanel'),
   notificationPanel: document.getElementById('notificationPanel'),
   messageTextarea: document.getElementById('messageTextarea'),
@@ -92,7 +93,7 @@ var dashboard = (function (socket){
 
     socket.on('notifications history', function(notifications){
       for (var i = 0; i < notifications.length; i++) {
-        notificationPanel.processNotification(notifications[i]);
+        notificationPanel.processNotification(notifications[i], true);
       }
     });
 

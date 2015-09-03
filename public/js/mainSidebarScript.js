@@ -196,45 +196,38 @@ function NotificationPanel(mapping){
   this.notificationPanel = mapping.notificationPanel;
   this.notificationPanelList = mapping.notificationPanel.getElementsByTagName('ul')[0];
   this.notificationsList = [];
+  this.notificationsCounter = mapping.notificationsCounter;
+  this.notificationCount = 0;
 }
 
 NotificationPanel.prototype.toggleNotificationPanel = function(forceOpen){
   this.isNotificationPanelOpen = !this.isNotificationPanelOpen;
   if(this.isNotificationPanelOpen){
     this.notificationPanel.style.left = '120px';
+    if(this.notificationCount !== 0){
+      this.notificationsCounter.style.display = 'none';
+      this.notificationCount = 0;
+    }
   }
   else{
     this.notificationPanel.style.left = '-330px';
   }
 }
 
-NotificationPanel.prototype.processNotification = function(notification){
-  console.log('Received notification!');
-  console.log(notification);
+NotificationPanel.prototype.processNotification = function(notification, noAlert){
   if(notification.streamSource === 'mention'){
-    console.log('A mention!');
-    console.log('name: ', notification.tweet.user.name);
-    console.log('username: ', notification.tweet.user.screen_name);
-    //this.createNotification(notification);
+    // Do we activate mentions?
+    //this.createNotification(notification, noAlert);
   }
   else if(notification.streamSource === 'retweet'){
-    console.log('A retweet!');
-    console.log('name: ', notification.tweet.user.name);
-    console.log('username: ', notification.tweet.user.screen_name);
     notification.tweet.retweeted_status.created_at = notification.tweet.created_at;
-    this.createNotification(notification);
+    this.createNotification(notification, noAlert);
   }
   else if(notification.streamSource === 'reply'){
-    console.log('A reply');
-    console.log('name: ', notification.tweet.user.name);
-    console.log('username: ', notification.tweet.user.screen_name);
-    //this.createNotification(notification);
+    // Do we activate replies?
+    //this.createNotification(notification, noAlert);
   }
   else if(notification.streamSource === 'follow'){
-    console.log('A follow');
-    console.log('name: ', notification.event.source.name);
-    console.log('username: ', notification.event.source.screen_name);
-    console.log('profile image: ', notification.event.source.profile_image_url_https);
     notification.tweet = notification.event.source;
     notification.tweet.created_at = notification.event.created_at;
     notification.tweet.user = {
@@ -242,13 +235,9 @@ NotificationPanel.prototype.processNotification = function(notification){
       'profile_image_url_https': notification.event.source.profile_image_url_https
     };
     notification.tweet.entities = {};
-    this.createNotification(notification);
+    this.createNotification(notification, noAlert);
   }
   else if(notification.streamSource === 'favorite'){
-    console.log('A favorite');
-    console.log('name: ', notification.event.source.name);
-    console.log('username: ', notification.event.source.screen_name);
-    console.log('profile image: ', notification.event.source.profile_image_url_https);
     notification.tweet = notification.event.target_object;
     notification.tweet.created_at = notification.event.created_at;
     notification.tweet.user = {
@@ -257,30 +246,35 @@ NotificationPanel.prototype.processNotification = function(notification){
       'profile_image_url_https': notification.event.target.profile_image_url_https
     };
     notification.tweet.entities = {};
-    this.createNotification(notification);
+    this.createNotification(notification, noAlert);
   }
-  //else if(notification.streamSource === 'unfavorite'){
-    //console.log('A unfavorite');
-    //console.log('name: ', notification.event.source.name);
-    //console.log('username: ', notification.event.source.screen_name);
-    //console.log('profile image: ', notification.event.source.profile_image_url_https);
-    //notification.tweet = notification.event.source;
-    //notification.tweet.created_at = notification.event.created_at;
-    //notification.tweet.user = {
-      //'name': notification.event.source.name
-    //};
-    //notification.tweet.entities = {};
-    //this.createNotification(notification);
-  //}
+  // Do we activate unfavorites?
+  /*else if(notification.streamSource === 'unfavorite'){
+    console.log('A unfavorite');
+    console.log('name: ', notification.event.source.name);
+    console.log('username: ', notification.event.source.screen_name);
+    console.log('profile image: ', notification.event.source.profile_image_url_https);
+    notification.tweet = notification.event.source;
+    notification.tweet.created_at = notification.event.created_at;
+    notification.tweet.user = {
+      'name': notification.event.source.name
+    };
+    notification.tweet.entities = {};
+    this.createNotification(notification, noAlert);
+  }*/
 }
 
-NotificationPanel.prototype.createNotification = function(notification){
+NotificationPanel.prototype.createNotification = function(notification, noAlert){
   var notification = new Notification(notification);
 
   notification.message.processDate();
   var generatedNotification = notification.generateNotification();
   this.notificationsList.unshift(generatedNotification);
   this.notificationPanelList.insertBefore(generatedNotification, this.notificationPanelList.childNodes[0]);
+  if(!noAlert){
+    this.notificationsCounter.textContent = this.notificationCount = this.notificationCount + 1;
+    this.notificationsCounter.style.display = 'block';
+  }
 }
 
 /**
