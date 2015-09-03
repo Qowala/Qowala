@@ -211,7 +211,7 @@ body {
   color: #41C463;
 }
 
-#buttonOpenMessageEdition, #buttonAddColumn {
+#buttonOpenMessageEdition, #buttonAddColumn, #buttonOpenNotificationPanel {
   background-color: #119955;
   border: medium none;
   color: white;
@@ -260,6 +260,28 @@ body {
     position: absolute;
     right: 13px;
     top: 22px;
+}
+
+#buttonOpenNotificationPanel {
+  background-color: #676868;
+  color: #000000;
+  padding: 0;
+  font-size: 1.8em;
+}
+
+#notificationsCounter{
+  background-color: #900C17;
+  width: 20px;
+  height: 20px;
+  display: none;
+  position: absolute;
+  right: 24px;
+  margin-top: -7px;
+  z-index: 1;
+  padding: 5px;
+  border-radius: 14px;
+  font-weight: 600;
+  text-align: center;
 }
 
 #titleOpenMessageEdition {
