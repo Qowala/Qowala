@@ -252,8 +252,8 @@ body {
   overflow: hidden;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-property: color, background-color;
-  transition-property: color, background-color;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
 }
 
 #buttonOpenMessageEdition:hover, #buttonAddColumn:hover {
@@ -287,6 +287,21 @@ body {
   color: #000000;
   padding: 0;
   font-size: 1.8em;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
+}
+
+#buttonOpenNotificationPanel:hover {
+    background-color:#16C46D;
 }
 
 #notificationsCounter{
