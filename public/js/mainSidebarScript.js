@@ -248,6 +248,17 @@ NotificationPanel.prototype.processNotification = function(notification, noAlert
     notification.tweet.entities = {};
     this.createNotification(notification, noAlert);
   }
+  else if(notification.streamSource === 'list_member_added'){
+    notification.tweet = notification.event.target_object;
+    notification.tweet.created_at = notification.event.created_at;
+    notification.tweet.user = {
+      'name': notification.event.target.name,
+      'screen_name': notification.event.target.screen_name,
+      'profile_image_url_https': notification.event.target.profile_image_url_https
+    };
+    notification.tweet.entities = {};
+    this.createNotification(notification, noAlert);
+  }
   // Do we activate unfavorites?
   /*else if(notification.streamSource === 'unfavorite'){
     console.log('A unfavorite');
@@ -283,10 +294,11 @@ NotificationPanel.prototype.createNotification = function(notification, noAlert)
  */
 function Notification(notification){
   this.type = notification.streamSource;
-  if(this.type === 'follow' || this.type === 'favorite'){
+  if(this.type === 'follow' || this.type === 'favorite' || this.type === 'list_member_added'){
     this.userDescription = notification.event.source.description;
     this.userName = notification.event.source.name;
     this.userScreenName = notification.event.source.screen_name;
+    this.target_object = notification.event.target_object;
   }
   this.message = new Message(notification.tweet, notification.streamSource, false);
 }
@@ -412,13 +424,33 @@ Notification.prototype.generateNotification = function(){
     var content = document.createElement('p');
     content.textContent = this.userDescription;
     content.setAttribute('class', 'tweet-text');
-    console.log('this.userDescription: ', this.userDescription);
-    console.log('content: ', content);
 
     linkAuthorImg.appendChild(profileImg);
     notification.appendChild(linkAuthorImg);
     notification.appendChild(linkAuthor);
     notification.appendChild(authorScreenName);
+    notification.appendChild(content);
+  }
+  else if(this.type === 'list_member_added'){
+    var linkAuthorTitle = document.createElement('a');
+    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
+    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
+    linkAuthorTitle.setAttribute('target', '_blank');
+    notifTitle.textContent = this.userName + ' added you to the list';
+    notifIcon.setAttribute('class', 'fa fa-list');
+    linkAuthorTitle.appendChild(notifTitle);
+    notification.appendChild(linkAuthorTitle);
+    notification.appendChild(notifIcon);
+
+    var content = document.createElement('p');
+    var listLink = document.createElement('a');
+    listLink.setAttribute('href', 'https://twitter.com' + this.target_object.uri);
+    listLink.setAttribute('target', '_blank');
+    listLink.setAttribute('class', 'notification-link');
+    listLink.textContent = this.target_object.uri.substr(1);
+    content.appendChild(listLink);
+    content.setAttribute('class', 'tweet-text');
+
     notification.appendChild(content);
   }
 
