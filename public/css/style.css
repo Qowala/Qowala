@@ -188,14 +188,14 @@ body {
   width: 290px;
 }
 
-.notification .fa {
+.notification > i {
   font-size: 1.5em;
   position: absolute;
   right: 15px;
   top: 15px;
 }
 
-.notification .fa-twitter {
+.notification > .fa-twitter {
   font-size: 1em;
   position: absolute;
   left: 15px;
@@ -212,8 +212,12 @@ body {
   color: #19B8BF;
 }
 
-.notification .fa-retweet {
+.notification > .fa-retweet {
   color: #41C463;
+}
+
+.notification > .mention {
+  font-style: normal;
 }
 
 .notification-link {
