@@ -185,6 +185,7 @@ body {
   font-size: 0.95em;
   margin: 0 0 10px 30px;
   text-transform: uppercase;
+  width: 290px;
 }
 
 .notification .fa {
@@ -213,6 +214,17 @@ body {
 
 .notification .fa-retweet {
   color: #41C463;
+}
+
+.notification-link {
+  color: white;
+  text-decoration: none;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.notification-link:hover {
+  text-decoration: underline;
 }
 
 #buttonOpenMessageEdition, #buttonAddColumn, #buttonOpenNotificationPanel {
