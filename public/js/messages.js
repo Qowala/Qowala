@@ -14,6 +14,7 @@
 function Message(message, streamSource, areImagesEnabled){
   this.id_str = message.retweeted_status ? message.retweeted_status.id_str : message.id_str;
   this.retweeterAuthorUsername = message.user.name;
+  this.retweeterAuthorPseudonym = message.user.screen_name;
   this.authorUsername = message.retweeted_status ? message.retweeted_status.user.screen_name : message.user.screen_name;
   this.authorPseudonym = message.retweeted_status ? message.retweeted_status.user.name : message.user.name;
   this.date = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;

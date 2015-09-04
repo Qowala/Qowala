@@ -309,9 +309,14 @@ Notification.prototype.generateNotification = function(){
   notification.appendChild(twitterIcon);
 
   if(this.type === 'retweet'){
+    var linkAuthorTitle = document.createElement('a');
+    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
+    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.message.retweeterAuthorPseudonym);
+    linkAuthorTitle.setAttribute('target', '_blank');
     notifTitle.textContent = this.message.retweeterAuthorUsername + ' retweeted you';
     notifIcon.setAttribute('class', 'fa fa-retweet');
-    notification.appendChild(notifTitle);
+    linkAuthorTitle.appendChild(notifTitle);
+    notification.appendChild(linkAuthorTitle);
     notification.appendChild(notifIcon);
 
     var linkAuthorImg = document.createElement('a');
@@ -343,9 +348,14 @@ Notification.prototype.generateNotification = function(){
     notification.appendChild(content);
   }
   else if(this.type === 'favorite'){
+    var linkAuthorTitle = document.createElement('a');
+    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
+    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
+    linkAuthorTitle.setAttribute('target', '_blank');
     notifTitle.textContent = this.userName + ' favorited you';
     notifIcon.setAttribute('class', 'fa fa-star');
-    notification.appendChild(notifTitle);
+    linkAuthorTitle.appendChild(notifTitle);
+    notification.appendChild(linkAuthorTitle);
     notification.appendChild(notifIcon);
 
     var linkAuthorImg = document.createElement('a');
