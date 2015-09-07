@@ -135,6 +135,7 @@ Message.prototype.processDate = function(){
   date.toLocaleString();
   var year = date.getFullYear();
   var month = date.getMonth();
+  month++; // Increment by one as it begins at 0 in Javascript
   month = month < 10 ? '0' + month : month;
   var day = date.getDate();
   day = day < 10 ? '0' + day : day;
