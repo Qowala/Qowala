@@ -37,7 +37,7 @@ exports.pushUser = function(userId, name, username, profileImage){
         console.log('Saved: ', user);
       }
       else{
-        User.update({user: userId}, {name: name, profileImage: profileImage}, {}, function(err, numberAffected, rawResponse) {
+        User.update({user: userId}, {name: name, username: username, profileImage: profileImage}, {}, function(err, numberAffected, rawResponse) {
             if (err) return [500, err];
             return rawResponse;
         });
