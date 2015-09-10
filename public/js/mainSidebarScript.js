@@ -111,6 +111,7 @@ MainSidebar.prototype.textareaListener = function(){
   // Triggers inputs for updating the number of characters
   this.messageTextarea.addEventListener('input', function(e){
     updateNumberCharacters();
+    updateNameSuggestion();
   }.bind(this));
 
   function updateNumberCharacters(){
@@ -131,6 +132,66 @@ MainSidebar.prototype.textareaListener = function(){
       this.sendTweetButton.disabled = false;
     }
   }
+
+  function updateNameSuggestion() {
+    var beforeCursor = this.messageTextarea.value
+      .substring(0, getCaretPosition(this.messageTextarea));
+
+    if(beforeCursor.indexOf('@') !== -1){
+      var mentionIndex = beforeCursor.lastIndexOf('@');
+      var btwMentionCaret = beforeCursor
+        .substring(mentionIndex, getCaretPosition(this.messageTextarea));
+
+      if(btwMentionCaret.indexOf(' ') === -1 && btwMentionCaret !== '@'){
+        var afterMention = this.messageTextarea.value
+          .substring(mentionIndex + 1, this.messageTextarea.value.length);
+
+        if(afterMention.indexOf(' ') === -1){
+          var usernameMention = afterMention;
+
+        } else {
+          var usernameMention = afterMention
+            .substring(0, afterMention.indexOf(' '));
+        }
+      }
+    }
+  }
+
+  /*
+  * ** Returns the caret (cursor) position of the specified text field.
+  * ** Return value range is 0-inputText.value.length.
+  *
+  * Thanks at Flight School for the initial code:
+  * http://flightschool.acylt.com/devnotes/caret-position-woes/
+  **/
+    function getCaretPosition (inputText) {
+
+      // Initialize
+      var caretPos = 0;
+
+      // IE Support
+      if (document.selection) {
+
+        // Set focus on the element
+        inputText.focus ();
+
+        // To get cursor position, get empty selection range
+        var oSel = document.selection.createRange ();
+
+        // Move selection start to 0 position
+        oSel.moveStart ('character', -inputText.value.length);
+
+        // The caret position is selection length
+        caretPos = oSel.text.length;
+      }
+
+      // Firefox support
+      else if (inputText.selectionStart || inputText.selectionStart == '0')
+        caretPos = inputText.selectionStart;
+
+      // Return results
+      return (caretPos);
+    }
 }
 
 /**
