@@ -13,6 +13,7 @@ function MainSidebar(mapping, createBlankColumn){
   this.messageTextarea = mapping.messageTextarea;
   this.numberCharactersLeft = mapping.numberCharactersLeft;
   this.sendTweetButton = mapping.sendTweetButton;
+  this.suggestionPanel = mapping.suggestionPanel;
 
   this.inputTag = mapping.inputTag;
   this.tagContainer = mapping.tagContainer;
@@ -153,7 +154,14 @@ MainSidebar.prototype.textareaListener = function(){
           var usernameMention = afterMention
             .substring(0, afterMention.indexOf(' '));
         }
+        this.suggestionPanel.style.display = "block";
+
+      } else {
+          this.suggestionPanel.style.display = "none";
       }
+
+    } else {
+        this.suggestionPanel.style.display = "none";
     }
   }
 
