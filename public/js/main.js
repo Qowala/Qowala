@@ -16,6 +16,7 @@ var mapping = {
   messageEditionPanel: document.getElementById('messageEditionPanel'),
   notificationPanel: document.getElementById('notificationPanel'),
   messageTextarea: document.getElementById('messageTextarea'),
+  suggestionPanel: document.getElementById('suggestionPanel'),
   numberCharactersLeft: document.getElementById('numberCharactersLeft'),
   sendTweetButton: document.getElementById('sendTweetButton'),
   inputTag: document.getElementById('tagInput'),
