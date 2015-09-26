@@ -11,6 +11,7 @@ var userSchema = mongoose.Schema({
   enabledLists: Array,
   columnsLayout: Array,
   homeTimelineCache: Array,
+  friendsCache: Object,
   enabledTags: Array,
   notifications: Array
 });
@@ -190,6 +191,36 @@ exports.getListsIndex = function (userId, cb){
     else {
       if(user){
         cb(user.listsIndex);
+      }
+    }
+  });
+};
+
+/**
+ * Push the user's friends
+ * @param  {Number}  userId The users ID
+ * @param  {Array}   friendsCache  The users friends
+ * @return {Object}
+ */
+exports.pushUserFriendsCache = function(userId, friendsCache){
+  User.update({user: userId}, {friendsCache: friendsCache}, {}, function(err, numberAffected, rawResponse) {
+      if (err) return [500, err];
+      return rawResponse;
+  });
+};
+
+/**
+ * Get user's friends
+ * @param  {Function} cb     Callback returning the friends
+ */
+exports.getUserFriendsCache = function (userId, cb){
+  User.findOne({user: userId}).exec(function(err, user) {
+    if (err) {
+      return ['error', {status: 500}];
+    }
+    else {
+      if(user){
+        cb(user.friendsCache);
       }
     }
   });
