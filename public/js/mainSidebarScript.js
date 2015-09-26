@@ -154,7 +154,7 @@ MainSidebar.prototype.textareaListener = function(){
           var usernameMention = afterMention
             .substring(0, afterMention.indexOf(' '));
         }
-        this.suggestionPanel.style.display = "block";
+        socket.emit('searchUser', usernameMention);
 
       } else {
           this.suggestionPanel.style.display = "none";
@@ -200,6 +200,32 @@ MainSidebar.prototype.textareaListener = function(){
       // Return results
       return (caretPos);
     }
+}
+
+/**
+ * Receive user suggestion
+ */
+MainSidebar.prototype.receiveUserSuggestion = function(suggestions){
+  this.suggestionPanel.style.display = "block";
+  var userList = document.createElement('ul');
+  userList.id = "userSuggestionList";
+  for (var i = 0; i < suggestions.users.length; i++) {
+    var li = document.createElement('li');
+    var img = document.createElement('img');
+    img.src = suggestions.users[i].profile_image_url_https;
+    //li.textContent = '@' + suggestions.users[i].screen_name;
+    li.appendChild(img);
+    var span = document.createElement('span');
+    span.className = "suggested-user-name";
+    span.textContent = suggestions.users[i].name;
+    li.appendChild(span);
+    var text = document.createTextNode('@' + suggestions.users[i].screen_name);
+    li.appendChild(text);
+    userList.appendChild(li);
+  }
+  console.log(suggestions);
+  this.suggestionPanel.innerHTML = '';
+  this.suggestionPanel.appendChild(userList);
 }
 
 /**

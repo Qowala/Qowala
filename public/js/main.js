@@ -121,6 +121,11 @@ var dashboard = (function (socket){
       mainSidebar.updateNumberConnectedUsers(numberConnectedUsers);
     });
 
+    socket.on('search-user', function(suggestions){
+      console.log('received suggestions!');
+      mainSidebar.receiveUserSuggestion(suggestions);
+    });
+
     socket.on('disconnect', function(){
       console.log('Got disconnected');
     })
