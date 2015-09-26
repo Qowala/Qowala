@@ -406,13 +406,41 @@ body {
 
 #suggestionPanel {
   display: none;
-  height: 250px;
+  max-height: 330px;
   background-color: white;
   position: absolute;
   top: 292px;
   left: 35px;
   right: 35px;
   border: 3px solid rgb(175, 172, 172);
+  overflow: hidden;
+}
+
+#userSuggestionList{
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px
+}
+
+#userSuggestionList > li {
+  color: gray;
+  font-style: italic;
+  padding: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#userSuggestionList > li > img {
+  border-radius: 5px;
+  width: 35px
+}
+
+#userSuggestionList .suggested-user-name {
+  font-style: normal;
+  font-weight: bold;
+  color: black;
+  margin: 0 10px;
 }
 
 #divider::before {
