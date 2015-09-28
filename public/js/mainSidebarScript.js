@@ -14,6 +14,7 @@ function MainSidebar(mapping, createBlankColumn){
   this.numberCharactersLeft = mapping.numberCharactersLeft;
   this.sendTweetButton = mapping.sendTweetButton;
   this.suggestionPanel = mapping.suggestionPanel;
+  this.suggestionList = null;
 
   this.inputTag = mapping.inputTag;
   this.tagContainer = mapping.tagContainer;
@@ -136,12 +137,12 @@ MainSidebar.prototype.textareaListener = function(){
 
   function updateNameSuggestion() {
     var beforeCursor = this.messageTextarea.value
-      .substring(0, getCaretPosition(this.messageTextarea));
+      .substring(0, _getCaretPosition(this.messageTextarea));
 
     if(beforeCursor.indexOf('@') !== -1){
       var mentionIndex = beforeCursor.lastIndexOf('@');
       var btwMentionCaret = beforeCursor
-        .substring(mentionIndex, getCaretPosition(this.messageTextarea));
+        .substring(mentionIndex, _getCaretPosition(this.messageTextarea));
 
       if(btwMentionCaret.indexOf(' ') === -1 && btwMentionCaret !== '@'){
         var afterMention = this.messageTextarea.value
@@ -157,49 +158,103 @@ MainSidebar.prototype.textareaListener = function(){
         socket.emit('searchUser', usernameMention);
 
       } else {
-          this.suggestionPanel.style.display = "none";
+        this.suggestionPanel.style.display = "none";
+        this.messageTextarea.removeEventListener('keypress',
+          _chooseCompletion
+        );
       }
 
     } else {
-        this.suggestionPanel.style.display = "none";
+      this.suggestionPanel.style.display = "none";
+      this.messageTextarea.removeEventListener('keypress',
+        _chooseCompletion
+      );
     }
   }
 
-  /*
-  * ** Returns the caret (cursor) position of the specified text field.
-  * ** Return value range is 0-inputText.value.length.
-  *
-  * Thanks at Flight School for the initial code:
-  * http://flightschool.acylt.com/devnotes/caret-position-woes/
-  **/
-    function getCaretPosition (inputText) {
+}
 
-      // Initialize
-      var caretPos = 0;
+/*
+ * ** Returns the caret (cursor) position of the specified text field.
+ * ** Return value range is 0-inputText.value.length.
+ *
+ * Thanks at Flight School for the initial code:
+ * http://flightschool.acylt.com/devnotes/caret-position-woes/
+ **/
+var _getCaretPosition = function getCaretPosition (inputText) {
 
-      // IE Support
-      if (document.selection) {
+  // Initialize
+  var caretPos = 0;
 
-        // Set focus on the element
-        inputText.focus ();
+  // IE Support
+  if (document.selection) {
 
-        // To get cursor position, get empty selection range
-        var oSel = document.selection.createRange ();
+    // Set focus on the element
+    inputText.focus ();
 
-        // Move selection start to 0 position
-        oSel.moveStart ('character', -inputText.value.length);
+    // To get cursor position, get empty selection range
+    var oSel = document.selection.createRange ();
 
-        // The caret position is selection length
-        caretPos = oSel.text.length;
-      }
+    // Move selection start to 0 position
+    oSel.moveStart ('character', -inputText.value.length);
 
-      // Firefox support
-      else if (inputText.selectionStart || inputText.selectionStart == '0')
-        caretPos = inputText.selectionStart;
+    // The caret position is selection length
+    caretPos = oSel.text.length;
+  }
 
-      // Return results
-      return (caretPos);
+  // Firefox support
+  else if (inputText.selectionStart || inputText.selectionStart == '0')
+    caretPos = inputText.selectionStart;
+
+  // Return results
+  return (caretPos);
+}
+
+/**
+ * Choose username to complete message with
+ */
+var _chooseCompletion = function(e){
+  var suggestionCursor = 0;
+  var suggestions = document.getElementById('suggestionPanel').getElementsByTagName('li');
+  var messageTextarea = document.getElementById('messageTextarea');
+  var color = 'beige';
+
+  for (var i = 0; i < suggestions.length; i++) {
+    if(suggestions[i].style.backgroundColor === color){
+      suggestionCursor = i;
     }
+  }
+
+  if (e.keyCode == 9){
+    e.preventDefault();
+    var usernames = suggestions[suggestionCursor].textContent;
+
+    var beforeCursor = messageTextarea.value
+      .substring(0, _getCaretPosition(messageTextarea));
+    var mentionIndex = beforeCursor.lastIndexOf('@');
+
+    var rightSplit = messageTextarea.value
+      .substring(_getCaretPosition(messageTextarea),
+                 messageTextarea.value.length);
+    var leftSplit = messageTextarea.value.substring(0, mentionIndex);
+    var middle = usernames.substr(usernames.indexOf('@'));
+    messageTextarea.value = leftSplit + middle + rightSplit;
+
+  } else if (e.keyCode === 40) {
+    e.preventDefault();
+    if(suggestionCursor < 5 && suggestionCursor < suggestions.length - 1){
+      suggestions[suggestionCursor].style.backgroundColor = '';
+      suggestionCursor++;
+      suggestions[suggestionCursor].style.backgroundColor = color;
+    }
+  } else if (e.keyCode === 38) {
+    e.preventDefault();
+    if(suggestionCursor > 0){
+      suggestions[suggestionCursor].style.backgroundColor = '';
+      suggestionCursor--;
+      suggestions[suggestionCursor].style.backgroundColor = color;
+    }
+  }
 }
 
 /**
@@ -209,11 +264,14 @@ MainSidebar.prototype.receiveUserSuggestion = function(suggestions){
   this.suggestionPanel.style.display = "block";
   var userList = document.createElement('ul');
   userList.id = "userSuggestionList";
+  this.suggestionList = [];
   for (var i = 0; i < suggestions.users.length; i++) {
+    this.suggestionList.push({
+      screen_name: suggestions.users[i].screen_name
+    });
     var li = document.createElement('li');
     var img = document.createElement('img');
     img.src = suggestions.users[i].profile_image_url_https;
-    //li.textContent = '@' + suggestions.users[i].screen_name;
     li.appendChild(img);
     var span = document.createElement('span');
     span.className = "suggested-user-name";
@@ -223,9 +281,11 @@ MainSidebar.prototype.receiveUserSuggestion = function(suggestions){
     li.appendChild(text);
     userList.appendChild(li);
   }
-  console.log(suggestions);
   this.suggestionPanel.innerHTML = '';
   this.suggestionPanel.appendChild(userList);
+  this.suggestionPanel.getElementsByTagName('li')[0]
+    .style.backgroundColor = 'beige';
+  this.messageTextarea.addEventListener('keypress', _chooseCompletion);
 }
 
 /**
@@ -250,31 +310,32 @@ MainSidebar.prototype.sendMessage = function(){
   }
 }
 
+// Thank you to nemisj for his setCursor function http://stackoverflow.com/a/1867393
+var _setCursor = function setCursor(node,pos){
+  node = (typeof node == "string" || node instanceof String) ? document.getElementById(node) : node;
+  if(!node){
+      return false;
+  } else if(node.createTextRange){
+      var textRange = node.createTextRange();
+      textRange.collapse(true);
+      textRange.moveEnd(pos);
+      textRange.moveStart(pos);
+      textRange.select();
+      return true;
+  } else if(node.setSelectionRange){
+      node.setSelectionRange(pos,pos);
+      return true;
+  }
+  return false;
+}
+
 /**
  * Insert text in message edition panel
  */
 MainSidebar.prototype.insertMessage = function(message){
-  // Thank you to nemisj for his setCursor function http://stackoverflow.com/a/1867393
-  function setCursor(node,pos){
-    node = (typeof node == "string" || node instanceof String) ? document.getElementById(node) : node;
-    if(!node){
-        return false;
-    } else if(node.createTextRange){
-        var textRange = node.createTextRange();
-        textRange.collapse(true);
-        textRange.moveEnd(pos);
-        textRange.moveStart(pos);
-        textRange.select();
-        return true;
-    } else if(node.setSelectionRange){
-        node.setSelectionRange(pos,pos);
-        return true;
-    }
-    return false;
-  }
   this.messageTextarea.value = message + ' ';
   this.messageTextarea.focus();
-  setCursor(this.messageTextarea, this.messageTextarea.value.length);
+  _setCursor(this.messageTextarea, this.messageTextarea.value.length);
 }
 
 MainSidebar.prototype.toggleNotificationPanel = function(forceOpen){
