@@ -113,7 +113,7 @@ MainSidebar.prototype.textareaListener = function(){
   // Triggers inputs for updating the number of characters
   this.messageTextarea.addEventListener('input', function(e){
     updateNumberCharacters();
-    updateNameSuggestion();
+    _updateNameSuggestion();
   }.bind(this));
 
   function updateNumberCharacters(){
@@ -134,35 +134,29 @@ MainSidebar.prototype.textareaListener = function(){
       this.sendTweetButton.disabled = false;
     }
   }
+}
 
-  function updateNameSuggestion() {
-    var beforeCursor = this.messageTextarea.value
-      .substring(0, _getCaretPosition(this.messageTextarea));
+var _updateNameSuggestion = function _updateNameSuggestion() {
+  var beforeCursor = this.messageTextarea.value
+    .substring(0, _getCaretPosition(this.messageTextarea));
 
-    if(beforeCursor.indexOf('@') !== -1){
-      var mentionIndex = beforeCursor.lastIndexOf('@');
-      var btwMentionCaret = beforeCursor
-        .substring(mentionIndex, _getCaretPosition(this.messageTextarea));
+  if(beforeCursor.indexOf('@') !== -1){
+    var mentionIndex = beforeCursor.lastIndexOf('@');
+    var btwMentionCaret = beforeCursor
+      .substring(mentionIndex, _getCaretPosition(this.messageTextarea));
 
-      if(btwMentionCaret.indexOf(' ') === -1 && btwMentionCaret !== '@'){
-        var afterMention = this.messageTextarea.value
-          .substring(mentionIndex + 1, this.messageTextarea.value.length);
+    if(btwMentionCaret.indexOf(' ') === -1 && btwMentionCaret !== '@'){
+      var afterMention = this.messageTextarea.value
+        .substring(mentionIndex + 1, this.messageTextarea.value.length);
 
-        if(afterMention.indexOf(' ') === -1){
-          var usernameMention = afterMention;
-
-        } else {
-          var usernameMention = afterMention
-            .substring(0, afterMention.indexOf(' '));
-        }
-        socket.emit('searchUser', usernameMention);
+      if(afterMention.indexOf(' ') === -1){
+        var usernameMention = afterMention;
 
       } else {
-        this.suggestionPanel.style.display = "none";
-        this.messageTextarea.removeEventListener('keypress',
-          _chooseCompletion
-        );
+        var usernameMention = afterMention
+          .substring(0, afterMention.indexOf(' '));
       }
+      socket.emit('searchUser', usernameMention);
 
     } else {
       this.suggestionPanel.style.display = "none";
@@ -170,8 +164,13 @@ MainSidebar.prototype.textareaListener = function(){
         _chooseCompletion
       );
     }
-  }
 
+  } else {
+    this.suggestionPanel.style.display = "none";
+    this.messageTextarea.removeEventListener('keypress',
+      _chooseCompletion
+    );
+  }
 }
 
 /*
