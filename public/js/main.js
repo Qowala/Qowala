@@ -16,6 +16,7 @@ var mapping = {
   messageEditionPanel: document.getElementById('messageEditionPanel'),
   notificationPanel: document.getElementById('notificationPanel'),
   messageTextarea: document.getElementById('messageTextarea'),
+  suggestionPanel: document.getElementById('suggestionPanel'),
   numberCharactersLeft: document.getElementById('numberCharactersLeft'),
   sendTweetButton: document.getElementById('sendTweetButton'),
   inputTag: document.getElementById('tagInput'),
@@ -118,6 +119,10 @@ var dashboard = (function (socket){
 
     socket.on('numberConnectedUsers', function(numberConnectedUsers){
       mainSidebar.updateNumberConnectedUsers(numberConnectedUsers);
+    });
+
+    socket.on('search-user', function(suggestions){
+      mainSidebar.receiveUserSuggestion(suggestions);
     });
 
     socket.on('disconnect', function(){
