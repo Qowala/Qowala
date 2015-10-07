@@ -46,7 +46,7 @@ describe("mainSidebar", function(){
 
       expect(suggestions[0].style.backgroundColor).toEqual('');
       expect(suggestions[1].style.backgroundColor).toEqual('');
-      expect(suggestions[2].style.backgroundColor).toEqual('beige');
+      expect(suggestions[2].style.backgroundColor).toEqual('rgb(245, 245, 220)');
     });
 
     it("should block selection up when limit reached", function(){
@@ -58,13 +58,13 @@ describe("mainSidebar", function(){
       var suggestions = document.getElementById('suggestionPanel')
         .getElementsByTagName('li');
 
-      suggestions[1].style.backgroundColor = 'beige';
+      suggestions[1].style.backgroundColor = 'rgb(245, 245, 220)';
 
       _chooseCompletion(e);
       _chooseCompletion(e);
       _chooseCompletion(e);
 
-      expect(suggestions[0].style.backgroundColor).toEqual('beige');
+      expect(suggestions[0].style.backgroundColor).toEqual('rgb(245, 245, 220)');
       expect(suggestions[1].style.backgroundColor).toEqual('');
       expect(suggestions[2].style.backgroundColor).toEqual('');
     });
@@ -79,7 +79,7 @@ describe("mainSidebar", function(){
         .getElementsByTagName('li');
       var messageTextarea = document.getElementById('messageTextarea');
 
-      suggestions[1].style.backgroundColor = 'beige';
+      suggestions[1].style.backgroundColor = 'rgb(245, 245, 220)';
 
       _setCursor(messageTextarea, 7);
 
