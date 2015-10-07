@@ -216,7 +216,7 @@ var _chooseCompletion = function(e){
   var suggestionCursor = 0;
   var suggestions = document.getElementById('suggestionPanel').getElementsByTagName('li');
   var messageTextarea = document.getElementById('messageTextarea');
-  var color = 'beige';
+  var color = 'rgb(245, 245, 220)';
 
   for (var i = 0; i < suggestions.length; i++) {
     if(suggestions[i].style.backgroundColor === color){
@@ -224,7 +224,7 @@ var _chooseCompletion = function(e){
     }
   }
 
-  if (e.keyCode == 9){
+  if (e.keyCode == 9 || e.keyCode == 13){
     e.preventDefault();
     var usernames = suggestions[suggestionCursor].textContent;
 
@@ -284,7 +284,7 @@ MainSidebar.prototype.receiveUserSuggestion = function(suggestions){
   this.suggestionPanel.appendChild(userList);
   this.suggestionPanel.getElementsByTagName('li')[0]
     .style.backgroundColor = 'beige';
-  this.messageTextarea.addEventListener('keypress', _chooseCompletion);
+  this.messageTextarea.addEventListener('keydown', _chooseCompletion);
 }
 
 /**
