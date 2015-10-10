@@ -33,7 +33,6 @@ var mapping = {
  */
 var dashboard = (function (socket){
   var mainSidebar = null;
-  var statisticsSidebar = null;
   var messagesDisplay = null;
 
   var socket = socket;
@@ -47,7 +46,6 @@ var dashboard = (function (socket){
       messagesDisplay.createBlankColumn.bind(messagesDisplay)
     );
     notificationPanel = new NotificationPanel(mapping);
-    statisticsSidebar = new StatisticsSidebar();
 
     // Generate the defaults columns
     mainSidebar.init();
