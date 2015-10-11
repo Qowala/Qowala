@@ -1,3 +1,5 @@
 node_modules/
 config/twitter.json
 .vagrant
+*.sublime-project
+*.sublime-workspace
