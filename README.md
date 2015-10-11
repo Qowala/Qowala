@@ -22,11 +22,13 @@ We are using the open source Taiga project management tool. You can access it at
 ### Qowala live v1.0 functionalities:
 
 - One pod for several users
+- Get live notifications when users interact with you
 - Display user's timeline
 - Display user's lists
 - Track tweets by hashtags
 - Send tweets
 - Retweet tweets
+- Reply to tweets
 
 ![Qowala live Screenshot](http://www.killiankemps.fr/data/images/capture-d-ecran-2015-05-31-a-20.17.19.png)
 

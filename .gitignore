@@ -3,3 +3,5 @@ config/twitter.json
 .vagrant
 *.sublime-project
 *.sublime-workspace
+*.vim
+*.swp

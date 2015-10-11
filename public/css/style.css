@@ -43,7 +43,7 @@ body {
 
 }
 
-#loginPopup {
+#loginPopup, #deprecatedBrowserPopup {
     background-color: #595959;
     height: 230px;
     left: 50%;
@@ -59,8 +59,29 @@ body {
     color: white;
 }
 
+#deprecatedBrowserPopup {
+  display: none;
+}
+
 #loginPopup > p {
     margin-bottom: 50px;
+}
+
+.fa.fa-firefox, .fa.fa-chrome, .fa.fa-opera {
+    font-size: 3em;
+    margin: 10px 10px 0;
+}
+
+.fa.fa-opera {
+  color: #C61717;
+}
+
+.fa.fa-chrome {
+  color: #3FA9F5;
+}
+
+.fa.fa-firefox {
+  color: #F15A24;
 }
 
 #welcome-button {
@@ -113,7 +134,7 @@ body {
     max-width: 100px;
 }
 
-#mainSidebar {
+#mainSidebar, #notificationPanel {
     background-color: #1a1a1a;
     bottom: 0;
     color: white;
@@ -125,29 +146,114 @@ body {
     z-index: 2;
 }
 
-#buttonOpenMessageEdition, #buttonAddColumn {
-    background-color: #119955;
-    border: medium none;
-    color: white;
-    height: 50px;
-    margin-left: 25px;
-    padding: 5px 0 0 7px;
-    border-radius: 10px;
-    font-size: 2.2em;
-    width: 50px;
-    display: block;
-    position: relative;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
+#notificationPanel{
+  background-color: #333333;
+  left: -330px;
+  width: 430px;
+  z-index: 1;
+  -moz-transition: left 1s;
+  -webkit-transition: left 1s;
+  -ms-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+}
+
+#notificationPanel h3 {
+  margin: 0;
+  text-align: center;
+}
+
+#notificationPanel > ul {
+  padding: 0 20px 10px 10px;
+  margin-top: 30px;
+  overflow-y: scroll;
+  height: calc(100% - 56px);
+}
+
+.notification {
+  background-color: #545454;
+  border-radius: 5px;
+  padding: 10px;
+  list-style-type: none;
+  margin: 0 0 20px;
+  padding: 15px 10px 10px;
+  position: relative;
+}
+
+.notification h4 {
+  color: #429D4F;
+  font-size: 0.95em;
+  margin: 0 0 10px 30px;
+  text-transform: uppercase;
+  width: 290px;
+}
+
+.notification > i {
+  font-size: 1.5em;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.notification > .fa-twitter {
+  font-size: 1em;
+  position: absolute;
+  left: 15px;
+  top: 18px;
+  color: #3FA9F5;
+  width: 16px;
+}
+
+.fa-star {
+  color: #E0E01E;
+}
+
+.fa-user-plus {
+  color: #19B8BF;
+}
+
+.notification > .fa-retweet {
+  color: #41C463;
+}
+
+.notification > .mention {
+  font-style: normal;
+}
+
+.notification-link {
+  color: white;
+  text-decoration: none;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.notification-link:hover {
+  text-decoration: underline;
+}
+
+#buttonOpenMessageEdition, #buttonAddColumn, #buttonOpenNotificationPanel {
+  background-color: #119955;
+  border: medium none;
+  color: white;
+  height: 50px;
+  margin-left: 25px;
+  padding: 5px 0 0 7px;
+  border-radius: 10px;
+  font-size: 2.2em;
+  width: 50px;
+  display: block;
+  position: relative;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
 }
 
 #buttonOpenMessageEdition:hover, #buttonAddColumn:hover {
@@ -174,6 +280,43 @@ body {
     position: absolute;
     right: 13px;
     top: 22px;
+}
+
+#buttonOpenNotificationPanel {
+  background-color: #676868;
+  color: #000000;
+  padding: 0;
+  font-size: 1.8em;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
+}
+
+#buttonOpenNotificationPanel:hover {
+    background-color:#16C46D;
+}
+
+#notificationsCounter{
+  background-color: #900C17;
+  width: 20px;
+  height: 20px;
+  display: none;
+  position: absolute;
+  right: 24px;
+  margin-top: -7px;
+  z-index: 1;
+  padding: 5px;
+  border-radius: 14px;
+  font-weight: 600;
+  text-align: center;
 }
 
 #titleOpenMessageEdition {
@@ -837,7 +980,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #4CCAFF;
 }
 
-.tweet-retweet-button, .tweet-retweet-button-active {
+.tweet-retweet-button, .tweet-retweet-button-active, .tweet-reply-button {
     background-color: transparent;
     border: none;
     color: #dddede;
@@ -858,12 +1001,22 @@ input[type="text"].tagInput:-ms-input-placeholder {
     transition-property: color, background-color;
 }
 
-.tweet-retweet-button:hover, .tweet-retweet-button-active {
+.tweet-reply-button {
+    position: absolute;
+    right: 65px;
+}
+
+.tweet-retweet-button:hover, .tweet-retweet-button-active,
+.tweet-reply-button:hover {
     color: #119955;
 }
 
 .tweet-retweet-button i, .tweet-retweet-button-active i {
-    font-size: 2em;
+    font-size: 1.4em;
+}
+
+.tweet-reply-button i {
+    font-size: 1.15em;
 }
 
 .tweet-retweeter {

@@ -6,6 +6,15 @@
     </div>
 <% } %>
 
+<div id="deprecatedBrowserPopup">
+    <h2>BROWSER INFORMATION</h2>
+    <p>Qowala uses the latest web technologies to deliver the best experience possible to you.</p>
+    <p>Please use the latest version of Firefox, Chrome or Opera.</p>
+    <a href="https://www.mozilla.org/en-US/firefox/new/"><i class="fa fa-firefox"></i></a>
+    <a href="https://www.chromium.org/"><i class="fa fa-chrome"></i></a>
+    <a href="http://www.opera.com/"><i class="fa fa-opera"></i></a>
+</div>
+
 <div id="mainSidebar">
     <h1 id="logo"><a href="https://git.framasoft.org/KillianKemps/Qowala-live/"><img src="/img/logoql-white_360.png"></a></h1>
 
@@ -23,6 +32,11 @@
     <div id="divider">
     </div>
 
+    <span id="notificationsCounter"></span>
+    <button id="buttonOpenNotificationPanel">
+        <i class="fa fa-bell"></i>
+    </button>
+
     <a href="/logout" id="logoutLink">
         <i class="fa fa-sign-out"></i>
         <p>log out</p>
@@ -30,6 +44,12 @@
 
     <p id="numberConnectedUsersPhrase"><span id="numberConnectedUsers"></span> koala<span id="koalaPlural"></span> online!</p>
 
+</div>
+
+<div id="notificationPanel">
+  <h3>Notifications</h3>
+  <ul id="notificationsList">
+  </ul>
 </div>
 
 <div id="messageEditionPanel">
