@@ -1,6 +1,8 @@
 Qowala live
 ===========
 
+[![Build Status](https://travis-ci.org/KillianKemps/Qowala-live.svg?branch=master)](https://travis-ci.org/KillianKemps/Qowala-live)
+
 Qowala live is an open source Twitter client that wishes to give you control on your usage of social networks.
 
 Created and coded by Killian Kemps and designed by Adrien Touminet.
