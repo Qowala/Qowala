@@ -305,6 +305,8 @@ MainSidebar.prototype.sendMessage = function(){
       'in_reply_to_status_id': this.tweetRecipient.tweetRecipientId
     });
     this.messageTextarea.value = "";
+    this.numberCharactersLeft.textContent = 140;
+    this.sendTweetButton.disabled = true;
     this.openMessageEdition();
   }
 }
