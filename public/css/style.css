@@ -1128,7 +1128,11 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #26ae6a;
 }
 
-#tweetConfirmationPopup .tweet-date, #tweetConfirmationPopup .tweet-retweeter, #tweetConfirmationPopup .tweet-retweet-button, #tweetConfirmationPopup .tweet-retweet-button-active{
+#tweetConfirmationPopup .tweet-date,
+#tweetConfirmationPopup .tweet-retweeter,
+#tweetConfirmationPopup .tweet-retweet-button,
+#tweetConfirmationPopup .tweet-retweet-button-active,
+#tweetConfirmationPopup .tweet-reply-button {
     display: none;
 }
 
