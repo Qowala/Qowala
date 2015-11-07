@@ -29,6 +29,7 @@ function Message(message, streamSource, areImagesEnabled){
   this.retweeted = message.retweeted_status ? message.retweeted_status.retweeted : message.retweeted;
   this.areImagesEnabled = areImagesEnabled;
   this.image = null;
+  this.user = message.retweeted_status ? message.retweeted_status.user : message.user;
 
   this.isRetweet = message.retweeted_status ? true : false;
 
@@ -67,9 +68,9 @@ Message.prototype.generateMessage = function(){
     newTweet.appendChild(newUserRetweeter);
   }
 
-  var newLinkAuthorImg = document.createElement('a');
-  newLinkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
-  newLinkAuthorImg.setAttribute('target', '_blank');
+  // var newLinkAuthorImg = document.createElement('a');
+  // newLinkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
+  // newLinkAuthorImg.setAttribute('target', '_blank');
 
   var newImg = document.createElement('img');
   newImg.setAttribute('src', this.profilePicture);
@@ -112,10 +113,41 @@ Message.prototype.generateMessage = function(){
   // Put event listener on elements
   this.addEvent(newRetweetButton, replyButton);
 
-  newLinkAuthorImg.appendChild(newImg);
+  newImg.addEventListener('click', function(e){
+    var userProfilePanel = document.getElementById('userProfilePanel');
+    var userProfileBannerImg = document.getElementById('userProfileBannerImg');
+    var userProfileTweets = document.getElementById('userProfileTweets');
+    var userProfileFollowers = document.getElementById('userProfileFollowers');
+    var userProfileFollowings = document.getElementById('userProfileFollowings');
+    var userProfileListed = document.getElementById('userProfileListed');
+    var userProfileImg = document.getElementById('userProfileImg');
+    var userProfileName = document.getElementById('userProfileName');
+    var userProfileCity = document.getElementById('userProfileCity');
+    var userProfileDescription = document.getElementById('userProfileDescription');
+
+    userProfilePanel.style.display = 'block';
+    userProfileBannerImg.style.background = 'url('+this.user.profile_banner_url+'/600x200)';
+    userProfileTweets.innerHTML = this.user.statuses_count;
+    userProfileFollowers.innerHTML = this.user.followers_count;
+    userProfileFollowings.innerHTML = this.user.friends_count;
+    userProfileListed.innerHTML = this.user.listed_count;
+    
+    var re = /normal/;
+    var str = this.user.profile_image_url;
+    var subst = 'bigger';
+    var result = str.replace(re, subst);
+    userProfileImg.setAttribute('src',result);
+
+    userProfileName.innerHTML = this.user.name +" <span>@"+ this.user.screen_name +"</span>";
+    userProfileCity.innerHTML = "<i class='fa fa-map-marker'></i> "+this.user.location;
+    userProfileDescription.innerHTML = this.user.description;
+
+  }.bind(this));
+
+  // newLinkAuthorImg.appendChild(newImg);
   newRetweetButton.appendChild(newRetweetFont);
   replyButton.appendChild(replyFont);
-  newTweet.appendChild(newLinkAuthorImg);
+  newTweet.appendChild(newImg);
   newTweet.appendChild(newLinkAuthor);
   newTweet.appendChild(newAuthorScreenName);
   newTweet.appendChild(newContent);
