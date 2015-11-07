@@ -14,6 +14,7 @@ var mapping = {
   buttonOpenNotificationPanel: document.getElementById('buttonOpenNotificationPanel'),
   notificationsCounter: document.getElementById('notificationsCounter'),
   messageEditionPanel: document.getElementById('messageEditionPanel'),
+  userProfilePanel: document.getElementById('userProfilePanel'),
   notificationPanel: document.getElementById('notificationPanel'),
   messageTextarea: document.getElementById('messageTextarea'),
   suggestionPanel: document.getElementById('suggestionPanel'),
