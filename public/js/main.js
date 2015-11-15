@@ -124,6 +124,14 @@ var dashboard = (function (socket){
       mainSidebar.receiveUserSuggestion(suggestions);
     });
 
+    socket.on('returnFollowedBy', function(followers){
+      var userProfileFollowedBy = document.getElementById('userProfileFollowedBy');
+      var keys = Object.keys(followers);
+      userProfileFollowedBy.innerHTML = 'Followed by <a href="'+ followers[keys[0]].link +'">' + followers[keys[0]].name + '</a>';
+      userProfileFollowedBy.innerHTML += ', <a href="'+ followers[keys[1]].link +'">' + followers[keys[1]].name + '</a>';
+      userProfileFollowedBy.innerHTML += ' and <a href="'+ followers[keys[2]].link +'">' + followers[keys[2]].name +'</a>';
+    });
+
     socket.on('disconnect', function(){
       console.log('Got disconnected');
     })
