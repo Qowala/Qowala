@@ -145,6 +145,9 @@ body {
     width: 100px;
     z-index: 2;
 }
+#mainSidebar {
+  z-index: 4;
+}
 
 #notificationPanel{
   background-color: #333333;
@@ -343,7 +346,7 @@ body {
     border-radius: 0 10px 10px 0;
     position: fixed;
     top: 95px;
-    z-index: 1;
+    z-index: 3;
     left: -100px;
     -moz-transition: left 1s;
     -webkit-transition: left 1s;
@@ -978,6 +981,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: white;
     border-radius: 10px;
     border: solid white 1px;
+    cursor: pointer;
 }
 
 .tweet-profile > a {
@@ -1315,6 +1319,11 @@ input[type="text"].tagInput:-ms-input-placeholder {
   right: 0;
   margin: auto;
   top: 175px;
+  border: 2px solid #fff;
+}
+#userProfileImg.top {
+  top: 0;
+  max-height: 55px;
 }
 #userProfilePanel .infos {
   padding: 0 3%;
@@ -1338,6 +1347,53 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 #userProfileDescription {
   font-style: italic;
+  margin-bottom: 0;
+}
+.profile-actions {
+  text-align: center;
+}
+.profile-actions button {
+  border: 1px solid #119955;
+  color: #119955;
+  background-color: #fff;
+  border-radius: 7px;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 5px;
+  width: 150px;
+  margin: 20px;
+}
+.profile-actions button.following {
+  background-color: #119955;
+  color: #fff;
+}
+#userProfileFollowedBy {
+  padding: 15px;
+  margin: 0;
+  background-color: #EFEFEF;
+}
+#userProfileFollowedBy a {
+  text-decoration: none;
+  color: #119955;
+}
+#userProfilePanel .links a {
+  display: inline-block;
+  width: 25%;
+  color: #119955;
+  text-align: center;
+  text-decoration: none;
+  line-height: 28px;
+  padding-top: 15px;
+  padding-bottom: 5px;
+}
+#userProfilePanel .links a i, #userProfilePanel .links a span {
+  display: block;
+  color: #119955;
+  font-size: 20px;
+}
+#userProfilePanel .links a span {
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 /***********************/
