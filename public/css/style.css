@@ -122,16 +122,18 @@ h1 {
   margin-left: 7px;
 }
 
-#mainSidebar, #notificationPanel {
-    background-color: #21A768;
-    bottom: 0;
-    color: white;
-    margin-top: -40px;
-    padding: 30px 10px 10px;
-    position: fixed;
-    top: 0;
-    width: 50px;
-    z-index: 2;
+#mainSidebar {
+  background-color: #21A768;
+  bottom: 0;
+  color: white;
+  /*margin-top: -40px;*/
+  padding: 0 10px 0;
+  position: relative;
+  top: 0;
+  width: 50px;
+  z-index: 2;
+  height: 100%;
+  float: left;
 }
 
 #mainSidebar {
@@ -139,15 +141,19 @@ h1 {
 }
 
 #notificationPanel{
-  background-color: #333333;
-  left: -330px;
+  background-color: #F5F5F5;
+  margin-left: -450px;
   width: 430px;
+  height: 100%;
+  padding: 0;
+  position: relative;
+  float: left;
   z-index: 1;
-  -moz-transition: left 1s;
-  -webkit-transition: left 1s;
-  -ms-transition: left 1s;
-  -o-transition: left 1s;
-  transition: left 1s;
+  -moz-transition: margin 1s;
+  -webkit-transition: margin 1s;
+  -ms-transition: margin 1s;
+  -o-transition: margin 1s;
+  transition: margin 1s;
 }
 
 #notificationPanel h3 {
@@ -156,15 +162,13 @@ h1 {
 }
 
 #notificationPanel > ul {
-  padding: 0 20px 10px 10px;
-  margin-top: 30px;
+  padding: 0;
+  margin: 0;
   overflow-y: scroll;
   height: calc(100% - 56px);
 }
 
 .notification {
-  background-color: #545454;
-  border-radius: 5px;
   padding: 10px;
   list-style-type: none;
   margin: 0 0 20px;
@@ -180,36 +184,48 @@ h1 {
   width: 290px;
 }
 
-.notification > i {
-  font-size: 1.5em;
-  position: absolute;
-  right: 15px;
-  top: 15px;
+.notification > div {
+  font-size: 0.9em;
+  color: white;
+  background-color: #57ACEF;
+  border-radius: 18px;
+  padding: 7px 6px 7px 5px;
+  float: left;
+  margin: 10px 20px 0 10px;
 }
 
-.notification > .fa-twitter {
-  font-size: 1em;
-  position: absolute;
-  left: 15px;
-  top: 18px;
-  color: #3FA9F5;
-  width: 16px;
+.notification img {
+  float: left;
+  margin: 5px 30px 0 0;
+  width: 40px;
+  border-radius: 5px;
 }
 
-.fa-star {
-  color: #E0E01E;
+.notification > p {
+  font-size: 0.9em;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
-.fa-user-plus {
-  color: #19B8BF;
+.notification .fa-retweet, .notification .fa-reply {
+  padding: 0 2px;
 }
 
-.notification > .fa-retweet {
-  color: #41C463;
+.notification .fa-user-plus {
+  padding-left: 3px;
 }
 
-.notification > .mention {
-  font-style: normal;
+.notification .fa-list {
+  padding: 0px 2px 0px 3px;
+}
+
+.notification .fa-heart {
+  padding: 1px 2px 0px 3px
+}
+
+.notification .fa-at {
+  padding: 0px 2px 0px 4px;
+  font-weight: bold;
 }
 
 .notification-link {
@@ -221,6 +237,16 @@ h1 {
 
 .notification-link:hover {
   text-decoration: underline;
+}
+
+.notification .subject {
+  font-weight: 600;
+}
+
+.notification .notification-date {
+  float: right;
+  color: #ccc;
+  font-size: 0.8em;
 }
 
 #mainSidebar > button, .button-sidebar {
@@ -235,7 +261,7 @@ h1 {
   display: block;
   position: relative;
   margin-bottom: 30px;
-  margin-left: 2px;
+  margin-left: 1px;
   box-shadow: 0px 4px 1px -3px #1D905A;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
@@ -296,19 +322,20 @@ button#buttonOpenNotificationPanel {
   font-size: .8em;
 }
 
-#notificationsCounter{
-  background-color: #900C17;
-  width: 20px;
-  height: 20px;
+#notificationsCounter {
+  background-color: #E94C3D;
+  width: 12px;
+  height: 12px;
   display: none;
   position: absolute;
-  right: 24px;
+  right: 2px;
   margin-top: -7px;
   z-index: 1;
   padding: 5px;
   border-radius: 14px;
   font-weight: 600;
   text-align: center;
+  font-size: 0.6em;
 }
 
 #titleOpenMessageEdition {
@@ -516,14 +543,14 @@ input[type="text"].tagInput:-ms-input-placeholder {
 /** TWEETS **/
 
 #tweets-columns-list {
-    position: relative;
-    right: -120px;
-    width: calc(100% - 120px);
+    /*width: calc(100% - 70px);*/
     padding: 0;
-    display: inline-flex;
+    /*display: inline-flex;*/
+    display: flex;
     margin-top: 0;
     height: 100%;
     margin: 0;
+    overflow-x: auto;
 }
 
 .tweets-column, #plusColumn {
