@@ -360,14 +360,14 @@ function NotificationPanel(mapping){
 NotificationPanel.prototype.toggleNotificationPanel = function(forceOpen){
   this.isNotificationPanelOpen = !this.isNotificationPanelOpen;
   if(this.isNotificationPanelOpen){
-    this.notificationPanel.style.left = '120px';
+    this.notificationPanel.style.left = '70px';
     if(this.notificationCount !== 0){
       this.notificationsCounter.style.display = 'none';
       this.notificationCount = 0;
     }
   }
   else{
-    this.notificationPanel.style.left = '-330px';
+    this.notificationPanel.style.left = '-380px';
   }
 }
 

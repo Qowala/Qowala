@@ -138,8 +138,8 @@ body {
 }
 
 #notificationPanel{
-  background-color: #333333;
-  left: -330px;
+  background-color: #F5F5F5;
+  left: -380px;
   width: 430px;
   z-index: 1;
   -moz-transition: left 1s;
@@ -156,7 +156,6 @@ body {
 
 #notificationPanel > ul {
   padding: 0 20px 10px 10px;
-  margin-top: 30px;
   overflow-y: scroll;
   height: calc(100% - 56px);
 }
@@ -516,7 +515,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 #tweets-columns-list {
     position: relative;
-    right: -120px;
+    right: -70px;
     width: calc(100% - 120px);
     padding: 0;
     display: inline-flex;
