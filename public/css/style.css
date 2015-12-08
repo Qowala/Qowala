@@ -264,6 +264,32 @@ body {
   top: 22px;
 }
 
+#logoutLink {
+  color: white;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  padding: 0;
+}
+
+#logoutLink i {
+  margin-top: 11px;
+  margin-left: 5px;
+}
+
+#mainSidebar a:hover {
+  color:#FFA525;
+}
+
+#numberConnectedUsersPhrase {
+  bottom: 100px;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: .8em;
+}
+
 #notificationsCounter{
   background-color: #900C17;
   width: 20px;
@@ -403,16 +429,6 @@ body {
   margin: 0 10px;
 }
 
-#divider::before {
-    border-top: 1px solid #8d8e8d;
-    content: " ";
-    display: block;
-    margin-top:30px;
-    margin-left: 13px;
-    padding-top: 20px;
-    width: 70px;
-}
-
 input[type="text"].tagInput {
     display: block;
     padding: 0 12px;
@@ -489,37 +505,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #676767;
     font-family: "open_sansregular",sans-serif;
     padding: 4px 15px;
-}
-
-#logoutLink {
-  color: white;
-  position: absolute;
-  bottom: 10px;
-  text-align: center;
-  padding: 0;
-}
-
-#logoutLink i {
-  margin-top: 11px;
-  margin-left: 5px;
-}
-
-#mainSidebar a:hover {
-  color:#FFA525;
-}
-
-
-#logoutLink p {
-    margin: 0;
-}
-
-#numberConnectedUsersPhrase {
-    bottom: 100px;
-    left: 0;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    font-size: .8em;
 }
 
 /** TWEETS **/
