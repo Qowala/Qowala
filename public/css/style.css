@@ -533,10 +533,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     position: relative;
 }
 
-.tweets-column + .tweets-column {
-    border-left: 5px solid #1a1a1a;
-}
-
 .tweets-column-header {
     background-color: #21A768;
     color: white;
@@ -559,8 +555,8 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: transparent;
     border: medium none;
     bottom: 6px;
-    color: #afacac;
-    font-size: 1.6em;
+    color: white;
+    font-size: 1.2em;
     position: absolute;
     right: 10px;  -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -879,8 +875,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     list-style-type: none;
     min-height: 48px;
     padding: 10px;
-    border-bottom: 1px solid #119955;
+    border: 1px solid #C5EAD8;
     position: relative;
+    margin: 10px;
+    border-radius: 4px;
     transform: scaleY(0);
     transform-origin: 50% 0;
     -moz-transition: transform ease-in 0.1s;
@@ -923,7 +921,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweet-authorname{
     font-weight: 600;
     text-decoration: none;
-    color: white;
+    color: #21A768;
 }
 
 .tweet-authorScreenName {
