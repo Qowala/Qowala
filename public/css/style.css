@@ -113,36 +113,24 @@ body {
     max-width: 200px;
 }
 
-#logo {
-    text-align: center;
-}
-
-#logo::after {
-    border-bottom: 1px solid #8d8e8d;
-    content: " ";
-    display: block;
-    margin: 0 auto;
-    padding-bottom: 30px;
-    width: 70px;
-}
-
-#logo a {
-  width: 100px;
+h1 {
+  margin: 0.4em 0;
 }
 
 #logo img{
-    max-width: 100px;
+  max-width: 34px;
+  margin-left: 7px;
 }
 
 #mainSidebar, #notificationPanel {
-    background-color: #1a1a1a;
+    background-color: #21A768;
     bottom: 0;
     color: white;
-    margin-top: -16px;
+    margin-top: -40px;
     padding: 30px 10px 10px;
     position: fixed;
     top: 0;
-    width: 100px;
+    width: 50px;
     z-index: 2;
 }
 
@@ -235,77 +223,77 @@ body {
   text-decoration: underline;
 }
 
-#buttonOpenMessageEdition, #buttonAddColumn, #buttonOpenNotificationPanel {
-  background-color: #119955;
+#mainSidebar > button, .button-sidebar {
+  background-color: #25BF77;
   border: medium none;
   color: white;
-  height: 50px;
-  margin-left: 25px;
-  padding: 5px 0 0 7px;
-  border-radius: 10px;
-  font-size: 2.2em;
-  width: 50px;
+  height: 48px;
+  padding: 5px 0 0 3px;
+  border-radius: 3px;
+  font-size: 1.4em;
+  width: 48px;
   display: block;
   position: relative;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  margin-bottom: 30px;
+  margin-left: 2px;
+  box-shadow: 0px 4px 1px -3px #1D905A;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
   -webkit-transition-property: background-color;
   transition-property: background-color;
 }
 
-#buttonOpenMessageEdition:hover, #buttonAddColumn:hover {
-    background-color:#16C46D;
+#mainSidebar > button:hover {
+  background-color:#16C46D;
 }
 
 #buttonOpenMessageEdition {
-  margin-top: 40px;
-}
-
-#buttonAddColumn {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 #buttonAddColumn .fa.fa-columns {
-    bottom: 8px;
-    font-size: 0.95em;
-    left: 10px;
-    position: absolute;
+  bottom: 12px;
+  font-size: 0.85em;
+  left: 14px;
+  position: absolute;
 }
 
-#buttonAddColumn .fa.fa-plus {
-    font-size: 0.3em;
-    position: absolute;
-    right: 13px;
-    top: 22px;
+#buttonAddColumn .fa.fa-plus-circle {
+  font-size: 0.7em;
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  background-color: #25BF77;
 }
 
-#buttonOpenNotificationPanel {
-  background-color: #676868;
-  color: #000000;
+button#buttonOpenNotificationPanel {
   padding: 0;
-  font-size: 1.8em;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: color, background-color;
-  transition-property: color, background-color;
 }
 
-#buttonOpenNotificationPanel:hover {
-    background-color:#16C46D;
+#logoutLink {
+  color: white;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  padding: 0;
+}
+
+#logoutLink i {
+  margin-top: 11px;
+  margin-left: 5px;
+}
+
+#mainSidebar a:hover {
+  color:#FFA525;
+}
+
+#numberConnectedUsersPhrase {
+  bottom: 100px;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: .8em;
 }
 
 #notificationsCounter{
@@ -446,16 +434,6 @@ body {
   margin: 0 10px;
 }
 
-#divider::before {
-    border-top: 1px solid #8d8e8d;
-    content: " ";
-    display: block;
-    margin-top:30px;
-    margin-left: 13px;
-    padding-top: 20px;
-    width: 70px;
-}
-
 input[type="text"].tagInput {
     display: block;
     padding: 0 12px;
@@ -533,47 +511,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #676767;
     font-family: "open_sansregular",sans-serif;
     padding: 4px 15px;
-}
-
-#logoutLink {
-    background-color: transparent;
-    border: none;
-    color: #d18933;
-    position: absolute;
-    left: 20px;
-    bottom: 80px;
-    width: 80px;
-    text-align: center;
-    text-decoration: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
-}
-
-#mainSidebar a:hover {
-  color:#FFA525;
-}
-
-
-#logoutLink p {
-    margin: 0;
-}
-
-#numberConnectedUsersPhrase {
-    bottom: 20px;
-    left: 0;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    font-size: .8em;
 }
 
 /** TWEETS **/
