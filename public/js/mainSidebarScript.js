@@ -360,14 +360,14 @@ function NotificationPanel(mapping){
 NotificationPanel.prototype.toggleNotificationPanel = function(forceOpen){
   this.isNotificationPanelOpen = !this.isNotificationPanelOpen;
   if(this.isNotificationPanelOpen){
-    this.notificationPanel.style.left = '70px';
+    this.notificationPanel.style.marginLeft = '0';
     if(this.notificationCount !== 0){
       this.notificationsCounter.style.display = 'none';
       this.notificationCount = 0;
     }
   }
   else{
-    this.notificationPanel.style.left = '-380px';
+    this.notificationPanel.style.marginLeft = '-450px';
   }
 }
 
@@ -498,10 +498,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthor.setAttribute('target', '_blank');
     linkAuthor.textContent = this.message.authorPseudonym;
 
-    var authorScreenName = document.createElement('span');
-    authorScreenName.setAttribute('class', 'tweet-authorScreenName');
-    authorScreenName.textContent = '@' + this.message.authorUsername;
-
     var profileImg = document.createElement('img');
     profileImg.setAttribute('src', this.message.profilePicture);
     profileImg.setAttribute('class', 'tweet-profile');
@@ -513,7 +509,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthorImg.appendChild(profileImg);
     notification.appendChild(linkAuthorImg);
     notification.appendChild(linkAuthor);
-    notification.appendChild(authorScreenName);
     notification.appendChild(content);
   }
   else if(this.type === 'reply'){
@@ -539,10 +534,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthor.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
     linkAuthor.setAttribute('target', '_blank');
     linkAuthor.textContent = this.message.authorPseudonym;
-
-    var authorScreenName = document.createElement('span');
-    authorScreenName.setAttribute('class', 'tweet-authorScreenName');
-    authorScreenName.textContent = '@' + this.message.authorUsername;
 
     var profileImg = document.createElement('img');
     profileImg.setAttribute('src', this.message.profilePicture);
@@ -572,7 +563,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthorImg.appendChild(profileImg);
     tweet.appendChild(linkAuthorImg);
     tweet.appendChild(linkAuthor);
-    tweet.appendChild(authorScreenName);
     tweet.appendChild(content);
     newRetweetButton.appendChild(newRetweetFont);
     replyButton.appendChild(replyFont);
@@ -605,10 +595,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthor.setAttribute('target', '_blank');
     linkAuthor.textContent = this.message.authorPseudonym;
 
-    var authorScreenName = document.createElement('span');
-    authorScreenName.setAttribute('class', 'tweet-authorScreenName');
-    authorScreenName.textContent = '@' + this.message.authorUsername;
-
     var profileImg = document.createElement('img');
     profileImg.setAttribute('src', this.message.profilePicture);
     profileImg.setAttribute('class', 'tweet-profile');
@@ -637,7 +623,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthorImg.appendChild(profileImg);
     tweet.appendChild(linkAuthorImg);
     tweet.appendChild(linkAuthor);
-    tweet.appendChild(authorScreenName);
     tweet.appendChild(content);
     newRetweetButton.appendChild(newRetweetFont);
     replyButton.appendChild(replyFont);
@@ -666,10 +651,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthor.setAttribute('target', '_blank');
     linkAuthor.textContent = this.message.authorPseudonym;
 
-    var authorScreenName = document.createElement('span');
-    authorScreenName.setAttribute('class', 'tweet-authorScreenName');
-    authorScreenName.textContent = '@' + this.message.authorUsername;
-
     var profileImg = document.createElement('img');
     profileImg.setAttribute('src', this.message.profilePicture);
     profileImg.setAttribute('class', 'tweet-profile');
@@ -681,7 +662,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthorImg.appendChild(profileImg);
     notification.appendChild(linkAuthorImg);
     notification.appendChild(linkAuthor);
-    notification.appendChild(authorScreenName);
     notification.appendChild(content);
   }
   else if(this.type === 'follow'){
@@ -703,10 +683,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthor.setAttribute('target', '_blank');
     linkAuthor.textContent = this.userName;
 
-    var authorScreenName = document.createElement('span');
-    authorScreenName.setAttribute('class', 'tweet-authorScreenName');
-    authorScreenName.textContent = '@' + this.userScreenName;
-
     var content = document.createElement('p');
     content.textContent = this.userDescription;
     content.setAttribute('class', 'tweet-text');
@@ -714,7 +690,6 @@ Notification.prototype.generateNotification = function(){
     linkAuthorImg.appendChild(profileImg);
     notification.appendChild(linkAuthorImg);
     notification.appendChild(linkAuthor);
-    notification.appendChild(authorScreenName);
     notification.appendChild(content);
   }
   else if(this.type === 'list_member_added'){

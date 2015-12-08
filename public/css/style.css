@@ -125,28 +125,34 @@ body {
     max-width: 33px;
 }
 
-#mainSidebar, #notificationPanel {
-    background-color: #21A768;
-    bottom: 0;
-    color: white;
-    margin-top: -40px;
-    padding: 30px 10px 10px;
-    position: fixed;
-    top: 0;
-    width: 50px;
-    z-index: 2;
+#mainSidebar {
+  background-color: #21A768;
+  bottom: 0;
+  color: white;
+  /*margin-top: -40px;*/
+  padding: 0 10px 0;
+  position: relative;
+  top: 0;
+  width: 50px;
+  z-index: 2;
+  height: 100%;
+  float: left;
 }
 
 #notificationPanel{
   background-color: #F5F5F5;
-  left: -380px;
+  margin-left: -450px;
   width: 430px;
+  height: 100%;
+  padding: 0 10px 0;
+  position: relative;
+  float: left;
   z-index: 1;
-  -moz-transition: left 1s;
-  -webkit-transition: left 1s;
-  -ms-transition: left 1s;
-  -o-transition: left 1s;
-  transition: left 1s;
+  -moz-transition: margin 1s;
+  -webkit-transition: margin 1s;
+  -ms-transition: margin 1s;
+  -o-transition: margin 1s;
+  transition: margin 1s;
 }
 
 #notificationPanel h3 {
@@ -514,14 +520,14 @@ input[type="text"].tagInput:-ms-input-placeholder {
 /** TWEETS **/
 
 #tweets-columns-list {
-    position: relative;
-    right: -70px;
-    width: calc(100% - 120px);
+    /*width: calc(100% - 70px);*/
     padding: 0;
-    display: inline-flex;
+    /*display: inline-flex;*/
+    display: flex;
     margin-top: 0;
     height: 100%;
     margin: 0;
+    overflow-x: auto;
 }
 
 .tweets-column, #plusColumn {
