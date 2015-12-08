@@ -534,13 +534,18 @@ input[type="text"].tagInput:-ms-input-placeholder {
     overflow-y: scroll;
 }
 
+
 .tweets-column-header {
-    background-color: #21A768;
-    color: white;
-    margin: 10px;
-    padding: 10px 20px;
-    position: relative;
-    border-radius: 5px;
+  background-color: #21A768;
+  color: white;
+  margin: 10px;
+  padding: 10px 20px;
+  position: relative;
+  border-radius: 5px;
+}
+
+#tweets-column-home .tweets-column-header {
+  background-color: #55ACEF;
 }
 
 .tweets-column-header h3 {
@@ -873,20 +878,24 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets li{
-    list-style-type: none;
-    min-height: 48px;
-    padding: 10px;
-    border: 1px solid #C5EAD8;
-    position: relative;
-    margin: 10px;
-    border-radius: 4px;
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    -moz-transition: transform ease-in 0.1s;
-    -webkit-transition: transform ease-in 0.1s;
-    -ms-transition: transform ease-in 0.1s;
-    -o-transition: transform ease-in 0.1s;
-    transition: transform ease-in 0.1s;
+  list-style-type: none;
+  min-height: 48px;
+  padding: 10px;
+  border: 1px solid #C5EAD8;
+  position: relative;
+  margin: 10px;
+  border-radius: 4px;
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  -moz-transition: transform ease-in 0.1s;
+  -webkit-transition: transform ease-in 0.1s;
+  -ms-transition: transform ease-in 0.1s;
+  -o-transition: transform ease-in 0.1s;
+  transition: transform ease-in 0.1s;
+}
+
+#tweets-column-home .tweets li {
+  border: 1px solid #C8DBEA;
 }
 
 .tweet-date{
@@ -924,6 +933,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
     font-weight: 600;
     text-decoration: none;
     color: #21A768;
+}
+
+#tweets-column-home .tweet-authorname {
+    color: #55ACEF;
 }
 
 .tweet-authorScreenName {

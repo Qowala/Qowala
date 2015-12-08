@@ -476,7 +476,7 @@ Message.prototype.processText = function(){
         if(urls_indices[i].media){
           var image = document.createElement('img');
           image.setAttribute('src',
-            urls_indices[i].media_url + ':thumb');
+            urls_indices[i].media_url + ':medium');
           image.setAttribute('fullsize',
             urls_indices[i].largeSize.h +
             '/' +
