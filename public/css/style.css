@@ -114,7 +114,7 @@ body {
 }
 
 h1 {
-  margin: 0.4em 0;
+  margin: 0.5em 0;
 }
 
 #logo img{
@@ -522,30 +522,31 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding: 0;
     display: inline-flex;
     margin-top: 0;
-    min-height: 100%;
+    height: 100%;
     margin: 0;
-    background-color: #333333;
 }
 
 .tweets-column, #plusColumn {
     list-style-type: none;
     width: 25%;
-    background-color: #333333;
-    max-height: 100%;
+    height: 100%;
     min-width: 24.75%;
     position: relative;
+    overflow-y: scroll;
 }
 
-.tweets-column + .tweets-column {
-    border-left: 5px solid #1a1a1a;
-}
 
 .tweets-column-header {
-    background-color: #4d4d4d;
-    color: #e0e2e0;
-    margin: 0;
-    padding: 10px 20px;
-    position: relative;
+  background-color: #21A768;
+  color: white;
+  margin: 10px 15px;
+  padding: 13px 20px;
+  position: relative;
+  border-radius: 5px;
+}
+
+#tweets-column-home .tweets-column-header {
+  background-color: #55ACEF;
 }
 
 .tweets-column-header h3 {
@@ -554,14 +555,15 @@ input[type="text"].tagInput:-ms-input-placeholder {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 0.8em;
 }
 
 .tweets-column-header-button {
     background-color: transparent;
     border: medium none;
-    bottom: 6px;
-    color: #afacac;
-    font-size: 1.6em;
+    bottom: 10px;
+    color: white;
+    font-size: 1.2em;
     position: absolute;
     right: 10px;
     -webkit-transform: translateZ(0);
@@ -584,7 +586,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweets-column-panel {
     position: absolute;
     top: 46px;
-    background-color: #202020;
     width: 100%;
     z-index: 1;
     overflow: hidden;
@@ -625,7 +626,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     list-style-type: none;
     text-align: center;
     min-height: 60px;
-    color: white;
     position: relative;
 }
 
@@ -863,7 +863,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .column-tutorial {
     border: 2px solid #0D9955;
     border-radius: 20px;
-    color: white;
     margin: 50px auto;
     text-align: center;
     width: 80%;
@@ -879,33 +878,40 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets li{
-    list-style-type: none;
-    /*background-color: #5072b2;*/
-    color: white;
-    min-height: 48px;
-    padding: 10px;
-    border-bottom: 1px solid #119955;
-    position: relative;
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    -moz-transition: transform ease-in 0.1s;
-    -webkit-transition: transform ease-in 0.1s;
-    -ms-transition: transform ease-in 0.1s;
-    -o-transition: transform ease-in 0.1s;
-    transition: transform ease-in 0.1s;
+  list-style-type: none;
+  min-height: 48px;
+  padding: 10px 10px 8px 10px;
+  border: 1px solid #C5EAD8;
+  position: relative;
+  margin: 10px 15px;
+  border-radius: 4px;
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  -moz-transition: transform ease-in 0.1s;
+  -webkit-transition: transform ease-in 0.1s;
+  -ms-transition: transform ease-in 0.1s;
+  -o-transition: transform ease-in 0.1s;
+  transition: transform ease-in 0.1s;
+}
+
+#tweets-column-home .tweets li {
+  border: 1px solid #C8DBEA;
 }
 
 .tweet-date{
     font-size: 0.8em;
+    margin-left:6px;
+    color: #999;
 }
 
-.tweet-date:hover {
-    text-decoration: underline;
+.tweet-date::before {
+    content: "\2022";
+    margin-right: 6px;
 }
 
 .tweet-text{
     font-size: 0.9em;
-    margin: 8px 0 10px;
+    margin: 8px 0 10px 52px;
     word-wrap: break-word;
 }
 
@@ -913,10 +919,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
     float: left;
     height: 40px;
     margin-right: 10px;
-    margin-top: 6px;
     width: 40px;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     border: solid white 1px;
     cursor: pointer;
 }
@@ -929,14 +934,18 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweet-authorname{
     font-weight: 600;
     text-decoration: none;
-    color: white;
+    color: #21A768;
+}
+
+#tweets-column-home .tweet-authorname {
+    color: #55ACEF;
 }
 
 .tweet-authorScreenName {
-    color: #119955;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
-    margin-left: 10px;
+    color: #999999;
+    font-family: 'Asap-Regular', sans-serif;
+    margin-left: 6px;
+    font-size: 0.9em;
 }
 
 .tweet-url, .tweet-link-image{
@@ -963,11 +972,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweet-retweet-button, .tweet-retweet-button-active, .tweet-reply-button {
     background-color: transparent;
     border: none;
-    color: #dddede;
-    position: absolute;
-    right: 20px;
-    bottom: 10px;
-    padding: 0;
+    color: #ccc;
+    font-size: 0.7em;
+    margin-right: 15px;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
@@ -982,8 +989,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-reply-button {
-    position: absolute;
-    right: 65px;
+  margin-left: 46px;
 }
 
 .tweet-retweet-button:hover, .tweet-retweet-button-active,
@@ -1000,13 +1006,39 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-retweeter {
-    font-size: 0.9em;
-    margin: 0 0 5px;
+  font-size: 0.9em;
+  margin: 0 0 5px;
+  margin: -10px -10px 8px;
+  color: rgb(153, 153, 153);
+  padding: 12px 12px 12px 32px;
+  background-color: #EDFAF3;
+}
+
+.tweet-retweeter span {
+  color: #21A866;
+}
+
+#tweets-column-home .tweet-retweeter {
+  background-color: rgb(237, 244, 250);
+}
+
+#tweets-column-home .tweet-retweeter span {
+  color: #55ACEF;
+}
+
+.tweet-retweeter img {
+  width: 20px;
+  border-radius: 5px;
 }
 
 .tweet-retweeter .fa-retweet {
-    color: #119955;
-    margin-right: 10px;
+  color: #21A866;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+#tweets-column-home .tweet-retweeter .fa-retweet {
+  color: #55ACEF;
 }
 
 .tweet-image, .tweet-image-extended{

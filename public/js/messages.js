@@ -12,21 +12,26 @@
  * @param {String} profilePicture  URL to user's profile picture
  */
 function Message(message, streamSource, areImagesEnabled){
-  this.id_str = message.retweeted_status ? message.retweeted_status.id_str : message.id_str;
+  // Use this variable to manage tweet if it is either retweeted or not
+  this.messageStatus = message.retweeted_status ? message.retweeted_status : message;
+
+  this.id_str = this.messageStatus.id_str;
   this.retweeterAuthorUsername = message.user.name;
   this.retweeterAuthorPseudonym = message.user.screen_name;
-  this.authorUsername = message.retweeted_status ? message.retweeted_status.user.screen_name : message.user.screen_name;
-  this.authorPseudonym = message.retweeted_status ? message.retweeted_status.user.name : message.user.name;
-  this.date = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;
-  this.displayedDate = '0 min';
-  this.friendlyDate = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;
+  this.retweeterProfilePicture = message.user.profile_image_url_https;
+  this.retweetCount = this.messageStatus.retweet_count;
+  this.authorUsername = this.messageStatus.user.screen_name;
+  this.authorPseudonym = this.messageStatus.user.name;
+  this.date = this.messageStatus.created_at;
+  this.displayedDate = '0 min ago';
+  this.friendlyDate = this.messageStatus.created_at;
   this.dateHTML = null;
   this.text = document.createTextNode('p');
   this.hasBeenTextAlreadyProcessed = false;
-  this.text.textContent = message.retweeted_status ? message.retweeted_status.text : message.text;
-  this.profilePicture = message.retweeted_status ? message.retweeted_status.user.profile_image_url_https : message.user.profile_image_url_https;
+  this.text.textContent = this.messageStatus.text;
+  this.profilePicture = this.messageStatus.user.profile_image_url_https;
   this.streamSource = streamSource
-  this.retweeted = message.retweeted_status ? message.retweeted_status.retweeted : message.retweeted;
+  this.retweeted = this.messageStatus.retweeted;
   this.areImagesEnabled = areImagesEnabled;
   this.image = null;
   this.user = message.retweeted_status ? message.retweeted_status.user : message.user;
@@ -61,10 +66,18 @@ Message.prototype.generateMessage = function(){
   if(this.isRetweet){
     var newUserRetweeter = document.createElement('p');
     newUserRetweeter.className = "tweet-retweeter";
-    newUserRetweeter.textContent = this.retweeterAuthorUsername + ' has retweeted';
+
     var newRetweeterFont = document.createElement('i');
     newRetweeterFont.setAttribute('class', 'fa fa-retweet');
-    newUserRetweeter.insertBefore(newRetweeterFont, newUserRetweeter.firstChild);
+    newUserRetweeter.appendChild(newRetweeterFont);
+
+    var retweeterImg = document.createElement('img');
+    retweeterImg.setAttribute('src', this.retweeterProfilePicture);
+    retweeterImg.setAttribute('class', 'tweet-retweeter-profile');
+    newUserRetweeter.insertBefore(retweeterImg, newUserRetweeter.firstChild);
+
+    newUserRetweeter.insertAdjacentHTML('beforeend', ' retweeted by <span>' + this.retweeterAuthorUsername + '</span>');
+
     newTweet.appendChild(newUserRetweeter);
   }
 
@@ -123,8 +136,8 @@ Message.prototype.generateMessage = function(){
   newTweet.appendChild(newImg);
   newTweet.appendChild(newLinkAuthor);
   newTweet.appendChild(newAuthorScreenName);
-  newTweet.appendChild(newContent);
   newTweet.appendChild(newDate);
+  newTweet.appendChild(newContent);
   newTweet.appendChild(replyButton);
   newTweet.appendChild(newRetweetButton);
 
@@ -370,6 +383,7 @@ Message.prototype.updateTime = function(test){
   var unit = ' min';
 
   var toBeDisplayed = timeDifference + unit;
+  toBeDisplayed = toBeDisplayed + ' ago';
 
   if(timeDifference >= 60){
     timeDifference = timeDifference / 60;
@@ -383,6 +397,7 @@ Message.prototype.updateTime = function(test){
     }
 
     toBeDisplayed = timeDifference + unit;
+    toBeDisplayed = toBeDisplayed + ' ago';
 
     if (timeDifference >= 24) {
 
@@ -581,7 +596,7 @@ Message.prototype.processText = function(){
         if(urls_indices[i].media){
           var image = document.createElement('img');
           image.setAttribute('src',
-            urls_indices[i].media_url + ':thumb');
+            urls_indices[i].media_url + ':medium');
           image.setAttribute('fullsize',
             urls_indices[i].largeSize.h +
             '/' +
