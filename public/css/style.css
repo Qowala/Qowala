@@ -523,13 +523,11 @@ input[type="text"].tagInput:-ms-input-placeholder {
     margin-top: 0;
     min-height: 100%;
     margin: 0;
-    background-color: #333333;
 }
 
 .tweets-column, #plusColumn {
     list-style-type: none;
     width: 25%;
-    background-color: #333333;
     max-height: 100%;
     min-width: 24.75%;
     position: relative;
@@ -540,11 +538,12 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets-column-header {
-    background-color: #4d4d4d;
-    color: #e0e2e0;
-    margin: 0;
+    background-color: #21A768;
+    color: white;
+    margin: 10px;
     padding: 10px 20px;
     position: relative;
+    border-radius: 5px;
 }
 
 .tweets-column-header h3 {
@@ -553,6 +552,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 0.8em;
 }
 
 .tweets-column-header-button {
@@ -582,7 +582,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweets-column-panel {
     position: absolute;
     top: 46px;
-    background-color: #202020;
     width: 100%;
     z-index: 1;
     overflow: hidden;
@@ -625,7 +624,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     list-style-type: none;
     text-align: center;
     min-height: 60px;
-    color: white;
     position: relative;
 }
 
@@ -863,7 +861,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .column-tutorial {
     border: 2px solid #0D9955;
     border-radius: 20px;
-    color: white;
     margin: 50px auto;
     text-align: center;
     width: 80%;
@@ -880,8 +877,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweets li{
     list-style-type: none;
-    /*background-color: #5072b2;*/
-    color: white;
     min-height: 48px;
     padding: 10px;
     border-bottom: 1px solid #119955;
