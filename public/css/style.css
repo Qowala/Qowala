@@ -251,17 +251,22 @@ body {
 }
 
 #buttonAddColumn .fa.fa-columns {
-  bottom: 8px;
-  font-size: 0.95em;
-  left: 10px;
+  bottom: 12px;
+  font-size: 0.85em;
+  left: 14px;
   position: absolute;
 }
 
-#buttonAddColumn .fa.fa-plus {
-  font-size: 0.3em;
+#buttonAddColumn .fa.fa-plus-circle {
+  font-size: 0.7em;
   position: absolute;
-  right: 13px;
-  top: 22px;
+  right: 8px;
+  top: 11px;
+  background-color: #25BF77;
+}
+
+button#buttonOpenNotificationPanel {
+  padding: 0;
 }
 
 #logoutLink {
