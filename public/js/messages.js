@@ -118,8 +118,8 @@ Message.prototype.generateMessage = function(){
   newTweet.appendChild(newLinkAuthorImg);
   newTweet.appendChild(newLinkAuthor);
   newTweet.appendChild(newAuthorScreenName);
-  newTweet.appendChild(newContent);
   newTweet.appendChild(newDate);
+  newTweet.appendChild(newContent);
   newTweet.appendChild(replyButton);
   newTweet.appendChild(newRetweetButton);
 
