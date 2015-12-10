@@ -458,6 +458,8 @@ function Notification(notification){
     this.target_object = notification.event.target_object;
   }
   this.message = new Message(notification.tweet, notification.streamSource, false);
+  this.profilePicture = notification.tweet.user.profile_image_url_https;
+  this.username = notification.tweet.user.name;
 }
 
 /**
@@ -471,203 +473,61 @@ Notification.prototype.generateNotification = function(){
   var notification = document.createElement('li');
   notification.setAttribute('name', 'notification-' + this.message.id_str);
   notification.setAttribute('class', 'notification');
-  var notifTitle = document.createElement('h4');
+  var notifContent = document.createElement('h4');
   var notifIcon = document.createElement('i');
-  var twitterIcon = document.createElement('i');
-  twitterIcon.setAttribute('class', 'fa fa-twitter');
-  notification.appendChild(twitterIcon);
+
+  switch(this.type) {
+    case 'retweet':
+      var verb = ' retweeted: ';
+      break;
+    case 'reply':
+      var verb = ' replied to your tweet: ';
+      break;
+    case 'mention':
+      var verb = ' mentionned you in his/her tweet: ';
+      break;
+    case 'favorite':
+      var verb = ' liked your tweet: ';
+      break;
+    case 'follow':
+      var verb = ' followed you ';
+      break;
+    case 'list_member_added':
+      var verb = ' added you to a list ';
+      break;
+    default:
+      var verb = ' interacted with you: ';
+  }
 
   if(this.type === 'retweet'){
-    var linkAuthorTitle = document.createElement('a');
-    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
-    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.message.retweeterAuthorPseudonym);
-    linkAuthorTitle.setAttribute('target', '_blank');
-    notifTitle.textContent = this.message.retweeterAuthorUsername + ' retweeted you';
     notifIcon.setAttribute('class', 'fa fa-retweet');
-    linkAuthorTitle.appendChild(notifTitle);
-    notification.appendChild(linkAuthorTitle);
     notification.appendChild(notifIcon);
 
+    subject = this.username;
+
     var linkAuthorImg = document.createElement('a');
-    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
+    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.message.retweeterAuthorUsername);
     linkAuthorImg.setAttribute('target', '_blank');
 
-    var linkAuthor = document.createElement('a');
-    linkAuthor.setAttribute('class', 'tweet-authorname');
-    linkAuthor.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthor.setAttribute('target', '_blank');
-    linkAuthor.textContent = this.message.authorPseudonym;
-
     var profileImg = document.createElement('img');
-    profileImg.setAttribute('src', this.message.profilePicture);
-    profileImg.setAttribute('class', 'tweet-profile');
+    profileImg.setAttribute('src', this.profilePicture);
+    profileImg.setAttribute('class', 'notification-profile');
 
     var content = document.createElement('p');
-    content = this.message.text;
-    content.setAttribute('class', 'tweet-text');
+    content.insertAdjacentHTML('afterbegin', '<span class="subject">' + subject + '</span>');
+    content.innerHTML += verb + this.message.text.textContent;
+    content.setAttribute('class', 'notification-text');
+    content.innerHTML = content.innerHTML.substr(0, 107);
+    content.innerHTML = content.innerHTML + '...';
 
     linkAuthorImg.appendChild(profileImg);
     notification.appendChild(linkAuthorImg);
-    notification.appendChild(linkAuthor);
-    notification.appendChild(content);
-  }
-  else if(this.type === 'reply'){
-    var tweet = document.createElement('li');
-    tweet.setAttribute('name', 'tweet-' + this.message.id_str);
-    tweet.setAttribute('class', 'tweet');
-    var linkAuthorTitle = document.createElement('a');
-    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
-    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.message.retweeterAuthorPseudonym);
-    linkAuthorTitle.setAttribute('target', '_blank');
-    notifTitle.textContent = this.message.retweeterAuthorUsername + ' answered you';
-    notifIcon.setAttribute('class', 'fa fa-reply');
-    linkAuthorTitle.appendChild(notifTitle);
-    notification.appendChild(linkAuthorTitle);
-    notification.appendChild(notifIcon);
-
-    var linkAuthorImg = document.createElement('a');
-    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthorImg.setAttribute('target', '_blank');
-
-    var linkAuthor = document.createElement('a');
-    linkAuthor.setAttribute('class', 'tweet-authorname');
-    linkAuthor.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthor.setAttribute('target', '_blank');
-    linkAuthor.textContent = this.message.authorPseudonym;
-
-    var profileImg = document.createElement('img');
-    profileImg.setAttribute('src', this.message.profilePicture);
-    profileImg.setAttribute('class', 'tweet-profile');
-
-    var content = document.createElement('p');
-    content = this.message.text;
-    content.setAttribute('class', 'tweet-text');
-
-    var newRetweetButton = document.createElement('button');
-    newRetweetButton.setAttribute('name', 'retweet-' + this.id_str);
-    newRetweetButton.setAttribute('class', 'tweet-retweet-button');
-
-    var newRetweetFont = document.createElement('i');
-    newRetweetFont.setAttribute('class', 'fa fa-retweet');
-
-    var replyButton = document.createElement('button');
-    replyButton.setAttribute('name', 'reply-' + this.id_str);
-    replyButton.setAttribute('class', 'tweet-reply-button');
-
-    var replyFont = document.createElement('i');
-    replyFont.setAttribute('class', 'fa fa-reply');
-
-    // Put event listener on elements
-    this.message.addEvent(newRetweetButton, replyButton);
-
-    linkAuthorImg.appendChild(profileImg);
-    tweet.appendChild(linkAuthorImg);
-    tweet.appendChild(linkAuthor);
-    tweet.appendChild(content);
-    newRetweetButton.appendChild(newRetweetFont);
-    replyButton.appendChild(replyFont);
-    tweet.appendChild(replyButton);
-    tweet.appendChild(newRetweetButton);
-    notification.appendChild(tweet);
-  }
-  else if(this.type === 'mention'){
-    var tweet = document.createElement('li');
-    tweet.setAttribute('name', 'tweet-' + this.message.id_str);
-    tweet.setAttribute('class', 'tweet');
-    var linkAuthorTitle = document.createElement('a');
-    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
-    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.message.retweeterAuthorPseudonym);
-    linkAuthorTitle.setAttribute('target', '_blank');
-    notifTitle.textContent = this.message.retweeterAuthorUsername + ' mentioned you';
-    notifIcon.setAttribute('class', 'mention');
-    notifIcon.textContent = '@';
-    linkAuthorTitle.appendChild(notifTitle);
-    notification.appendChild(linkAuthorTitle);
-    notification.appendChild(notifIcon);
-
-    var linkAuthorImg = document.createElement('a');
-    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthorImg.setAttribute('target', '_blank');
-
-    var linkAuthor = document.createElement('a');
-    linkAuthor.setAttribute('class', 'tweet-authorname');
-    linkAuthor.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthor.setAttribute('target', '_blank');
-    linkAuthor.textContent = this.message.authorPseudonym;
-
-    var profileImg = document.createElement('img');
-    profileImg.setAttribute('src', this.message.profilePicture);
-    profileImg.setAttribute('class', 'tweet-profile');
-
-    var content = document.createElement('p');
-    content = this.message.text;
-    content.setAttribute('class', 'tweet-text');
-
-    var newRetweetButton = document.createElement('button');
-    newRetweetButton.setAttribute('name', 'retweet-' + this.id_str);
-    newRetweetButton.setAttribute('class', 'tweet-retweet-button');
-
-    var newRetweetFont = document.createElement('i');
-    newRetweetFont.setAttribute('class', 'fa fa-retweet');
-
-    var replyButton = document.createElement('button');
-    replyButton.setAttribute('name', 'reply-' + this.id_str);
-    replyButton.setAttribute('class', 'tweet-reply-button');
-
-    var replyFont = document.createElement('i');
-    replyFont.setAttribute('class', 'fa fa-reply');
-
-    // Put event listener on elements
-    this.message.addEvent(newRetweetButton, replyButton);
-
-    linkAuthorImg.appendChild(profileImg);
-    tweet.appendChild(linkAuthorImg);
-    tweet.appendChild(linkAuthor);
-    tweet.appendChild(content);
-    newRetweetButton.appendChild(newRetweetFont);
-    replyButton.appendChild(replyFont);
-    tweet.appendChild(replyButton);
-    tweet.appendChild(newRetweetButton);
-    notification.appendChild(tweet);
-  }
-  else if(this.type === 'favorite'){
-    var linkAuthorTitle = document.createElement('a');
-    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
-    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
-    linkAuthorTitle.setAttribute('target', '_blank');
-    notifTitle.textContent = this.userName + ' favorited you';
-    notifIcon.setAttribute('class', 'fa fa-star');
-    linkAuthorTitle.appendChild(notifTitle);
-    notification.appendChild(linkAuthorTitle);
-    notification.appendChild(notifIcon);
-
-    var linkAuthorImg = document.createElement('a');
-    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthorImg.setAttribute('target', '_blank');
-
-    var linkAuthor = document.createElement('a');
-    linkAuthor.setAttribute('class', 'tweet-authorname');
-    linkAuthor.setAttribute('href', 'https://twitter.com/' + this.message.authorUsername);
-    linkAuthor.setAttribute('target', '_blank');
-    linkAuthor.textContent = this.message.authorPseudonym;
-
-    var profileImg = document.createElement('img');
-    profileImg.setAttribute('src', this.message.profilePicture);
-    profileImg.setAttribute('class', 'tweet-profile');
-
-    var content = document.createElement('p');
-    content = this.message.text;
-    content.setAttribute('class', 'tweet-text');
-
-    linkAuthorImg.appendChild(profileImg);
-    notification.appendChild(linkAuthorImg);
-    notification.appendChild(linkAuthor);
     notification.appendChild(content);
   }
   else if(this.type === 'follow'){
-    notifTitle.textContent = 'New follower';
+    notifContent.textContent = 'New follower';
     notifIcon.setAttribute('class', 'fa fa-user-plus');
-    notification.appendChild(notifTitle);
+    notification.appendChild(notifContent);
     notification.appendChild(notifIcon);
     var linkAuthorImg = document.createElement('a');
     linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
@@ -697,9 +557,9 @@ Notification.prototype.generateNotification = function(){
     linkAuthorTitle.setAttribute('class', 'tweet-authorname');
     linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
     linkAuthorTitle.setAttribute('target', '_blank');
-    notifTitle.textContent = this.userName + ' added you to the list';
+    notifContent.textContent = this.userName + ' added you to the list';
     notifIcon.setAttribute('class', 'fa fa-list');
-    linkAuthorTitle.appendChild(notifTitle);
+    linkAuthorTitle.appendChild(notifContent);
     notification.appendChild(linkAuthorTitle);
     notification.appendChild(notifIcon);
 

@@ -144,7 +144,7 @@ body {
   margin-left: -450px;
   width: 430px;
   height: 100%;
-  padding: 0 10px 0;
+  padding: 0;
   position: relative;
   float: left;
   z-index: 1;
@@ -161,14 +161,13 @@ body {
 }
 
 #notificationPanel > ul {
-  padding: 0 20px 10px 10px;
+  padding: 0;
+  margin: 0;
   overflow-y: scroll;
   height: calc(100% - 56px);
 }
 
 .notification {
-  background-color: #545454;
-  border-radius: 5px;
   padding: 10px;
   list-style-type: none;
   margin: 0 0 20px;
@@ -185,35 +184,30 @@ body {
 }
 
 .notification > i {
-  font-size: 1.5em;
-  position: absolute;
-  right: 15px;
-  top: 15px;
+  font-size: 0.9em;
+  color: white;
+  background-color: #57ACEF;
+  border-radius: 18px;
+  padding: 8px;
+  float: left;
+  margin: 10px 20px 0 10px;
 }
 
-.notification > .fa-twitter {
-  font-size: 1em;
-  position: absolute;
-  left: 15px;
-  top: 18px;
-  color: #3FA9F5;
-  width: 16px;
+.notification img {
+  float: left;
+  margin: 5px 30px 0 0;
+  width: 40px;
+  border-radius: 5px;
 }
 
-.fa-star {
-  color: #E0E01E;
+.notification > p {
+  font-size: 0.9em;
+  margin-top: 6px;
 }
 
-.fa-user-plus {
-  color: #19B8BF;
-}
-
-.notification > .fa-retweet {
-  color: #41C463;
-}
-
-.notification > .mention {
-  font-style: normal;
+/* FIXME */
+.notification .fa-user-plus {
+  padding-left: 10px;
 }
 
 .notification-link {
@@ -225,6 +219,10 @@ body {
 
 .notification-link:hover {
   text-decoration: underline;
+}
+
+.notification .subject {
+  font-weight: 600;
 }
 
 #mainSidebar > button, .button-sidebar {
@@ -239,7 +237,7 @@ body {
   display: block;
   position: relative;
   margin-bottom: 30px;
-  margin-left: 2px;
+  margin-left: 1px;
   box-shadow: 0px 4px 1px -3px #1D905A;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
@@ -300,19 +298,20 @@ button#buttonOpenNotificationPanel {
   font-size: .8em;
 }
 
-#notificationsCounter{
-  background-color: #900C17;
-  width: 20px;
-  height: 20px;
+#notificationsCounter {
+  background-color: #E94C3D;
+  width: 12px;
+  height: 12px;
   display: none;
   position: absolute;
-  right: 24px;
+  right: 2px;
   margin-top: -7px;
   z-index: 1;
   padding: 5px;
   border-radius: 14px;
   font-weight: 600;
   text-align: center;
+  font-size: 0.6em;
 }
 
 #titleOpenMessageEdition {
