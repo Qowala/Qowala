@@ -180,12 +180,12 @@ h1 {
   width: 290px;
 }
 
-.notification > i {
+.notification > div {
   font-size: 0.9em;
   color: white;
   background-color: #57ACEF;
   border-radius: 18px;
-  padding: 8px;
+  padding: 6px 6px 6px 5px;
   float: left;
   margin: 10px 20px 0 10px;
 }
@@ -200,11 +200,15 @@ h1 {
 .notification > p {
   font-size: 0.9em;
   margin-top: 6px;
+  margin-bottom: 6px;
 }
 
-/* FIXME */
+.notification .fa-retweet {
+  padding: 0 2px;
+}
+
 .notification .fa-user-plus {
-  padding-left: 10px;
+  padding-left: 3px;
 }
 
 .notification-link {
@@ -220,6 +224,12 @@ h1 {
 
 .notification .subject {
   font-weight: 600;
+}
+
+.notification .notification-date {
+  float: right;
+  color: #ccc;
+  font-size: 0.8em;
 }
 
 #mainSidebar > button, .button-sidebar {

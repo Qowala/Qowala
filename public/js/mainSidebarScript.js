@@ -451,15 +451,16 @@ NotificationPanel.prototype.createNotification = function(notification, noAlert)
  */
 function Notification(notification){
   this.type = notification.streamSource;
-  if(['follow', 'favorite', 'list_member_added'].indexOf(this.type) !== -1){
-    this.userDescription = notification.event.source.description;
-    this.userName = notification.event.source.name;
-    this.userScreenName = notification.event.source.screen_name;
-    this.target_object = notification.event.target_object;
-  }
   this.message = new Message(notification.tweet, notification.streamSource, false);
   this.profilePicture = notification.tweet.user.profile_image_url_https;
   this.username = notification.tweet.user.name;
+  this.userScreenName = notification.tweet.user.screen_name;
+  if(['follow', 'favorite', 'list_member_added'].indexOf(this.type) !== -1){
+    this.userDescription = notification.event.source.description;
+    this.username = notification.event.source.name;
+    this.userScreenName = notification.event.source.screen_name;
+    this.target_object = notification.event.target_object;
+  }
 }
 
 /**
@@ -475,10 +476,12 @@ Notification.prototype.generateNotification = function(){
   notification.setAttribute('class', 'notification');
   var notifContent = document.createElement('h4');
   var notifIcon = document.createElement('i');
+  var notifIconDiv = document.createElement('div');
 
   switch(this.type) {
     case 'retweet':
       var verb = ' retweeted: ';
+      notifIcon.setAttribute('class', 'fa fa-retweet');
       break;
     case 'reply':
       var verb = ' replied to your tweet: ';
@@ -491,92 +494,115 @@ Notification.prototype.generateNotification = function(){
       break;
     case 'follow':
       var verb = ' followed you ';
+      notifIcon.setAttribute('class', 'fa fa-user-plus');
       break;
     case 'list_member_added':
       var verb = ' added you to a list ';
+      notifIcon.setAttribute('class', 'fa fa-list');
       break;
     default:
       var verb = ' interacted with you: ';
   }
 
-  if(this.type === 'retweet'){
-    notifIcon.setAttribute('class', 'fa fa-retweet');
-    notification.appendChild(notifIcon);
+  notifIconDiv.appendChild(notifIcon);
+  notification.appendChild(notifIconDiv);
 
-    subject = this.username;
+  subject = this.username;
 
-    var linkAuthorImg = document.createElement('a');
-    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.message.retweeterAuthorUsername);
-    linkAuthorImg.setAttribute('target', '_blank');
+  var linkAuthorImg = document.createElement('a');
+  linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
+  linkAuthorImg.setAttribute('target', '_blank');
 
-    var profileImg = document.createElement('img');
-    profileImg.setAttribute('src', this.profilePicture);
-    profileImg.setAttribute('class', 'notification-profile');
+  var profileImg = document.createElement('img');
+  profileImg.setAttribute('src', this.profilePicture);
+  profileImg.setAttribute('class', 'notification-profile');
 
-    var content = document.createElement('p');
-    content.insertAdjacentHTML('afterbegin', '<span class="subject">' + subject + '</span>');
-    content.innerHTML += verb + this.message.text.textContent;
-    content.setAttribute('class', 'notification-text');
-    content.innerHTML = content.innerHTML.substr(0, 107);
-    content.innerHTML = content.innerHTML + '...';
+  var content = document.createElement('p');
+  content.setAttribute('class', 'notification-text');
+  content.insertAdjacentHTML('afterbegin', '<span class="subject">' + subject + '</span>');
+  content.innerHTML += verb + this.message.text.textContent;
+  content.innerHTML = content.innerHTML.substr(0, 110);
+  content.innerHTML = content.innerHTML + '...';
 
-    linkAuthorImg.appendChild(profileImg);
-    notification.appendChild(linkAuthorImg);
-    notification.appendChild(content);
-  }
-  else if(this.type === 'follow'){
-    notifContent.textContent = 'New follower';
-    notifIcon.setAttribute('class', 'fa fa-user-plus');
-    notification.appendChild(notifContent);
-    notification.appendChild(notifIcon);
-    var linkAuthorImg = document.createElement('a');
-    linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
-    linkAuthorImg.setAttribute('target', '_blank');
+  linkAuthorImg.appendChild(profileImg);
+  notification.appendChild(linkAuthorImg);
+  notification.appendChild(content);
 
-    var profileImg = document.createElement('img');
-    profileImg.setAttribute('src', this.message.profilePicture);
-    profileImg.setAttribute('class', 'tweet-profile');
+  //if(this.type === 'retweet'){
+    //notification.appendChild(notifIcon);
 
-    var linkAuthor = document.createElement('a');
-    linkAuthor.setAttribute('class', 'tweet-authorname');
-    linkAuthor.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
-    linkAuthor.setAttribute('target', '_blank');
-    linkAuthor.textContent = this.userName;
+    //subject = this.username;
 
-    var content = document.createElement('p');
-    content.textContent = this.userDescription;
-    content.setAttribute('class', 'tweet-text');
+    //var linkAuthorImg = document.createElement('a');
+    //linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.username);
+    //linkAuthorImg.setAttribute('target', '_blank');
 
-    linkAuthorImg.appendChild(profileImg);
-    notification.appendChild(linkAuthorImg);
-    notification.appendChild(linkAuthor);
-    notification.appendChild(content);
-  }
-  else if(this.type === 'list_member_added'){
-    var linkAuthorTitle = document.createElement('a');
-    linkAuthorTitle.setAttribute('class', 'tweet-authorname');
-    linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
-    linkAuthorTitle.setAttribute('target', '_blank');
-    notifContent.textContent = this.userName + ' added you to the list';
-    notifIcon.setAttribute('class', 'fa fa-list');
-    linkAuthorTitle.appendChild(notifContent);
-    notification.appendChild(linkAuthorTitle);
-    notification.appendChild(notifIcon);
+    //var profileImg = document.createElement('img');
+    //profileImg.setAttribute('src', this.profilePicture);
+    //profileImg.setAttribute('class', 'notification-profile');
 
-    var content = document.createElement('p');
-    var listLink = document.createElement('a');
-    listLink.setAttribute('href', 'https://twitter.com' + this.target_object.uri);
-    listLink.setAttribute('target', '_blank');
-    listLink.setAttribute('class', 'notification-link');
-    listLink.textContent = this.target_object.uri.substr(1);
-    content.appendChild(listLink);
-    content.setAttribute('class', 'tweet-text');
+    //var content = document.createElement('p');
+    //content.setAttribute('class', 'notification-text');
+    //content.insertAdjacentHTML('afterbegin', '<span class="subject">' + subject + '</span>');
+    //content.innerHTML += verb + this.message.text.textContent;
+    //content.innerHTML = content.innerHTML.substr(0, 110);
+    //content.innerHTML = content.innerHTML + '...';
 
-    notification.appendChild(content);
-  }
+    //linkAuthorImg.appendChild(profileImg);
+    //notification.appendChild(linkAuthorImg);
+    //notification.appendChild(content);
+  //}
+  //else if(this.type === 'follow'){
+    //notifContent.textContent = 'New follower';
+    //notification.appendChild(notifContent);
+    //notification.appendChild(notifIcon);
+    //var linkAuthorImg = document.createElement('a');
+    //linkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
+    //linkAuthorImg.setAttribute('target', '_blank');
+
+    //var profileImg = document.createElement('img');
+    //profileImg.setAttribute('src', this.message.profilePicture);
+    //profileImg.setAttribute('class', 'tweet-profile');
+
+    //var linkAuthor = document.createElement('a');
+    //linkAuthor.setAttribute('class', 'tweet-authorname');
+    //linkAuthor.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
+    //linkAuthor.setAttribute('target', '_blank');
+    //linkAuthor.textContent = this.userName;
+
+    //var content = document.createElement('p');
+    //content.textContent = this.userDescription;
+    //content.setAttribute('class', 'tweet-text');
+
+    //linkAuthorImg.appendChild(profileImg);
+    //notification.appendChild(linkAuthorImg);
+    //notification.appendChild(linkAuthor);
+    //notification.appendChild(content);
+  //}
+  //else if(this.type === 'list_member_added'){
+    //var linkAuthorTitle = document.createElement('a');
+    //linkAuthorTitle.setAttribute('class', 'tweet-authorname');
+    //linkAuthorTitle.setAttribute('href', 'https://twitter.com/' + this.userScreenName);
+    //linkAuthorTitle.setAttribute('target', '_blank');
+    //notifContent.textContent = this.username + ' added you to the list';
+    //linkAuthorTitle.appendChild(notifContent);
+    //notification.appendChild(linkAuthorTitle);
+    //notification.appendChild(notifIcon);
+
+    //var content = document.createElement('p');
+    //var listLink = document.createElement('a');
+    //listLink.setAttribute('href', 'https://twitter.com' + this.target_object.uri);
+    //listLink.setAttribute('target', '_blank');
+    //listLink.setAttribute('class', 'notification-link');
+    //listLink.textContent = this.target_object.uri.substr(1);
+    //content.appendChild(listLink);
+    //content.setAttribute('class', 'tweet-text');
+
+    //notification.appendChild(content);
+  //}
 
   var notificationDate = document.createElement('span');
-  notificationDate.setAttribute('class', 'tweet-date');
+  notificationDate.setAttribute('class', 'notification-date');
   notificationDate.setAttribute('title', this.message.friendlyDate);
   notificationDate.textContent = this.message.displayedDate;
   this.message.dateHTML = notificationDate;
