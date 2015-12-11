@@ -38,8 +38,10 @@ function Message(message, streamSource, areImagesEnabled){
 
   this.isRetweet = message.retweeted_status ? true : false;
 
+  this.messageStatus = message.retweeted_status ? message.retweeted_status : message;
+
   this.urls = message.retweeted_status ? message.retweeted_status.entities.urls : message.entities.urls;
-  this.medias = message.retweeted_status ? message.retweeted_status.entities.media : message.entities.media;
+  this.medias = this.messageStatus.extended_entities ? this.messageStatus.extended_entities.media : this.messageStatus.entities.media;
   this.hashtags = message.retweeted_status ? message.retweeted_status.entities.hashtags : message.entities.hashtags;
   this.user_mentions = message.retweeted_status ? message.retweeted_status.entities.user_mentions : message.entities.user_mentions;
 
@@ -492,13 +494,19 @@ Message.prototype.processText = function(){
     // Parse all media URLs from the Tweet object to be sort in a array
     if(this.medias) {
       for (var i = 0; i < this.medias.length; i++) {
+        var videoInfo = false;
+        if (this.medias[i].type == 'animated_gif') {
+          videoInfo = this.medias[i].video_info;
+        }
+
         var urlIndice = {
           expanded_url: this.medias[i].expanded_url,
           media_url: this.medias[i].media_url_https,
           url: this.medias[i].url,
           indices: this.medias[i].indices,
           largeSize: this.medias[i].sizes.large,
-          media: true
+          media: true,
+          videoInfo: videoInfo
         };
         urls_indices.push(urlIndice);
       };
@@ -595,30 +603,49 @@ Message.prototype.processText = function(){
         }
 
         if(urls_indices[i].media){
-          var image = document.createElement('img');
-          image.setAttribute('src',
-            urls_indices[i].media_url + ':medium');
-          image.setAttribute('fullsize',
-            urls_indices[i].largeSize.h +
-            '/' +
-            urls_indices[i].largeSize.w);
+          if(urls_indices[i].videoInfo){
+            var video = document.createElement('video');
+            video.setAttribute('src',
+            urls_indices[i].videoInfo.variants[0].url);
+            video.setAttribute('controls', true);
+            video.setAttribute('loop', true);
 
-          if(this.areImagesEnabled){
-            image.className = "tweet-image";
-            link.className = "tweet-link-image-none";
+            if(this.areImagesEnabled){
+              video.className = "tweet-image";
+              link.className = "tweet-link-image-none";
+            }
+            else{
+              video.className = "tweet-image-none";
+              link.className = "tweet-link-image";
+            }
+            parsedText.appendChild(video);
           }
-          else{
-            image.className = "tweet-image-none";
-            link.className = "tweet-link-image";
+          else {
+            var image = document.createElement('img');
+            image.setAttribute('src',
+              urls_indices[i].media_url + ':medium');
+            image.setAttribute('fullsize',
+              urls_indices[i].largeSize.h +
+              '/' +
+              urls_indices[i].largeSize.w);
+
+            if(this.areImagesEnabled){
+              image.className = "tweet-image";
+              link.className = "tweet-link-image-none";
+            }
+            else{
+              image.className = "tweet-image-none";
+              link.className = "tweet-link-image";
+            }
+
+            // Put an event to enlarge the image
+            image.addEventListener('click', function(){
+              this.enlargeImage();
+            }.bind(this), false);
+
+            this.image = image;
+            parsedText.appendChild(image);
           }
-
-          // Put an event to enlarge the image
-          image.addEventListener('click', function(){
-            this.enlargeImage();
-          }.bind(this), false);
-
-          this.image = image;
-          parsedText.appendChild(image);
         }
 
         parsedText.insertBefore(firstPart, parsedText.firstChild);
