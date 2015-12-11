@@ -1,17 +1,23 @@
 @font-face {
-  font-family: 'asapregular';
-  src: url('./fonts/asap-regular-webfont.eot');
-  src: url('./fonts/asap-regular-webfont.eot?#iefix') format('embedded-opentype'),
-  url('./fonts/asap-regular-webfont.woff2') format('woff2'),
-  url('./fonts/asap-regular-webfont.woff') format('woff'),
-  url('./fonts/asap-regular-webfont.ttf') format('truetype'),
-  url('./fonts/asap-regular-webfont.svg#asapregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Asap-Regular';
+  src: url('./fonts/Asap-Regular.eot');
+  src: url('./fonts/Asap-Regular.eot?#iefix') format('embedded-opentype'),
+  url('./fonts/Asap-Regular.woff') format('woff'),
+  url('./fonts/Asap-Regular.ttf') format('truetype'),
+  url('./fonts/Asap-Regular.svg#Asap-Regular') format('svg');
+}
+
+@font-face {
+  font-family: 'Asap-Bold';
+  src: url('./fonts/Asap-Bold.eot');
+  src: url('./fonts/Asap-Bold.eot?#iefix') format('embedded-opentype'),
+  url('./fonts/Asap-Bold.woff') format('woff'),
+  url('./fonts/Asap-Bold.ttf') format('truetype'),
+  url('./fonts/Asap-Bold.svg#Asap-Bold') format('svg');
 }
 
 html {
-    font-family: 'asapregular', sans-serif;
+    font-family: 'Asap-Regular', sans-serif;
     height: 100%;
 }
 
@@ -87,7 +93,7 @@ body {
 #welcome-button {
     background-color: #007d92;
     border-radius: 10px;
-    font-family: "asapregular",sans-serif;
+    font-family: "Asap-Regular",sans-serif;
     text-decoration: none;
     padding: 8px 30px;
     color: white;
@@ -215,7 +221,7 @@ h1 {
   color: white;
   text-decoration: none;
   font-style: italic;
-  font-weight: 600;
+  font-family: 'Asap-Bold';
 }
 
 .notification-link:hover {
@@ -223,7 +229,7 @@ h1 {
 }
 
 .notification .subject {
-  font-weight: 600;
+  font-family: 'Asap-Bold';
 }
 
 .notification .notification-date {
@@ -316,7 +322,7 @@ button#buttonOpenNotificationPanel {
   z-index: 1;
   padding: 5px;
   border-radius: 14px;
-  font-weight: 600;
+  font-family: 'Asap-Bold';
   text-align: center;
   font-size: 0.6em;
 }
@@ -440,7 +446,7 @@ button#buttonOpenNotificationPanel {
 
 #userSuggestionList .suggested-user-name {
   font-style: normal;
-  font-weight: bold;
+  font-family: 'Asap-Bold';
   color: black;
   margin: 0 10px;
 }
@@ -519,7 +525,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: #dddddd;
     border: 1px solid #dddddd;
     color: #676767;
-    font-family: "asapregular",sans-serif;
+    font-family: "Asap-Regular",sans-serif;
     padding: 4px 15px;
 }
 
@@ -941,7 +947,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-authorname{
-    font-weight: 600;
+    font-family: 'Asap-Bold';
     text-decoration: none;
     color: #21A768;
 }
@@ -952,8 +958,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweet-authorScreenName {
     color: #999999;
-    font-family: 'asapregular', sans-serif;
-    font-weight: 300;
+    font-family: 'Asap-Regular', sans-serif;
     margin-left: 10px;
 }
 
@@ -1190,7 +1195,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tag-name{
-    font-weight: bold;
+    font-family: 'Asap-Bold';
     font-size: 0.9em;
 }
 
