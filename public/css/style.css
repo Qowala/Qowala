@@ -93,7 +93,7 @@ body {
 #welcome-button {
     background-color: #007d92;
     border-radius: 10px;
-    font-family: "Asap-Regular",sans-serif;
+    font-family: 'Asap-Regular', sans-serif;
     text-decoration: none;
     padding: 8px 30px;
     color: white;
@@ -221,7 +221,7 @@ h1 {
   color: white;
   text-decoration: none;
   font-style: italic;
-  font-family: 'Asap-Bold';
+  font-family: 'Asap-Bold', sans-serif;
 }
 
 .notification-link:hover {
@@ -229,7 +229,7 @@ h1 {
 }
 
 .notification .subject {
-  font-family: 'Asap-Bold';
+  font-family: 'Asap-Bold', sans-serif;
 }
 
 .notification .notification-date {
@@ -322,7 +322,7 @@ button#buttonOpenNotificationPanel {
   z-index: 1;
   padding: 5px;
   border-radius: 14px;
-  font-family: 'Asap-Bold';
+  font-family: 'Asap-Bold', sans-serif;
   text-align: center;
   font-size: 0.6em;
 }
@@ -446,7 +446,7 @@ button#buttonOpenNotificationPanel {
 
 #userSuggestionList .suggested-user-name {
   font-style: normal;
-  font-family: 'Asap-Bold';
+  font-family: 'Asap-Bold', sans-serif;
   color: black;
   margin: 0 10px;
 }
@@ -525,7 +525,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: #dddddd;
     border: 1px solid #dddddd;
     color: #676767;
-    font-family: "Asap-Regular",sans-serif;
+    font-family: 'Asap-Regular', sans-serif;
     padding: 4px 15px;
 }
 
@@ -571,7 +571,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 0.8em;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    font-family: 'Asap-Bold', sans-serif;
 }
 
 .tweets-column-header-button {
@@ -579,7 +581,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     border: medium none;
     bottom: 6px;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.0em;
     position: absolute;
     right: 10px;  -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -947,7 +949,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-authorname{
-    font-family: 'Asap-Bold';
+    font-family: 'Asap-Bold', sans-serif;
     text-decoration: none;
     color: #21A768;
 }
@@ -1195,7 +1197,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tag-name{
-    font-family: 'Asap-Bold';
+    font-family: 'Asap-Bold', sans-serif;
     font-size: 0.9em;
 }
 
