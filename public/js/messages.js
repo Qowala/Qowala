@@ -15,6 +15,7 @@ function Message(message, streamSource, areImagesEnabled){
   this.id_str = message.retweeted_status ? message.retweeted_status.id_str : message.id_str;
   this.retweeterAuthorUsername = message.user.name;
   this.retweeterAuthorPseudonym = message.user.screen_name;
+  this.retweeterProfilePicture = message.user.profile_image_url_https;
   this.authorUsername = message.retweeted_status ? message.retweeted_status.user.screen_name : message.user.screen_name;
   this.authorPseudonym = message.retweeted_status ? message.retweeted_status.user.name : message.user.name;
   this.date = message.retweeted_status ? message.retweeted_status.created_at : message.created_at;
@@ -60,10 +61,18 @@ Message.prototype.generateMessage = function(){
   if(this.isRetweet){
     var newUserRetweeter = document.createElement('p');
     newUserRetweeter.className = "tweet-retweeter";
-    newUserRetweeter.textContent = this.retweeterAuthorUsername + ' has retweeted';
+
     var newRetweeterFont = document.createElement('i');
     newRetweeterFont.setAttribute('class', 'fa fa-retweet');
-    newUserRetweeter.insertBefore(newRetweeterFont, newUserRetweeter.firstChild);
+    newUserRetweeter.appendChild(newRetweeterFont);
+
+    var retweeterImg = document.createElement('img');
+    retweeterImg.setAttribute('src', this.retweeterProfilePicture);
+    retweeterImg.setAttribute('class', 'tweet-retweeter-profile');
+    newUserRetweeter.insertBefore(retweeterImg, newUserRetweeter.firstChild);
+
+    newUserRetweeter.insertAdjacentHTML('beforeend', ' retweeted by <span>' + this.retweeterAuthorUsername + '</span>');
+
     newTweet.appendChild(newUserRetweeter);
   }
 

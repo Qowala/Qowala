@@ -1038,13 +1038,35 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-retweeter {
-    font-size: 0.9em;
-    margin: 0 0 5px;
+  font-size: 0.9em;
+  margin: 0 0 5px;
+  margin: -10px -10px 5px;
+  color: rgb(153, 153, 153);
+  padding: 12px 12px 12px 32px;
+  background-color: #EDFAF3;
+}
+
+.tweet-retweeter span {
+  color: #21A866;
+}
+
+#tweets-column-home .tweet-retweeter {
+  background-color: rgb(237, 244, 250);
+}
+
+#tweets-column-home .tweet-retweeter span {
+  color: #55ACEF;
+}
+
+.tweet-retweeter img {
+  width: 20px;
+  border-radius: 5px;
 }
 
 .tweet-retweeter .fa-retweet {
     color: #119955;
-    margin-right: 10px;
+    margin-left: 10px;
+    margin-right: 5px;
 }
 
 .tweet-image, .tweet-image-extended{
