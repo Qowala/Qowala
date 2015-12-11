@@ -191,7 +191,7 @@ h1 {
   color: white;
   background-color: #57ACEF;
   border-radius: 18px;
-  padding: 6px 6px 6px 5px;
+  padding: 7px 6px 7px 5px;
   float: left;
   margin: 10px 20px 0 10px;
 }
@@ -209,12 +209,25 @@ h1 {
   margin-bottom: 6px;
 }
 
-.notification .fa-retweet {
+.notification .fa-retweet, .notification .fa-retweet {
   padding: 0 2px;
 }
 
 .notification .fa-user-plus {
   padding-left: 3px;
+}
+
+.notification .fa-list {
+  padding: 0px 2px 0px 3px;
+}
+
+.notification .fa-heart {
+  padding: 1px 2px 0px 3px
+}
+
+.notification .fa-at {
+  padding: 0px 2px 0px 4px;
+  font-weight: bold;
 }
 
 .notification-link {
