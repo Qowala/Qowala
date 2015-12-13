@@ -1283,36 +1283,45 @@ input[type="text"].tagInput:-ms-input-placeholder {
   height: auto;
   border-radius: 0;
 }
+
 #userProfileBannerImg {
   width: 100%;
   height: 200px;
   background-size: cover;
 }
+
 #userProfilePanel .datas {
   padding: 0 3%;
   height: 50px;
   line-height: 26px;
 }
+
 #userProfilePanel .datas .data {
   width: 17%;
 }
+
 #userProfilePanel .datas .left {
   float: left;
 }
+
 #userProfilePanel .datas .right {
   float: right;
 }
+
 #userProfilePanel .datas p {
   margin: 0;
 }
+
 #userProfilePanel .datas p:not(.number) {
   text-transform: uppercase;
   font-size: 12px;
 }
+
 #userProfilePanel .datas .number {
   color: #119955;
   font-size: 18px;
 }
+
 #userProfileImg {
   position: absolute;
   left: 0;
@@ -1321,13 +1330,16 @@ input[type="text"].tagInput:-ms-input-placeholder {
   top: 175px;
   border: 2px solid #fff;
 }
+
 #userProfileImg.top {
   top: 0;
   max-height: 55px;
 }
+
 #userProfilePanel .infos {
   padding: 0 3%;
 }
+
 #userProfilePanel .infos h2 {
   font-size: 22px;
   font-weight: normal;
@@ -1335,23 +1347,28 @@ input[type="text"].tagInput:-ms-input-placeholder {
   margin: 0;
   clear: both;
 }
+
 #userProfilePanel .infos h2 span {
   font-size: 14px;
   margin-left: 10px;
 }
+
 #userProfileCity {
   text-align: center;
   font-weight: normal;
   font-size: 16px;
   margin: 0;
 }
+
 #userProfileDescription {
   font-style: italic;
   margin-bottom: 0;
 }
+
 .profile-actions {
   text-align: center;
 }
+
 .profile-actions button {
   border: 1px solid #119955;
   color: #119955;
@@ -1363,21 +1380,33 @@ input[type="text"].tagInput:-ms-input-placeholder {
   width: 150px;
   margin: 20px;
 }
-.profile-actions button.following {
+
+.profile-actions button.following, .profile-actions button:hover {
   background-color: #119955;
   color: #fff;
 }
+
+.profile-actions button.following:hover {
+  background-color: #fff;
+  color: #119955;
+}
+
 #userProfileFollowedBy {
   padding: 15px;
   margin: 0;
   background-color: #EFEFEF;
 }
+
 #userProfileFollowedBy a {
   text-decoration: none;
   color: #119955;
 }
+
+#userProfilePanel .links {
+  display: flex;
+}
+
 #userProfilePanel .links a {
-  display: inline-block;
   width: 25%;
   color: #119955;
   text-align: center;
@@ -1386,11 +1415,13 @@ input[type="text"].tagInput:-ms-input-placeholder {
   padding-top: 15px;
   padding-bottom: 5px;
 }
+
 #userProfilePanel .links a i, #userProfilePanel .links a span {
   display: block;
   color: #119955;
   font-size: 20px;
 }
+
 #userProfilePanel .links a span {
   text-transform: uppercase;
   font-size: 12px;

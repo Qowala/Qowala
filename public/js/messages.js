@@ -68,10 +68,6 @@ Message.prototype.generateMessage = function(){
     newTweet.appendChild(newUserRetweeter);
   }
 
-  // var newLinkAuthorImg = document.createElement('a');
-  // newLinkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
-  // newLinkAuthorImg.setAttribute('target', '_blank');
-
   var newImg = document.createElement('img');
   newImg.setAttribute('src', this.profilePicture);
   newImg.setAttribute('class', 'tweet-profile');
@@ -122,7 +118,6 @@ Message.prototype.generateMessage = function(){
     this.openUserPanel(e);
   }.bind(this));
 
-  // newLinkAuthorImg.appendChild(newImg);
   newRetweetButton.appendChild(newRetweetFont);
   replyButton.appendChild(replyFont);
   newTweet.appendChild(newImg);
@@ -192,8 +187,17 @@ Message.prototype.openUserPanel = function(e){
   var result = str.replace(re, subst);
   userProfileImg.setAttribute('src',result);
 
-  userProfileName.innerHTML = this.user.name +" <span>@"+ this.user.screen_name +"</span>";
-  if (this.user.location) userProfileCity.innerHTML = "<i class='fa fa-map-marker'></i> "+this.user.location;
+  userProfileName.innerHTML = this.user.name;
+  var nameSpan = document.createElement('span');
+  nameSpan.innerHTML = "@" + this.user.screen_name
+  userProfileName.appendChild(nameSpan);
+
+  if (this.user.location) {
+    var markerIcon = document.createElement('i');
+    markerIcon.setAttribute('class','fa fa-map-marker');
+    userProfileCity.appendChild(markerIcon);
+    userProfileCity.innerHTML = " " + this.user.location;
+  }
   userProfileDescription.innerHTML = this.user.description;
 
   userProfileTweetButton.addEventListener('click', function(e){
@@ -218,9 +222,9 @@ Message.prototype.openUserPanel = function(e){
     userProfileFollowing.setAttribute('class', classes[index]);
   }.bind(this), true);
 
-  var baseUrl = 'https://twitter.com/'+this.user.screen_name;
+  var baseUrl = 'https://twitter.com/' + this.user.screen_name;
   userProfileTweetsLink.setAttribute('href', baseUrl);
-  userProfileMentionsLink.setAttribute('href', 'https://twitter.com/search?q=@'+this.user.screen_name);
+  userProfileMentionsLink.setAttribute('href', 'https://twitter.com/search?q=@' + this.user.screen_name);
   userProfileListsLink.setAttribute('href', baseUrl + '/lists');
   userProfileFavoritesLink.setAttribute('href', baseUrl + '/favorites');
   
