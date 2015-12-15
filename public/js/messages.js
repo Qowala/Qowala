@@ -639,8 +639,8 @@ Message.prototype.processText = function(){
             }
 
             // Put an event to enlarge the image
-            image.addEventListener('click', function(){
-              this.enlargeImage();
+            image.addEventListener('click', function(e){
+              this.enlargeImage(e);
             }.bind(this), false);
 
             this.image = image;
@@ -672,46 +672,86 @@ Message.prototype.processText = function(){
 }
 
 /**
+ * Process tweet's medias
+ */
+Message.prototype.processMedia = function(){
+
+  var medias = document.createElement('div');
+
+  if(this.areImagesEnabled){
+    medias.setAttribute('class', 'tweet-medias');
+    //link.className = "tweet-link-image-none";
+  }
+  else{
+    medias.setAttribute('class', 'tweet-medias-none');
+    //link.className = "tweet-link-image";
+  }
+
+  var imageSize = ':medium';
+
+  for (var i = 0; i < this.medias.length; i++) {
+    if (this.medias[i].type == 'animated_gif') {
+      var video = document.createElement('video');
+      video.setAttribute('src',
+      this.medias[i].video_info.variants[0].url);
+      video.setAttribute('controls', true);
+      video.setAttribute('loop', true);
+
+      medias.appendChild(video);
+    }
+    else {
+      var image = document.createElement('img');
+      image.setAttribute('src',
+        this.medias[i].media_url + imageSize);
+      image.setAttribute('fullsize',
+        this.medias[i].sizes.large.h +
+        '/' +
+        this.medias[i].sizes.large.w);
+
+      image.addEventListener('click', enlargeImage);
+
+      medias.appendChild(image);
+      imageSize = ':thumb';
+    }
+  }
+
+  this.mediasElement = medias;
+}
+
+/**
  * Loads a bigger image
  */
-Message.prototype.enlargeImage = function(){
-  var srcAttribute = this.image.getAttribute('src');
+Message.prototype.enlargeImage = function(e){
+  var srcAttribute = e.target.src;
   var src = srcAttribute.substring(0, srcAttribute.lastIndexOf(':'));
   var size = srcAttribute.substring(srcAttribute.lastIndexOf(':'), srcAttribute.length);
-  // console.log('size: ', size);
-  if(size == ':thumb'){
-    this.image.setAttribute('src', src + ':medium');
-    this.image.className += " tweet-image-extended";
-  }
-  else if(size == ':medium'){
-    var fullsize = this.image.getAttribute('fullsize');
-    var height = fullsize.substring(0, fullsize.lastIndexOf('/'));
-    var width = fullsize.substring(fullsize.lastIndexOf('/') + 1, fullsize.length);
+
+  var fullsize = e.target.attributes[1].value;
+  var height = fullsize.substring(0, fullsize.lastIndexOf('/'));
+  var width = fullsize.substring(fullsize.lastIndexOf('/') + 1, fullsize.length);
+  var popup = document.getElementById('largeImagePopup');
+  var popupImage = document.querySelector('#largeImagePopup img');
+  popupImage.setAttribute('src', src + ':large');
+
+  // 20 is added because of the padding of the parent element
+  var halfWidth = width / 2 + 20;
+  var left = 'calc(50% - ' + halfWidth + 'px)';
+  // console.log('left: ', left);
+  popup.style.left = left;
+  var halfHeight = height / 2 + 20;
+  var height = 'calc(50% - ' + halfHeight + 'px)';
+  // console.log('height: ', height);
+  popup.style.top = height;
+  popup.style.display = 'block';
+
+  function closeImagePopup(e){
+    columnsList.removeEventListener('click', closeImagePopup, true);
+    e.stopPropagation();
+    e.preventDefault();
     var popup = document.getElementById('largeImagePopup');
-    var popupImage = document.querySelector('#largeImagePopup img');
-    popupImage.setAttribute('src', src + ':large');
-
-    // 20 is added because of the padding of the parent element
-    var halfWidth = width / 2 + 20;
-    var left = 'calc(50% - ' + halfWidth + 'px)';
-    // console.log('left: ', left);
-    popup.style.left = left;
-    var halfHeight = height / 2 + 20;
-    var height = 'calc(50% - ' + halfHeight + 'px)';
-    // console.log('height: ', height);
-    popup.style.top = height;
-    popup.style.display = 'block';
-
-    function closeImagePopup(e){
-      columnsList.removeEventListener('click', closeImagePopup, true);
-      e.stopPropagation();
-      e.preventDefault();
-      var popup = document.getElementById('largeImagePopup');
-      popup.style.display = 'none';
-    }
-
-    var columnsList = document.getElementById('tweets-columns-list');
-    columnsList.addEventListener('click', closeImagePopup, true);
-
+    popup.style.display = 'none';
   }
+
+  var columnsList = document.getElementById('tweets-columns-list');
+  columnsList.addEventListener('click', closeImagePopup, true);
 }

@@ -1089,7 +1089,17 @@ input[type="text"].tagInput:-ms-input-placeholder {
     transition: all ease-in 0.35s;
 }
 
-.tweet-image-extended {
+.tweet-medias img, .tweet-medias video {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tweet-medias img + img {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.tweet-medias-extended {
     margin: 40px auto 20px;
 }
 
