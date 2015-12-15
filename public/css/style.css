@@ -565,7 +565,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     height: 100%;
     min-width: 24.75%;
     position: relative;
-    overflow-y: scroll;
 }
 
 
@@ -924,7 +923,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweets {
     padding: 0;
-    margin-top: 0;
+    margin: 0;
+    height: calc(100% - 60px);
+    overflow-y: scroll;
 }
 
 .tweets li{
