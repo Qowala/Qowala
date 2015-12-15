@@ -231,6 +231,10 @@ MessagesColumn.prototype.generateColumn = function(){
 
   this.columnSpinner = columnSpinner;
 
+  /** BLACK BACKGROUND **/
+
+  var blackBackground = document.createElement('div');
+  blackBackground.setAttribute('class', 'black-background');
 
   /** TWEETS **/
 
@@ -270,6 +274,7 @@ MessagesColumn.prototype.generateColumn = function(){
   newTweetColumn.appendChild(newTweetColumnHeader);
   newTweetColumn.appendChild(newTweetColumnPanel);
   newTweetColumn.appendChild(columnSpinner);
+  newTweetColumn.appendChild(blackBackground);
   newTweetColumn.appendChild(newTweetColumnTweets);
 
   console.log('Column ', this.id, ' generated');

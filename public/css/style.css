@@ -621,8 +621,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweets-column-panel {
     position: absolute;
-    top: 46px;
-    width: 100%;
+    top: 50px;
+    width: calc(100% - 30px);
+    padding: 10px 15px 0;
     z-index: 1;
     overflow: hidden;
     transform: scaleY(0);
@@ -636,6 +637,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweets-column-panel-list {
     padding: 0 40px 10px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px 1px #999;
 }
 
 .deleteColumnButton{
@@ -791,6 +795,16 @@ input[type="text"].tagInput:-ms-input-placeholder {
 #lists-row {
     padding: 0;
     display: inline-flex;
+}
+
+.black-background {
+  background-color: black;
+  width: 100%;
+  opacity: 0.5;
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 /*********************/
