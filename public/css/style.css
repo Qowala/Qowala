@@ -672,82 +672,61 @@ input[type="text"].tagInput:-ms-input-placeholder {
     float: left;
 }
 
-.switch {
-    position: relative;
-    top: 18px;
-    left: 100px;
-}
-
-.switch > [type="checkbox"]:checked, .switch > [type="checkbox"]:not(:checked) {
-    width: 0;
-    height: 0;
+input.switch:empty
+{
     display: none;
-    opacity: 0;
 }
 
-.switch > [type="checkbox"]:checked + label, .switch > [type="checkbox"]:not(:checked) + label {
+input.switch:empty ~ label
+{
+    position: relative;
+    float: left;
+    line-height: 20px;
+    text-indent: 4em;
+    margin: 0.2em 0;
     cursor: pointer;
-    display: inline-block;
-    margin-right: 7px;
-    /*margin-top: 7px;*/
-    margin-bottom: 17px;
-    padding-right: 60px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.switch > [type="checkbox"]:checked + label:after, .switch > [type="checkbox"]:not(:checked) + label:after {
-    content: "";
-    right: 10px;
-    width: 40px;
-    height: 22px;
+input.switch:empty ~ label:before,
+input.switch:empty ~ label:after
+{
     position: absolute;
-    border-radius: 10px;
-}
-
-.switch > [type="checkbox"]:checked + label + .switch-knob, .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
+    display: block;
     top: 0;
-    width: 22px;
-    height: 22px;
-    border-radius: 30px;
-    display: inline-block;
-    position: absolute;
-    cursor: pointer;
-    pointer-events: none;
-    -webkit-transition: right .1s ease-in, background-color .1s ease-in;
-    -moz-transition: right .1s ease-in, background-color .1s ease-in;
-    -o-transition: right .1s ease-in, background-color .1s ease-in;
-    -ms-transition: right .1s ease-in, background-color .1s ease-in;
+    bottom: 0;
+    left: 0;
+    content: ' ';
+    width: 44px;
+    background-color: #c33;
+    border-radius: 0.3em;
+    /*box-shadow: inset 0 0.2em 0 rgba(0,0,0,0.3);*/
+    -webkit-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
 }
 
-.switch > [type="checkbox"]:checked:focus + label:after, .switch > [type="checkbox"]:checked:focus + label + .switch-knob,
-.switch > [type="checkbox"]:not(:checked):focus + label:after,
-.switch > [type="checkbox"]:not(:checked):focus + label + .switch-knob {
-    box-shadow: 0 0 6px 0 #6fb5fb;
+input.switch:empty ~ label:after
+{
+    width: 15px;
+    top: 3px;
+    bottom: 3px;
+    margin-left: 0.2em;
+    background-color: #fff;
+    border-radius: 0.15em;
+    /*box-shadow: inset 0 -0.2em 0 rgba(0,0,0,0.2);*/
 }
 
-.switch > [type="checkbox"]:checked[disabled] + label, .switch > [type="checkbox"]:checked[disabled] + label:after, .switch > [type="checkbox"]:checked[disabled] + label + .switch-knob,
-.switch > [type="checkbox"]:not(:checked)[disabled] + label,
-.switch > [type="checkbox"]:not(:checked)[disabled] + label:after,
-.switch > [type="checkbox"]:not(:checked)[disabled] + label + .switch-knob {
-    cursor: not-allowed;
-    opacity: 0.4;
+input.switch:checked ~ label:before
+{
+    background-color: #393;
 }
 
-.switch > [type="checkbox"]:checked + label:after {
-    background-color: #00955b;
-}
-
-.switch > [type="checkbox"]:not(:checked) + label:after {
-    background-color: #dddddd;
-}
-
-.switch > [type="checkbox"]:checked + label + .switch-knob {
-    right: 5px;
-    background-color: #cbcbcb;
-}
-
-.switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
-    right: 30px;
-    background-color: #898989;
+input.switch:checked ~ label:after
+{
+    margin-left: 1.6em;
 }
 
 /* Special switch for second parameter */

@@ -113,26 +113,23 @@ MessagesColumn.prototype.generateColumn = function(){
   var firstParameterName = document.createElement('p');
   firstParameterName.textContent = "Show images";
 
-  var newTweetColumnImageSwitch = document.createElement('span');
-  newTweetColumnImageSwitch.setAttribute('class', 'switch');
+  var newTweetColumnImageSwitch = document.createElement('div');
 
   var newTweetColumnImageSwitchInput = document.createElement('input');
   newTweetColumnImageSwitchInput.setAttribute('type', 'checkbox');
   newTweetColumnImageSwitchInput.setAttribute('id', 'tweets-column-switch-image' + this.id);
   newTweetColumnImageSwitchInput.setAttribute('name', 'tweets-column-switch-image' + this.id);
   newTweetColumnImageSwitchInput.setAttribute('checked', 'true');
+  newTweetColumnImageSwitchInput.setAttribute('class', 'switch');
 
   this.imagesCheckbox = newTweetColumnImageSwitchInput;
 
   var newTweetColumnImageSwitchLabel = document.createElement('label');
   newTweetColumnImageSwitchLabel.setAttribute('for', 'tweets-column-switch-image' + this.id);
-
-  var newTweetColumnImageSwitchKnob = document.createElement('span');
-  newTweetColumnImageSwitchKnob.setAttribute('class', 'switch-knob');
+  newTweetColumnImageSwitchLabel.textContent = 'Display';
 
   newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchInput);
   newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchLabel);
-  newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchKnob);
 
   firstParameter.appendChild(firstParameterName);
   firstParameter.appendChild(newTweetColumnImageSwitch);
@@ -150,23 +147,20 @@ MessagesColumn.prototype.generateColumn = function(){
   var secondParameterSecondChoice = document.createElement('p');
   secondParameterSecondChoice.textContent = "Hashtags";
 
-  var listsOrTagsSwitch = document.createElement('span');
-  listsOrTagsSwitch.setAttribute('class', 'switch');
+  var listsOrTagsSwitch = document.createElement('div');
 
   var listsOrTagsSwitchInput = document.createElement('input');
   listsOrTagsSwitchInput.setAttribute('type', 'checkbox');
   listsOrTagsSwitchInput.setAttribute('id', 'tweets-column-switch-listsOrTags' + this.id);
   listsOrTagsSwitchInput.setAttribute('name', 'tweets-column-switch-listsOrTags' + this.id);
+  listsOrTagsSwitchInput.setAttribute('class', 'switch');
 
   var listsOrTagsSwitchLabel = document.createElement('label');
   listsOrTagsSwitchLabel.setAttribute('for', 'tweets-column-switch-listsOrTags' + this.id);
-
-  var listsOrTagsSwitchKnob = document.createElement('span');
-  listsOrTagsSwitchKnob.setAttribute('class', 'switch-knob');
+  listsOrTagsSwitchLabel.textContent = 'Choose';
 
   listsOrTagsSwitch.appendChild(listsOrTagsSwitchInput);
   listsOrTagsSwitch.appendChild(listsOrTagsSwitchLabel);
-  listsOrTagsSwitch.appendChild(listsOrTagsSwitchKnob);
 
   secondParamter.appendChild(secondParameterFirstChoice);
   secondParamter.appendChild(secondParameterSecondChoice);
