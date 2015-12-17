@@ -661,11 +661,16 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: #BD181D;
 }
 
-.tweets-column-panel-list li{
+.tweets-column-panel-list li {
     list-style-type: none;
     text-align: center;
     min-height: 60px;
     position: relative;
+}
+
+.tweets-column-panel-list li + li {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
 }
 
 .tweets-column-panel-list-first p{

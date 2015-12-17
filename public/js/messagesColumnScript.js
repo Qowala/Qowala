@@ -188,9 +188,6 @@ MessagesColumn.prototype.generateColumn = function(){
 
   this.hashtagsBlock = hashtagsBlock;
 
-  var hashtagsBlockTitle = document.createElement('h4');
-  hashtagsBlockTitle.textContent = "Add hashtag to track";
-
   var hashtagTrackInput = document.createElement('input');
   hashtagTrackInput.className = "tagInput";
   hashtagTrackInput.setAttribute('placeholder','Track...');
@@ -200,7 +197,6 @@ MessagesColumn.prototype.generateColumn = function(){
 
   var hashtagsList = this.generateHashtagsList();
 
-  hashtagsBlock.appendChild(hashtagsBlockTitle);
   hashtagsBlock.appendChild(hashtagTrackInput);
   hashtagsBlock.appendChild(hashtagsList);
 
@@ -289,10 +285,6 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
     this.id + ' .tweets-column-panel-list-block');
   var twitterListsDOM = document.createElement('li');
   twitterListsDOM.className = 'tweets-column-panel-list-twitterLists';
-
-  var listsBlockTitle = document.createElement('h4');
-  listsBlockTitle.textContent = "Choose list to display";
-  twitterListsDOM.appendChild(listsBlockTitle);
 
   var listChoice = document.createElement('select');
   listChoice.className = 'tweets-column-panel-list-twitterLists-select';
@@ -416,7 +408,7 @@ MessagesColumn.prototype.addEvent = function(elementsToAddEventListener){
   }.bind(this));
 
   elementsToAddEventListener.listsOrTagsSwitch.addEventListener('change', function(){
-    this.switchListsOrHashtags();
+    this.selectSearch();
   }.bind(this));
 
   elementsToAddEventListener.listChoiceButton.addEventListener('click', function(){
@@ -522,7 +514,7 @@ MessagesColumn.prototype.enableImages = function(){
 /**
  * Switchs display between hashtags and Twitter lists
  */
-MessagesColumn.prototype.switchListsOrHashtags = function(){
+MessagesColumn.prototype.selectSearch = function(){
   this.isListsOpen = !this.isListsOpen;
 
   var hashtagsBlock = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-hashtagsBlock');
