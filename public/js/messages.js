@@ -29,6 +29,7 @@ function Message(message, streamSource, areImagesEnabled){
   this.retweeted = message.retweeted_status ? message.retweeted_status.retweeted : message.retweeted;
   this.areImagesEnabled = areImagesEnabled;
   this.image = null;
+  this.user = message.retweeted_status ? message.retweeted_status.user : message.user;
 
   this.isRetweet = message.retweeted_status ? true : false;
 
@@ -66,10 +67,6 @@ Message.prototype.generateMessage = function(){
     newUserRetweeter.insertBefore(newRetweeterFont, newUserRetweeter.firstChild);
     newTweet.appendChild(newUserRetweeter);
   }
-
-  var newLinkAuthorImg = document.createElement('a');
-  newLinkAuthorImg.setAttribute('href', 'https://twitter.com/' + this.authorUsername);
-  newLinkAuthorImg.setAttribute('target', '_blank');
 
   var newImg = document.createElement('img');
   newImg.setAttribute('src', this.profilePicture);
@@ -112,10 +109,18 @@ Message.prototype.generateMessage = function(){
   // Put event listener on elements
   this.addEvent(newRetweetButton, replyButton);
 
-  newLinkAuthorImg.appendChild(newImg);
+  newImg.addEventListener('click', function(e){
+    this.openUserPanel(e);
+  }.bind(this));
+
+  newLinkAuthor.addEventListener('click', function(e){
+    e.preventDefault();
+    this.openUserPanel(e);
+  }.bind(this));
+
   newRetweetButton.appendChild(newRetweetFont);
   replyButton.appendChild(replyFont);
-  newTweet.appendChild(newLinkAuthorImg);
+  newTweet.appendChild(newImg);
   newTweet.appendChild(newLinkAuthor);
   newTweet.appendChild(newAuthorScreenName);
   newTweet.appendChild(newContent);
@@ -124,6 +129,106 @@ Message.prototype.generateMessage = function(){
   newTweet.appendChild(newRetweetButton);
 
   return newTweet;
+}
+
+Message.prototype.openUserPanel = function(e){
+  socket.emit('getFollowedBy', this.user.id);
+  var userProfilePanel = document.getElementById('userProfilePanel');
+  var userProfileBannerImg = document.getElementById('userProfileBannerImg');
+  var userProfileTweets = document.getElementById('userProfileTweets');
+  var userProfileFollowers = document.getElementById('userProfileFollowers');
+  var userProfileFollowings = document.getElementById('userProfileFollowings');
+  var userProfileListed = document.getElementById('userProfileListed');
+  var userProfileImg = document.getElementById('userProfileImg');
+  var userProfileName = document.getElementById('userProfileName');
+  var userProfileCity = document.getElementById('userProfileCity');
+  var userProfileDescription = document.getElementById('userProfileDescription');
+  var userProfileTweetsLink = document.getElementById('userProfileTweetsLink');
+  var userProfileMentionsLink = document.getElementById('userProfileMentionsLink');
+  var userProfileListsLink = document.getElementById('userProfileListsLink');
+  var userProfileFavoritesLink = document.getElementById('userProfileFavoritesLink');
+  var userProfileTweetButton = document.getElementById('userProfileTweetButton');
+  var userProfileFollowing = document.getElementById('userProfileFollowing');
+  var mainSidebar = document.getElementById('mainSidebar');
+
+  userProfilePanel.style.display = 'block';
+
+  function closeUserProfilePopup(e){
+    e.stopPropagation();
+    e.preventDefault();
+    columnsList.removeEventListener('click', closeUserProfilePopup, true);
+    mainSidebar.removeEventListener('click', closeUserProfilePopup, true);
+    var popup = document.getElementById('userProfilePanel');
+    popup.style.display = 'none';
+  }
+
+  var columnsList = document.getElementById('tweets-columns-list');
+  columnsList.addEventListener('click', closeUserProfilePopup, true);
+  mainSidebar.addEventListener('click', closeUserProfilePopup, true);
+
+
+  if (this.user.profile_banner_url) {
+    userProfileBannerImg.style.height = '200px';
+    userProfileImg.setAttribute('class', '');
+    userProfileBannerImg.style.background = 'url('+this.user.profile_banner_url+'/600x200)';
+  }
+  else {
+    userProfileImg.setAttribute('class', 'top');
+    userProfileBannerImg.style.height = 0;
+  }
+  userProfileTweets.innerHTML = this.user.statuses_count;
+  userProfileFollowers.innerHTML = this.user.followers_count;
+  userProfileFollowings.innerHTML = this.user.friends_count;
+  userProfileListed.innerHTML = this.user.listed_count;
+
+  var re = /normal/;
+  var str = this.user.profile_image_url;
+  var subst = 'bigger';
+  var result = str.replace(re, subst);
+  userProfileImg.setAttribute('src',result);
+
+  userProfileName.innerHTML = this.user.name;
+  var nameSpan = document.createElement('span');
+  nameSpan.innerHTML = "@" + this.user.screen_name
+  userProfileName.appendChild(nameSpan);
+
+  if (this.user.location) {
+    var markerIcon = document.createElement('i');
+    markerIcon.setAttribute('class','fa fa-map-marker');
+    userProfileCity.appendChild(markerIcon);
+    userProfileCity.innerHTML = " " + this.user.location;
+  }
+  userProfileDescription.innerHTML = this.user.description;
+
+  userProfileTweetButton.addEventListener('click', function(e){
+      this.prepareReply();
+  }.bind(this));
+
+  var emit = ['followUser', 'unfollowUser'];
+  var actions = ['Unfollow', 'Follow'];
+  var classes = ['following', ''];
+  var index = 1;
+  if (this.user.following) {
+    index = 0; 
+  }
+
+  userProfileFollowing.innerHTML = actions[index];
+  userProfileFollowing.setAttribute('class', classes[index]);
+
+  userProfileFollowing.addEventListener('click', function(){
+    index ^= 1;
+    socket.emit(emit[index], this.user.id);
+    userProfileFollowing.innerHTML = actions[index];
+    userProfileFollowing.setAttribute('class', classes[index]);
+  }.bind(this), true);
+
+  var baseUrl = 'https://twitter.com/' + this.user.screen_name;
+  userProfileTweetsLink.setAttribute('href', baseUrl);
+  userProfileMentionsLink.setAttribute('href', 'https://twitter.com/search?q=@' + this.user.screen_name);
+  userProfileListsLink.setAttribute('href', baseUrl + '/lists');
+  userProfileFavoritesLink.setAttribute('href', baseUrl + '/favorites');
+  
+  document.getElementById('userProfileFollowedBy').innerHTML = 'Followed by <i class="fa fa-spinner"></i>';
 }
 
 /**

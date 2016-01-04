@@ -146,6 +146,10 @@ body {
     z-index: 2;
 }
 
+#mainSidebar {
+  z-index: 4;
+}
+
 #notificationPanel{
   background-color: #333333;
   left: -330px;
@@ -343,7 +347,7 @@ body {
     border-radius: 0 10px 10px 0;
     position: fixed;
     top: 95px;
-    z-index: 1;
+    z-index: 3;
     left: -100px;
     -moz-transition: left 1s;
     -webkit-transition: left 1s;
@@ -398,7 +402,6 @@ body {
 #sendTweetButton:disabled {
     background-color: #4cc783;
 }
-
 
 #sendTweetButton:hover {
     background-color:#16C46D;
@@ -501,6 +504,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding-bottom: 10px;
     width: 220px;
 }
+
 .tweets-column-panel-list-hashtagsList .hashtag {
     background-color: #119955;
     border-radius: 15px;
@@ -622,7 +626,8 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #afacac;
     font-size: 1.6em;
     position: absolute;
-    right: 10px;  -webkit-transform: translateZ(0);
+    right: 10px;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
     -webkit-backface-visibility: hidden;
@@ -677,9 +682,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .deleteColumnButton:hover{
     background-color: #BD181D;
-
 }
-
 
 .tweets-column-panel-list li{
     list-style-type: none;
@@ -978,6 +981,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: white;
     border-radius: 10px;
     border: solid white 1px;
+    cursor: pointer;
 }
 
 .tweet-profile > a {
@@ -1093,7 +1097,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     display: none;
 }
 
-#largeImagePopup, #tweetConfirmationPopup{
+#largeImagePopup, #tweetConfirmationPopup, #userProfilePanel{
     position: fixed;
     background-color: #C2C2C2;
     border-radius: 20px;
@@ -1244,7 +1248,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
     margin-left: 30px;
 }
 
-
 #sendTagButton {
     background-color: #ddd;
     border: medium none;
@@ -1255,6 +1258,172 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 #sendTagButton:hover {
     background-color: #F5F5F5;
+}
+
+/**
+ *
+ * User Profile Panel
+ *
+ */
+#userProfilePanel {
+  display: none;
+  background-color: #fff;
+  width: 500px;
+  margin: auto;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 0;
+  overflow: hidden;
+  height: auto;
+  border-radius: 0;
+}
+
+#userProfileBannerImg {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+}
+
+#userProfilePanel .datas {
+  padding: 0 3%;
+  height: 50px;
+  line-height: 26px;
+}
+
+#userProfilePanel .datas .data {
+  width: 17%;
+}
+
+#userProfilePanel .datas .left {
+  float: left;
+}
+
+#userProfilePanel .datas .right {
+  float: right;
+}
+
+#userProfilePanel .datas p {
+  margin: 0;
+}
+
+#userProfilePanel .datas p:not(.number) {
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+#userProfilePanel .datas .number {
+  color: #119955;
+  font-size: 18px;
+}
+
+#userProfileImg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 175px;
+  border: 2px solid #fff;
+}
+
+#userProfileImg.top {
+  top: 0;
+  max-height: 55px;
+}
+
+#userProfilePanel .infos {
+  padding: 0 3%;
+}
+
+#userProfilePanel .infos h2 {
+  font-size: 22px;
+  font-weight: normal;
+  text-align: center;
+  margin: 0;
+  clear: both;
+}
+
+#userProfilePanel .infos h2 span {
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+#userProfileCity {
+  text-align: center;
+  font-weight: normal;
+  font-size: 16px;
+  margin: 0;
+}
+
+#userProfileDescription {
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.profile-actions {
+  text-align: center;
+}
+
+.profile-actions button {
+  border: 1px solid #119955;
+  color: #119955;
+  background-color: #fff;
+  border-radius: 7px;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 5px;
+  width: 150px;
+  margin: 20px;
+}
+
+.profile-actions button.following, .profile-actions button:hover {
+  background-color: #119955;
+  color: #fff;
+}
+
+.profile-actions button.following:hover {
+  background-color: #fff;
+  color: #119955;
+}
+
+#userProfileFollowedBy {
+  padding: 15px;
+  margin: 0;
+  background-color: #EFEFEF;
+}
+
+#userProfileFollowedBy a {
+  text-decoration: none;
+  color: #119955;
+}
+
+#userProfilePanel .links {
+  display: flex;
+}
+
+#userProfilePanel .links a {
+  width: 25%;
+  color: #119955;
+  text-align: center;
+  text-decoration: none;
+  line-height: 28px;
+  padding-top: 15px;
+  padding-bottom: 5px;
+}
+
+#userProfilePanel .links a i, #userProfilePanel .links a span {
+  display: block;
+  color: #119955;
+  font-size: 20px;
+}
+
+#userProfilePanel .links a span {
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 /***********************/
