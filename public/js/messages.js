@@ -108,6 +108,7 @@ Message.prototype.generateMessage = function(){
   var newRetweetButton = document.createElement('button');
   newRetweetButton.setAttribute('name', 'retweet-' + this.id_str);
   newRetweetButton.setAttribute('class', 'tweet-retweet-button');
+  newRetweetButton.textContent = ' ' + this.retweetCount;
 
   var newRetweetFont = document.createElement('i');
   newRetweetFont.setAttribute('class', 'fa fa-retweet');
@@ -131,7 +132,7 @@ Message.prototype.generateMessage = function(){
     this.openUserPanel(e);
   }.bind(this));
 
-  newRetweetButton.appendChild(newRetweetFont);
+  newRetweetButton.insertBefore(newRetweetFont, newRetweetButton.firstChild);
   replyButton.appendChild(replyFont);
   newTweet.appendChild(newImg);
   newTweet.appendChild(newLinkAuthor);
