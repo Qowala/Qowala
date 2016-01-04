@@ -145,6 +145,7 @@ body {
     width: 100px;
     z-index: 2;
 }
+
 #mainSidebar {
   z-index: 4;
 }
@@ -402,7 +403,6 @@ body {
     background-color: #4cc783;
 }
 
-
 #sendTweetButton:hover {
     background-color:#16C46D;
 }
@@ -504,6 +504,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     padding-bottom: 10px;
     width: 220px;
 }
+
 .tweets-column-panel-list-hashtagsList .hashtag {
     background-color: #119955;
     border-radius: 15px;
@@ -681,9 +682,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .deleteColumnButton:hover{
     background-color: #BD181D;
-
 }
-
 
 .tweets-column-panel-list li{
     list-style-type: none;
@@ -1248,7 +1247,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tag-lang li+li{
     margin-left: 30px;
 }
-
 
 #sendTagButton {
     background-color: #ddd;
