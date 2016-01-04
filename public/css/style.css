@@ -625,7 +625,8 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: #afacac;
     font-size: 1.6em;
     position: absolute;
-    right: 10px;  -webkit-transform: translateZ(0);
+    right: 10px;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
     -webkit-backface-visibility: hidden;

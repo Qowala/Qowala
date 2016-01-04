@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0.beta-4 - 2016/01/04
+
+  * Add user profile modal with links to its tweets, mentions, lists, favorites, and buttons to tweet and follow/unfollow.
+
+  * Add username auto-completion when writing a tweet.
+
 ## 1.0.0.beta-3 - 2015/09/07
 
   * Add notifications support when user is connected.
