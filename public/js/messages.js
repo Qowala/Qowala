@@ -225,7 +225,7 @@ Message.prototype.openUserPanel = function(e){
   var classes = ['following', ''];
   var index = 1;
   if (this.user.following) {
-    index = 0; 
+    index = 0;
   }
 
   userProfileFollowing.innerHTML = actions[index];
@@ -243,7 +243,7 @@ Message.prototype.openUserPanel = function(e){
   userProfileMentionsLink.setAttribute('href', 'https://twitter.com/search?q=@' + this.user.screen_name);
   userProfileListsLink.setAttribute('href', baseUrl + '/lists');
   userProfileFavoritesLink.setAttribute('href', baseUrl + '/favorites');
-  
+
   document.getElementById('userProfileFollowedBy').innerHTML = 'Followed by <i class="fa fa-spinner"></i>';
 }
 
