@@ -177,7 +177,7 @@ MessagesColumn.prototype.generateColumn = function(){
   listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button classic-button';
   listChoiceButton.textContent = "Display";
 
-  this.twitterListsDOM.childNodes[1].appendChild(listChoiceButton);
+  this.twitterListsDOM.childNodes[0].appendChild(listChoiceButton);
 
   panelList.appendChild(this.twitterListsDOM);
 
