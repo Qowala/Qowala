@@ -202,7 +202,7 @@ MessagesDisplay.prototype.useList = function(twitterListId, columnId){
                 this.messagesColumnsList[z].updateHashtagsList(
                   this.columnsLayout[y].hashtags
                 );
-                this.messagesColumnsList[i].emptyColumn();
+                this.messagesColumnsList[z].emptyColumn();
 
               }
             };
