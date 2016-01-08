@@ -1120,9 +1120,7 @@ input.switch:checked ~ label:after
 
 #largeImagePopup, #tweetConfirmationPopup, #userProfilePanel{
     position: fixed;
-    background-color: #C2C2C2;
-    border-radius: 20px;
-    padding: 20px;
+    box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.3), 0 0 7px 0 rgba(0,0,0,0.35);
     z-index: 2;
     display: none;
     -moz-transition: all ease-in 0.35s;

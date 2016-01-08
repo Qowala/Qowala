@@ -733,12 +733,11 @@ Message.prototype.enlargeImage = function(e){
   var popupImage = document.querySelector('#largeImagePopup img');
   popupImage.setAttribute('src', src + ':large');
 
-  // 20 is added because of the padding of the parent element
-  var halfWidth = width / 2 + 20;
+  var halfWidth = width / 2;
   var left = 'calc(50% - ' + halfWidth + 'px)';
   // console.log('left: ', left);
   popup.style.left = left;
-  var halfHeight = height / 2 + 20;
+  var halfHeight = height / 2;
   var height = 'calc(50% - ' + halfHeight + 'px)';
   // console.log('height: ', height);
   popup.style.top = height;
