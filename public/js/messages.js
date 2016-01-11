@@ -186,7 +186,7 @@ Message.prototype.openUserPanel = function(e){
   if (this.user.profile_banner_url) {
     userProfileBannerImg.style.height = '200px';
     userProfileImg.setAttribute('class', '');
-    userProfileBannerImg.style.background = 'url('+this.user.profile_banner_url+'/600x200)';
+    userProfileBannerImg.style.backgroundImage = 'url('+this.user.profile_banner_url+'/600x200)';
   }
   else {
     userProfileImg.setAttribute('class', 'top');
