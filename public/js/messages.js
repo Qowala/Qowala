@@ -214,7 +214,12 @@ Message.prototype.openUserPanel = function(e){
     userProfileCity.appendChild(markerIcon);
     userProfileCity.innerHTML = " " + this.user.location;
   }
-  userProfileDescription.innerHTML = this.user.description;
+
+  var description = this.user.entities.description;
+  description.textContent = this.user.description;
+  console.log(description);
+  userProfileDescription.innerHTML = '';
+  userProfileDescription.appendChild(processText(description).text);
 
   userProfileTweetButton.addEventListener('click', function(e){
       this.prepareReply();
@@ -753,4 +758,209 @@ Message.prototype.enlargeImage = function(e){
 
   var columnsList = document.getElementById('tweets-columns-list');
   columnsList.addEventListener('click', closeImagePopup, true);
+}
+
+/**
+ * Process the description text
+ * @return {[type]} [description]
+ */
+processText = function(text){
+  if(!text.hasBeenTextAlreadyProcessed){
+    // Array where to store all URLs of the tweet
+    var urls_indices = [];
+
+    // Copy of the original text
+    var tweetText = text.textContent;
+
+    // Parse all URLs from the Tweet object to be sort in a array
+    if(text.urls) {
+      for (var i = 0; i < text.urls.length; i++) {
+        var urlIndice = {
+          expanded_url: text.urls[i].expanded_url,
+          url: text.urls[i].url,
+          indices: text.urls[i].indices,
+          media: false
+        };
+        urls_indices.push(urlIndice);
+      }
+    }
+    // Parse all media URLs from the Tweet object to be sort in a array
+    if(text.medias) {
+      for (var i = 0; i < text.medias.length; i++) {
+        var videoInfo = false;
+        if (text.medias[i].type == 'animated_gif') {
+          videoInfo = text.medias[i].video_info;
+        }
+
+        var urlIndice = {
+          expanded_url: text.medias[i].expanded_url,
+          media_url: text.medias[i].media_url_https,
+          url: text.medias[i].url,
+          indices: text.medias[i].indices,
+          largeSize: text.medias[i].sizes.large,
+          media: true,
+          videoInfo: videoInfo
+        };
+        urls_indices.push(urlIndice);
+      };
+    }
+
+    if(text.hashtags) {
+      for (var i = 0; i < text.hashtags.length; i++) {
+        var urlIndice = {
+          url: 'https://twitter.com/hashtag/' + text.hashtags[i].text,
+          text: '#' + text.hashtags[i].text,
+          indices: text.hashtags[i].indices,
+          hashtag: true
+        };
+        urls_indices.push(urlIndice);
+      };
+    }
+
+    if(text.user_mentions) {
+      for (var i = 0; i < text.user_mentions.length; i++) {
+        var urlIndice = {
+          url: 'https://twitter.com/' + text.user_mentions[i].screen_name,
+          text: '@' + text.user_mentions[i].screen_name,
+          indices: text.user_mentions[i].indices,
+          user_mentions: true
+        };
+        urls_indices.push(urlIndice);
+      };
+    }
+    /**
+    * Compare the indices from bigger to smaller
+    * @param  {Array} a [Indices of first element]
+    * @param  {Array} b [Indices of first element]
+    * @return {Integer}   [Comparison result]
+    */
+    function compareIndicesInversed(a, b){
+      return  b.indices[0] - a.indices[0];
+    }
+
+    /**
+    * Search for escaped special characters and transform them
+    * @param {String} text Unescaped text
+    */
+    function unescapeHTML(text){
+      text = text.replace(/&amp;/g, '&');
+      text = text.replace(/&gt;/g, '>');
+      text = text.replace(/&lt;/g, '<');
+      text = text.replace(/&quot;/g, '"');
+      text = text.replace(/&#39;/g, "'");
+      return text;
+    }
+
+    // Sort the indices from bigger to smaller
+    urls_indices.sort(compareIndicesInversed);
+
+    var parsedText = document.createElement('p');
+    if(urls_indices[0]){
+
+      for (var i = 0; i < urls_indices.length; i++) {
+        var splittedText = tweetText
+          .substring(urls_indices[i].indices[1]) + " ";
+
+        splittedText = unescapeHTML(splittedText);
+
+        var firstPart = document.createTextNode(splittedText);
+
+        if(urls_indices[i].indices[0] == 139){
+          tweetText = tweetText
+            .substring(0, tweetText.lastIndexOf(' ') + 1);
+        }
+        else{
+          tweetText = tweetText
+            .substring(0, urls_indices[i].indices[0]);
+        }
+
+        var link = document.createElement('a');
+        link.setAttribute('target', "_blank");
+        link.className = 'tweet-url';
+
+        if(urls_indices[i].hashtag || urls_indices[i].user_mentions){
+          link.setAttribute('href', urls_indices[i].url);
+          link.textContent = urls_indices[i].text;
+        }
+        else{
+          if(urls_indices[i].expanded_url.length > 35){
+            var displayUrl = urls_indices[i].expanded_url
+              .slice(0, 32);
+            displayUrl += '...';
+          }
+          else {
+            var displayUrl = urls_indices[i].expanded_url;
+          }
+          link.setAttribute('href', urls_indices[i].expanded_url);
+          link.textContent = displayUrl;
+        }
+
+        if(urls_indices[i].media){
+          if(urls_indices[i].videoInfo){
+            var video = document.createElement('video');
+            video.setAttribute('src',
+            urls_indices[i].videoInfo.variants[0].url);
+            video.setAttribute('controls', true);
+            video.setAttribute('loop', true);
+
+            if(text.areImagesEnabled){
+              video.className = "tweet-image";
+              link.className = "tweet-link-image-none";
+            }
+            else{
+              video.className = "tweet-image-none";
+              link.className = "tweet-link-image";
+            }
+            parsedText.appendChild(video);
+          }
+          else {
+            var image = document.createElement('img');
+            image.setAttribute('src',
+              urls_indices[i].media_url + ':medium');
+            image.setAttribute('fullsize',
+              urls_indices[i].largeSize.h +
+              '/' +
+              urls_indices[i].largeSize.w);
+
+            if(text.areImagesEnabled){
+              image.className = "tweet-image";
+              link.className = "tweet-link-image-none";
+            }
+            else{
+              image.className = "tweet-image-none";
+              link.className = "tweet-link-image";
+            }
+
+            // Put an event to enlarge the image
+            image.addEventListener('click', function(){
+              text.enlargeImage();
+            }.bind(text), false);
+
+            text.image = image;
+            parsedText.appendChild(image);
+          }
+        }
+
+        parsedText.insertBefore(firstPart, parsedText.firstChild);
+        parsedText.insertBefore(link, parsedText.firstChild);
+
+        if(i == urls_indices.length - 1){
+          splittedText = tweetText.substring(0,
+            urls_indices[i].indices[0]);
+          splittedText = unescapeHTML(splittedText);
+          var firstPart = document.createTextNode(splittedText);
+          parsedText.insertBefore(firstPart, parsedText.firstChild);
+        }
+      };
+    }
+    else {
+      tweetText = unescapeHTML(tweetText);
+      var firstPart = document.createTextNode(tweetText);
+      parsedText.appendChild(firstPart);
+    }
+
+    text.text = parsedText;
+    text.hasBeenTextAlreadyProcessed = true;
+  }
+  return text;
 }
