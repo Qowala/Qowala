@@ -649,7 +649,6 @@ MessagesColumn.prototype.trackTag = function(){
   else{
     this.MessagesDisplay.addHashtag(this.id, tagObject.tag);
   }
-  this.openPanel();
   this.openSpinner();
 }
 
