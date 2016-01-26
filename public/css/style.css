@@ -56,10 +56,10 @@ body {
 }
 
 #loginPopup {
-    height: 400px;
+    height: 500px;
     left: 50%;
     margin-left: -400px;
-    margin-top: -200px;
+    margin-top: -250px;
     padding: 20px 0 40px;
     position: absolute;
     text-align: center;
@@ -70,8 +70,18 @@ body {
     color: white;
 }
 
+#loginPopup > h2 {
+    font-size: 3.5em;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
 #loginPopup > p {
     margin-bottom: 50px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-shadow: 1px 1px 1px #ccc;
 }
 
 #loginPopup > img {
@@ -116,12 +126,13 @@ body {
 }
 
 #welcome-button {
-    background-color: #007d92;
-    border-radius: 10px;
+    background-color: #55ACEF;
+    border-radius: 3px;
     font-family: 'Asap-Regular', sans-serif;
     text-decoration: none;
-    padding: 8px 30px;
+    padding: 15px 30px;
     color: white;
+    box-shadow: 0 3px #337FA3;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
@@ -140,8 +151,11 @@ body {
     color: #FFFFFF;
 }
 
-#welcome-logo {
-    max-width: 200px;
+#welcome-button > i {
+    margin-right: 10px;
+    font-size: 1.5em;
+    position: relative;
+    top: 2px;
 }
 
 h1 {
