@@ -1,3 +1,8 @@
 exports.getLogin = function(req, res) {
-  res.render('home/login');
+  if (req.user) {
+    res.redirect('/dashboard');
+  }
+  else {
+    res.render('home/login');
+  }
 };
