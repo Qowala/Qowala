@@ -49,7 +49,36 @@ body {
 
 }
 
-#loginPopup, #deprecatedBrowserPopup {
+#login-background {
+    background-image: url('../img/login-app-bg.jpg');
+    height: 100%;
+    width: 100%;
+}
+
+#loginPopup {
+    height: 400px;
+    left: 50%;
+    margin-left: -400px;
+    margin-top: -200px;
+    padding: 20px 0 40px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 800px;
+    z-index: 1;
+    border-radius: 20px;
+    color: white;
+}
+
+#loginPopup > p {
+    margin-bottom: 50px;
+}
+
+#loginPopup > img {
+    width: 800px;
+}
+
+#deprecatedBrowserPopup {
     background-color: #595959;
     height: 230px;
     left: 50%;
@@ -67,10 +96,6 @@ body {
 
 #deprecatedBrowserPopup {
   display: none;
-}
-
-#loginPopup > p {
-    margin-bottom: 50px;
 }
 
 .fa.fa-firefox, .fa.fa-chrome, .fa.fa-opera {
