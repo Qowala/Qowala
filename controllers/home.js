@@ -1,3 +1,3 @@
-exports.redirectToDashboard = function(req, res) {
-	res.redirect('/dashboard');
+exports.getLogin = function(req, res) {
+  res.render('home/login');
 };
