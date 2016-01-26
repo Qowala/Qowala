@@ -1,11 +1,3 @@
- <%if (!userId) { %>
-    <div id="loginPopup">
-        <h2>Welcome to <img id="welcome-logo" src="/img/logo-icn+name-green.png"></h2>
-        <p>Connect to your Twitter account to access Qowala :)</p>
-        <a href="/auth/twitter" id="welcome-button">Sign in with Twitter</a>
-    </div>
-<% } %>
-
 <div id="deprecatedBrowserPopup">
     <h2>BROWSER INFORMATION</h2>
     <p>Qowala uses the latest web technologies to deliver the best experience possible to you.</p>
@@ -118,3 +110,14 @@
 
 <ul id="tweets-columns-list">
 </ul>
+
+<script type="text/javascript">
+    var userId = <%= userId %>;
+    var username = "<%= username %>";
+</script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/js/messagesDisplayScript.js"></script>
+<script type="text/javascript" src="/js/messages.js"></script>
+<script type="text/javascript" src="/js/messagesColumnScript.js"></script>
+<script type="text/javascript" src="/js/mainSidebarScript.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
