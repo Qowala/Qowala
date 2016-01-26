@@ -19,9 +19,3 @@ exports.getDashboard = function(req, res) {
 
   console.log(req.session);
 };
-
-exports.postTag = function(req, res) {
-  users.addTag(req.user, req.body.tag);
-    // Redirect to dashboard
-    res.redirect('/dashboard');
-};

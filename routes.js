@@ -7,8 +7,6 @@ function routes (app){
 
     app.get('/dashboard', dashboard.getDashboard);
 
-    app.post('/tag', ensureAuthenticated, dashboard.postTag);
-
     // Redirect the user to Twitter for authentication.  When complete, Twitter
   // will redirect the user back to the application at
   //   /auth/twitter/callback
