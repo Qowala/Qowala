@@ -51,15 +51,16 @@ body {
 
 #login-background {
     background-image: url('../img/login-app-bg.jpg');
+    background-position: center;
     height: 100%;
     width: 100%;
 }
 
 #loginPopup {
-    height: 500px;
+    height: 480px;
     left: 50%;
     margin-left: -400px;
-    margin-top: -250px;
+    margin-top: -260px;
     padding: 20px 0 40px;
     position: absolute;
     text-align: center;
@@ -74,6 +75,8 @@ body {
     font-size: 3.5em;
     font-weight: 300;
     margin-bottom: 10px;
+    margin-top: 160px;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 #loginPopup > p {
@@ -81,11 +84,7 @@ body {
     font-size: 1.2em;
     text-transform: uppercase;
     font-weight: 700;
-    text-shadow: 1px 1px 1px #ccc;
-}
-
-#loginPopup > img {
-    width: 800px;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 #deprecatedBrowserPopup {
@@ -131,24 +130,19 @@ body {
     font-family: 'Asap-Regular', sans-serif;
     text-decoration: none;
     padding: 15px 30px;
+    position: relative;
+    top: 0;
     color: white;
-    box-shadow: 0 3px #337FA3;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
+    box-shadow: 0px 3px 0px #327fa6;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+    -webkit-transition-property: box-shadow, top;
+    transition-property: box-shadow, top;
 }
 
 #welcome-button:hover{
-    background-color: #009DB8;
-    color: #FFFFFF;
+    box-shadow: 0px 1px 0px #327fa6;
+    top: 3px;
 }
 
 #welcome-button > i {
