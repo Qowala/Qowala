@@ -403,50 +403,82 @@ button#buttonOpenNotificationPanel {
     text-align: center;
 }
 
-#messageEditionPanel{
+#messageEditionPanel {
     width: 10px;
-    background-color: #afacac;
     border-radius: 0 10px 10px 0;
     position: fixed;
-    top: 95px;
     z-index: 3;
     left: -100px;
-    -moz-transition: left 1s;
-    -webkit-transition: left 1s;
-    -ms-transition: left 1s;
-    -o-transition: left 1s;
-    transition: left 1s;
+    top: 0;
+    padding: 0 15px;
+    background: #fff;
+    box-sizing: border-box;
+    -moz-transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+#messageEditionPanel.open {
+    left: 70px;
+}
+
+#messageEditionPanel header {
+    background: #ccc;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#messageEditionPanel header h1 {
+    font-size: 0.75em;
+    line-height: 40px;
+    padding: 0 20px;
+    /*font-weight: bold;*/
+    text-transform: uppercase;
 }
 
 #messageEditionPanel p {
     color: black;
-    padding: 0 110px 0 0;
-    text-align: right;
+    text-align: left;
+    margin-top: -30px;
+    line-height: 0;
+    color: #ccc;
+    padding: 0 20px;
 }
 
 #messageTextarea {
-    background-color: #ededed;
-    border: medium none;
-    border-radius: 10px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
     display: block;
-    height: 200px;
+    height: 150px;
     margin: 14px auto;
-    padding: 10px;
-    width: 80%;
+    padding: 20px;
+    width: calc(100% - 42px);
 }
 
 .red{
     color: red;
 }
 
+#messageEditionPanel footer {
+    background-color: #f7f7f7;
+    text-align: right;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+}
+
 #sendTweetButton {
+    font-size: 0.75em;
+    font-weight: bold;
     background-color: #119955;
     border: medium none;
     border-radius: 5px;
     bottom: 10px;
     color: white;
     padding: 7px 20px;
-    position: absolute;
     right: 10px;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -590,14 +622,21 @@ input[type="text"].tagInput:-ms-input-placeholder {
 /** TWEETS **/
 
 #tweets-columns-list {
-    /*width: calc(100% - 70px);*/
+    width: calc(100% - 71px);
     padding: 0;
     /*display: inline-flex;*/
     display: flex;
     margin-top: 0;
     height: 100%;
+    left: 0;
     margin: 0;
     overflow-x: auto;
+    position: relative;
+    -moz-transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
 }
 
 .tweets-column, #plusColumn {

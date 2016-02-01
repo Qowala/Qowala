@@ -77,17 +77,18 @@ MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers
  */
 MainSidebar.prototype.openMessageEdition = function(openForce){
   this.isMessageEditionPanelOpen = !this.isMessageEditionPanelOpen || openForce;
+  var width = calculateWidth();
   if(this.isMessageEditionPanelOpen || openForce){
-    var width = calculateWidth();
-
-    this.messageEditionPanel.style.left = '-' + width +'px';
+    this.messageEditionPanel.className = "open";
     this.messageEditionPanel.style.width = width + 'px';
-    this.messageEditionPanel.style.left = 120 + 'px';
-
+    document.getElementById('tweets-columns-list').style.left = width + 'px';
+    document.getElementById('tweets-columns-list').style.width = window.innerWidth-width-71 + 'px';
   }
   else{
-    var width = calculateWidth();
-    this.messageEditionPanel.style.left = '-' + width +'px';
+    this.messageEditionPanel.className = "";
+    this.messageEditionPanel.style.width = '10px';
+    document.getElementById('tweets-columns-list').style.left = 0 + 'px';
+    document.getElementById('tweets-columns-list').style.width = window.innerWidth-71 + 'px';
   }
 
   function calculateWidth(){
@@ -118,15 +119,14 @@ MainSidebar.prototype.textareaListener = function(){
 
   function updateNumberCharacters(){
     var numberCharacters = this.messageTextarea.value.length;
-    var numberCharactersLeft = 140 - numberCharacters
-    this.numberCharactersLeft.textContent = numberCharactersLeft;
+    this.numberCharactersLeft.textContent = numberCharacters;
 
     // If number of characters negative, display in red
-    if(numberCharactersLeft < 0){
+    if(numberCharacters > 140){
       this.numberCharactersLeft.className = "red";
       this.sendTweetButton.disabled = true;
     }
-    else if (numberCharactersLeft == 140){
+    else if (numberCharacters == 0){
       this.sendTweetButton.disabled = true;
     }
     else{
