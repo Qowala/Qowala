@@ -82,13 +82,13 @@ MainSidebar.prototype.openMessageEdition = function(openForce){
     this.messageEditionPanel.className = "open";
     this.messageEditionPanel.style.width = width + 'px';
     document.getElementById('tweets-columns-list').style.left = width + 'px';
-    document.getElementById('tweets-columns-list').style.width = window.innerWidth-width-71 + 'px';
+    document.getElementById('tweets-columns-list').style.width = 'calc(100% - '+ Math.ceil(width-71) +'px)';
   }
   else{
     this.messageEditionPanel.className = "";
     this.messageEditionPanel.style.width = '10px';
     document.getElementById('tweets-columns-list').style.left = 0 + 'px';
-    document.getElementById('tweets-columns-list').style.width = window.innerWidth-71 + 'px';
+    document.getElementById('tweets-columns-list').style.width = 'calc(100% - 71px)';
   }
 
   function calculateWidth(){
