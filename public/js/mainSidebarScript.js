@@ -360,14 +360,18 @@ function NotificationPanel(mapping){
 NotificationPanel.prototype.toggleNotificationPanel = function(forceOpen){
   this.isNotificationPanelOpen = !this.isNotificationPanelOpen;
   if(this.isNotificationPanelOpen){
-    this.notificationPanel.style.marginLeft = '0';
+    this.notificationPanel.style.left = '71px';
     if(this.notificationCount !== 0){
       this.notificationsCounter.style.display = 'none';
       this.notificationCount = 0;
     }
+    document.getElementById('tweets-columns-list').style.left = '430px';
+    document.getElementById('tweets-columns-list').style.width = 'calc(100% - 501px)';
   }
   else{
-    this.notificationPanel.style.marginLeft = '-450px';
+    this.notificationPanel.style.left = '-450px';
+    document.getElementById('tweets-columns-list').style.left = '0';
+    document.getElementById('tweets-columns-list').style.width = 'calc(100% - 71px)';
   }
 }
 

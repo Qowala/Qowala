@@ -180,18 +180,17 @@ h1 {
 
 #notificationPanel{
   background-color: #F5F5F5;
-  margin-left: -450px;
+  left: -450px;
   width: 430px;
   height: 100%;
   padding: 0;
-  position: relative;
-  float: left;
+  position: fixed;
   z-index: 1;
-  -moz-transition: margin 1s;
-  -webkit-transition: margin 1s;
-  -ms-transition: margin 1s;
-  -o-transition: margin 1s;
-  transition: margin 1s;
+  -moz-transition: left 1s ease-in-out;
+  -webkit-transition: left 1s ease-in-out;
+  -ms-transition: left 1s ease-in-out;
+  -o-transition: left 1s ease-in-out;
+  transition: left 1s ease-in-out;
 }
 
 #notificationPanel h3 {
