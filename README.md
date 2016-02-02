@@ -57,13 +57,13 @@ Just launch the **Qowala-live_InstallationScript.sh**, it will do automatically 
     curl -sL https://deb.nodesource.com/setup | sudo bash -
     sudo apt-get install nodejs
     sudo apt-get install build-essential
-    
+
 ###### Install MongoDB
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
     echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
     sudo apt-get update
     sudo apt-get install -y mongodb-org
-    
+
 ###### Install the dependencies
     npm install
 
@@ -96,7 +96,7 @@ Move the directory containing your files
 Start the server
 
     nodejs server.js
-    
+
 You will then be able to access the client in your browser at **http://192.168.12.34:8080/** (The IP address can be changed in the Vagrantfile)
 
 # Project released under MIT License

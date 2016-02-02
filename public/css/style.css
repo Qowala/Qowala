@@ -472,12 +472,13 @@ button#buttonOpenNotificationPanel {
 #sendTweetButton {
     font-size: 0.75em;
     font-weight: bold;
+    font-family: 'Asap-Regular', sans-serif;
     background-color: #119955;
     border: medium none;
     border-radius: 5px;
     bottom: 10px;
     color: white;
-    padding: 7px 20px;
+    padding: 7px 12px;
     right: 10px;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -492,12 +493,12 @@ button#buttonOpenNotificationPanel {
     transition-property: color, background-color;
 }
 
-#sendTweetButton:disabled {
-    background-color: #4cc783;
-}
-
 #sendTweetButton:hover {
     background-color:#16C46D;
+}
+
+#sendTweetButton:disabled {
+    background-color: #4cc783;
 }
 
 #suggestionPanel {
