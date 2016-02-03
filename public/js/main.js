@@ -134,6 +134,7 @@ var dashboard = (function (socket){
 
     socket.on('disconnect', function(){
       console.log('Got disconnected');
+      alert('You got disconnected. Please refresh your browser.');
     })
 
     // Internal listeners
