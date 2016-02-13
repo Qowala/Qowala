@@ -570,8 +570,8 @@ Message.prototype.processText = function(){
     if(urls_indices[0]){
 
       for (var i = 0; i < urls_indices.length; i++) {
-        var splittedText = tweetText
-          .substring(urls_indices[i].indices[1]) + " ";
+        var decodedText = punycode.ucs2.decode(tweetText);
+        var splittedText = punycode.ucs2.encode(decodedText.slice(urls_indices[i].indices[1]));
 
         splittedText = unescapeHTML(splittedText);
 
@@ -582,8 +582,8 @@ Message.prototype.processText = function(){
             .substring(0, tweetText.lastIndexOf(' ') + 1);
         }
         else{
-          tweetText = tweetText
-            .substring(0, urls_indices[i].indices[0]);
+          var decodedText = punycode.ucs2.decode(tweetText);
+          tweetText = punycode.ucs2.encode(decodedText.slice(0, urls_indices[i].indices[0]));
         }
 
         var link = document.createElement('a');
@@ -657,8 +657,8 @@ Message.prototype.processText = function(){
         parsedText.insertBefore(link, parsedText.firstChild);
 
         if(i == urls_indices.length - 1){
-          splittedText = tweetText.substring(0,
-            urls_indices[i].indices[0]);
+          var decodedText = punycode.ucs2.decode(tweetText);
+          splittedText = punycode.ucs2.encode(decodedText.slice(0, urls_indices[i].indices[0]));
           splittedText = unescapeHTML(splittedText);
           var firstPart = document.createTextNode(splittedText);
           parsedText.insertBefore(firstPart, parsedText.firstChild);
