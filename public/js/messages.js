@@ -672,6 +672,7 @@ Message.prototype.processText = function(){
     }
 
     this.text = parsedText;
+    this.text = twemoji.parse(this.text);
     this.hasBeenTextAlreadyProcessed = true;
   }
 }

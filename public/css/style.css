@@ -1015,6 +1015,13 @@ input.switch:checked ~ label:after
   transition: transform ease-in 0.1s;
 }
 
+img.emoji {
+   height: 1em;
+   width: 1em;
+   margin: 0 .05em 0 .1em;
+   vertical-align: -0.1em;
+}
+
 #tweets-column-home .tweets li {
   border: 1px solid #C8DBEA;
 }
