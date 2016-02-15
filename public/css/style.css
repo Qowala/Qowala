@@ -321,7 +321,7 @@ h1 {
 }
 
 #mainSidebar > button:hover {
-  background-color:#16C46D;
+  background-color: #35CF87;
 }
 
 #buttonOpenMessageEdition {
@@ -343,6 +343,10 @@ h1 {
   background-color: #25BF77;
 }
 
+#buttonAddColumn:hover .fa.fa-plus-circle {
+  background-color: #35CF87;
+}
+
 button#buttonOpenNotificationPanel {
   padding: 0;
 }
@@ -353,6 +357,7 @@ button#buttonOpenNotificationPanel {
   bottom: 10px;
   text-align: center;
   padding: 0;
+  display: block;
 }
 
 #logoutLink i {
@@ -360,8 +365,8 @@ button#buttonOpenNotificationPanel {
   margin-left: 5px;
 }
 
-#mainSidebar a:hover {
-  color:#FFA525;
+#logoutLink:hover {
+  background-color: #35CF87;
 }
 
 #numberConnectedUsersPhrase {
