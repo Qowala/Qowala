@@ -782,6 +782,7 @@ button#buttonOpenNotificationPanel {
     transition-property: color, background-color;
     text-align: center;
     font-weight: bold;
+    font-family: 'droid_sansregular', sans-serif;
 }
 
 .deleteColumnButton:hover{
