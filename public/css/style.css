@@ -901,6 +901,11 @@ input.switch:checked ~ label:after
     padding: 7px 12px;
 }
 
+.tweets-column-panel-list-message {
+    margin: 0;
+    line-height: 34px;
+}
+
 .tweets-column-panel-list-twitterLists-button {
     margin-left: 10px;
 }
