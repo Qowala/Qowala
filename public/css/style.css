@@ -622,23 +622,29 @@ button#buttonOpenNotificationPanel {
     font-weight: bolder;
     display: inline-block;
     font-size: 12px;
-    margin-left: 9px;
+    margin-right: 9px;
+    position: relative;
+    padding-right: 9px;
 }
 
-.tweets-column-panel-list-hashtagsList .hashtag span {
-    border-left: 2px solid #999;
-    padding-left: 9px;
-    line-height: 10px;
-    display: inline-block;
+.tweets-column-panel-list-hashtagsList .hashtag:after {
+    border-right: 2px solid #999;
+    position: absolute;
+    width: 0;
+    content: '';
+    height: 10px;
+    top: 0;
+    bottom: 0;
+    right: -1px;
+    margin: auto;
 }
 
-.tweets-column-panel-list-hashtagsList .hashtag:first-child {
-    margin-left: 0;
+.tweets-column-panel-list-hashtagsList .hashtag:last-child {
+    margin-right: 0;
 }
 
-.tweets-column-panel-list-hashtagsList .hashtag:first-child span {
-    border-left: none;
-    padding-left: 0;
+.tweets-column-panel-list-hashtagsList .hashtag:last-child:after {
+    border-right: none;
 }
 
 .tweets-column-panel-list-hashtagsList .hashtag .hashtag-delete-icon {

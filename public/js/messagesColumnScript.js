@@ -343,7 +343,7 @@ MessagesColumn.prototype.generateHashtagsList = function(){
     cross.className = "fa fa-times hashtag-delete-icon";
 
     hashtag.className = 'hashtag';
-    hashtag.innerHTML = '<span>#'+this.hashtagsList[i]+'</span>';
+    hashtag.textContent = '#'+this.hashtagsList[i];
     hashtagsList.appendChild(hashtag);
     hashtag.appendChild(cross);
 
