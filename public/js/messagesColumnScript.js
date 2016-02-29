@@ -253,6 +253,7 @@ MessagesColumn.prototype.generateColumn = function(){
   var elementsToAddEventListener = {
     newTweetColumnParametersButton: newTweetColumnParametersButton,
     newTweetColumnImageSwitch: newTweetColumnImageSwitch,
+    listChoiceButton: listChoiceButton,
     hashtagTrackInput: hashtagTrackInput,
     deleteColumnButton: deleteColumnButton,
     newTweetColumnTitle: newTweetColumnTitle
@@ -408,13 +409,9 @@ MessagesColumn.prototype.addEvent = function(elementsToAddEventListener){
     this.enableImages();
   }.bind(this));
 
-  // elementsToAddEventListener.listsOrTagsSwitch.addEventListener('change', function(){
-  //   this.selectSearch();
-  // }.bind(this));
-
-  // elementsToAddEventListener.listChoiceButton.addEventListener('click', function(){
-  //   this.addListToDisplay();
-  // }.bind(this));
+  elementsToAddEventListener.listChoiceButton.addEventListener('click', function(){
+    this.addListToDisplay();
+  }.bind(this));
 
   //  Triggers the Enter button for tracking tags
   elementsToAddEventListener.hashtagTrackInput.addEventListener('keypress', function(e){
