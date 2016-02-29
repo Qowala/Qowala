@@ -863,9 +863,9 @@ input.switch ~ label:after {
     color: #999;
     line-height: 15px;
     text-align: center;
-    letter-spacing: 1.2px;
-    padding-left: 1px;
+    letter-spacing: -2px;
     box-sizing: border-box;
+    text-indent: -1px;
 }
 
 input.switch:empty ~ label:before
