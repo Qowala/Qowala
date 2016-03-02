@@ -9,6 +9,7 @@ var socket = io();
  * @type {Object}
  */
 var mapping = {
+  wakeyButton: document.getElementById('wakey-button'),
   buttonOpenMessageEdition: document.getElementById('buttonOpenMessageEdition'),
   buttonAddColumn: document.getElementById('buttonAddColumn'),
   buttonOpenNotificationPanel: document.getElementById('buttonOpenNotificationPanel'),
@@ -47,6 +48,11 @@ var dashboard = (function (socket){
       messagesDisplay.createBlankColumn.bind(messagesDisplay)
     );
     notificationPanel = new NotificationPanel(mapping);
+
+    // Add reload function to Wakey button
+    mapping.wakeyButton.addEventListener('click', function() {
+      document.location.reload();
+    });
 
     // Generate the defaults columns
     mainSidebar.init();
@@ -134,7 +140,8 @@ var dashboard = (function (socket){
 
     socket.on('disconnect', function(){
       console.log('Got disconnected');
-      alert('You got disconnected. Please refresh your browser.');
+      var ribbonOverlay = document.getElementById('ribbon-overlay');
+      ribbonOverlay.style.display = 'block';
     })
 
     // Internal listeners

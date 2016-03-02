@@ -88,6 +88,45 @@ body {
     text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 }
 
+#ribbon-overlay {
+    width: calc(100% - 70px);
+    height: 100%;
+    z-index: 1;
+    display: none;
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    left: 70px;
+}
+
+#sleep-ribbon {
+    background-color: rgb(231, 76, 60);
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    padding-left: 90px;
+    height: 50px;
+}
+
+#sleep-ribbon p {
+    margin: 7px auto;
+    color: white;
+    font-size: 0.9em;
+    width: 945px;
+}
+
+#sleep-ribbon span {
+    font-family: 'droid_sansbold';
+    font-size: 0.9em;
+}
+
+#wakey-button {
+    margin-left: 50px;
+    height: 35px;
+    color: rgb(231, 76, 60);
+    font-size: 0.9em;
+    font-family: 'droid_sansbold';
+}
+
 #deprecatedBrowserPopup {
     background-color: #595959;
     height: 230px;
