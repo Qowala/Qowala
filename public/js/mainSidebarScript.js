@@ -355,6 +355,7 @@ function NotificationPanel(mapping){
   this.notificationPanel = mapping.notificationPanel;
   this.buttonOpenNotificationPanel = mapping.buttonOpenNotificationPanel;
   this.notificationPanelList = mapping.notificationPanel.getElementsByTagName('ul')[0];
+  this.noNotificationNotice = mapping.notificationPanel.getElementsByTagName('p')[0];
   this.notificationsList = [];
   this.notificationsCounter = mapping.notificationsCounter;
   this.notificationCount = 0;
@@ -448,6 +449,7 @@ NotificationPanel.prototype.createNotification = function(notification, noAlert)
   var generatedNotification = notification.generateNotification();
   this.notificationsList.unshift(generatedNotification);
   this.notificationPanelList.insertBefore(generatedNotification, this.notificationPanelList.childNodes[0]);
+  this.noNotificationNotice.style.display = 'none';
   if(!noAlert){
     this.notificationsCounter.textContent = this.notificationCount = this.notificationCount + 1;
     this.notificationsCounter.style.display = 'block';
