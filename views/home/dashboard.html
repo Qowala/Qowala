@@ -1,10 +1,11 @@
- <%if (!userId) { %>
-    <div id="loginPopup">
-        <h2>Welcome to <img id="welcome-logo" src="/img/logoql-text.png"></h2>
-        <p>Connect to your Twitter account to access Qowala live :)</p>
-        <a href="/auth/twitter" id="welcome-button">Sign in with Twitter</a>
-    </div>
-<% } %>
+<div id="ribbon-overlay">
+  <div id="sleep-ribbon">
+    <p>
+      Zzzz... It looks like your Qowala went to sleep. But don't worry! You can <span>wake him with a slight push (of a button)</span>.
+      <button id="wakey-button">Wakey, Wakey, Qowala.</button>
+    </p>
+  </div>
+</div>
 
 <div id="deprecatedBrowserPopup">
     <h2>BROWSER INFORMATION</h2>
@@ -16,46 +17,48 @@
 </div>
 
 <div id="mainSidebar">
-    <h1 id="logo"><a href="https://git.framasoft.org/KillianKemps/Qowala-live/"><img src="/img/logoql-white_360.png"></a></h1>
+    <h1 id="logo">
+      <a href="https://git.framasoft.org/KillianKemps/Qowala-live/" target="_blank">
+        <img src="/img/logo-icn-white_cropped.png">
+      </a>
+    </h1>
 
     <button id="buttonOpenMessageEdition">
         <i class="fa fa-pencil-square-o"></i>
     </button>
-    <div id="titleOpenMessageEdition">Tweet</div>
 
     <button id="buttonAddColumn">
         <i class="fa fa-columns"></i>
-        <i class="fa fa-plus"></i>
+        <i class="fa fa-plus-circle"></i>
     </button>
-    <div id="titleAddColumn"> Add column </div>
-
-    <div id="divider">
-    </div>
 
     <span id="notificationsCounter"></span>
     <button id="buttonOpenNotificationPanel">
-        <i class="fa fa-bell"></i>
+        <i class="fa fa-bell-o"></i>
     </button>
 
-    <a href="/logout" id="logoutLink">
-        <i class="fa fa-sign-out"></i>
-        <p>log out</p>
-    </a>
-
     <p id="numberConnectedUsersPhrase"><span id="numberConnectedUsers"></span> koala<span id="koalaPlural"></span> online!</p>
+
+    <a href="/logout" id="logoutLink" class="button-sidebar">
+        <i class="fa fa-sign-out"></i>
+    </a>
 
 </div>
 
 <div id="notificationPanel">
-  <h3>Notifications</h3>
   <ul id="notificationsList">
   </ul>
 </div>
 
 <div id="messageEditionPanel">
-    <textarea id="messageTextarea"></textarea>
-    <p><span id="numberCharactersLeft">140</span> characters left</p>
-    <button id="sendTweetButton" disabled="true">Tweet!</button>
+    <header>
+        <h1><i class="fa fa-pencil-square-o"></i> New Post</h1>
+    </header>
+    <textarea id="messageTextarea" placeholder="Write your post..."></textarea>
+    <p><span id="numberCharactersLeft">0</span> / 140</p>
+    <footer>
+        <button id="sendTweetButton" disabled="true">POST</button>
+    </footer>
     <div id="suggestionPanel"></div>
 </div>
 
@@ -104,8 +107,8 @@
       <span>Lists</span>
     </a>
     <a href="" target="_blank" id="userProfileFavoritesLink">
-      <i class="fa fa-star"></i>
-      <span>Favorites</span>
+      <i class="fa fa-heart"></i>
+      <span>Likes</span>
     </a>
   </section>
 </div>
@@ -121,3 +124,16 @@
 
 <ul id="tweets-columns-list">
 </ul>
+
+<script type="text/javascript">
+    var userId = <%= userId %>;
+    var username = "<%= username %>";
+</script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/js/lib/punycode.min.js"></script>
+<script type="text/javascript" src="/js/lib/twemoji.min.js"></script>
+<script type="text/javascript" src="/js/messagesDisplayScript.js"></script>
+<script type="text/javascript" src="/js/messages.js"></script>
+<script type="text/javascript" src="/js/messagesColumnScript.js"></script>
+<script type="text/javascript" src="/js/mainSidebarScript.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>

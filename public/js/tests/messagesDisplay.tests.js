@@ -55,7 +55,7 @@ describe("messagesDisplay", function(){
     });
 
     it("should add to columnsLayout", function(){
-      
+
       this.messagesDisplay.useList('599583255113891841', 6);
 
       expect(this.messagesDisplay.columnsLayout).toBeDefined();
@@ -106,7 +106,7 @@ describe("messagesDisplay", function(){
         {
           id: 6,
           name: 'TestName',
-          type: 'list', 
+          type: 'list',
           listId: '599583255113891841',
           hashtags: []
         }
@@ -137,7 +137,7 @@ describe("messagesDisplay", function(){
     });
 
     it("should return the available lists", function(){
-      
+
       var availableLists = this.messagesDisplay.updateColumnsTwitterLists();
 
       expect(availableLists).toBeDefined();
@@ -325,7 +325,7 @@ describe("messagesDisplay", function(){
       var columnTwo = new MessagesColumn(
         2,
         'AnotherTestColumn',
-        'list', 
+        'list',
         this.messagesDisplay
       );
       this.messagesDisplay.messagesColumnsList.push(columnTwo);
@@ -395,6 +395,13 @@ describe("messagesDisplay", function(){
     it("should delete the message from the tracking MessagesColumnList",
       function(){
 
+      // Mockup twemoji
+      twemoji = {
+        parse: function(text) {
+          return text;
+        }
+      };
+
       var column = new MessagesColumn(
         2,
         'Hashtag',
@@ -459,6 +466,13 @@ describe("messagesDisplay", function(){
     });
 
     it("should add message going to search-timeline", function(){
+
+      // Mockup twemoji
+      twemoji = {
+        parse: function(text) {
+          return text;
+        }
+      };
 
       var column = new MessagesColumn(
         2,

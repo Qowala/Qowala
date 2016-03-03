@@ -93,133 +93,129 @@ MessagesColumn.prototype.generateColumn = function(){
   var panelList = document.createElement('ul');
   panelList.className = "tweets-column-panel-list";
 
-  /** DELETE BUTTON **/
-  if(this.type != "home"){
-    var deleteParameter = document.createElement('li');
-
-    var deleteColumnButton = document.createElement('button');
-    deleteColumnButton.className = 'deleteColumnButton classic-button';
-    deleteColumnButton.textContent = 'Delete';
-
-    deleteParameter.appendChild(deleteColumnButton);
-    panelList.appendChild(deleteParameter);
-  }
-
-  /** FIRST PARAMETER **/
-
-  var firstParameter = document.createElement('li');
-  firstParameter.className = 'tweets-column-panel-list-first';
-
-  var firstParameterName = document.createElement('p');
-  firstParameterName.textContent = "Show images";
-
-  var newTweetColumnImageSwitch = document.createElement('span');
-  newTweetColumnImageSwitch.setAttribute('class', 'switch');
-
-  var newTweetColumnImageSwitchInput = document.createElement('input');
-  newTweetColumnImageSwitchInput.setAttribute('type', 'checkbox');
-  newTweetColumnImageSwitchInput.setAttribute('id', 'tweets-column-switch-image' + this.id);
-  newTweetColumnImageSwitchInput.setAttribute('name', 'tweets-column-switch-image' + this.id);
-  newTweetColumnImageSwitchInput.setAttribute('checked', 'true');
-
-  this.imagesCheckbox = newTweetColumnImageSwitchInput;
-
-  var newTweetColumnImageSwitchLabel = document.createElement('label');
-  newTweetColumnImageSwitchLabel.setAttribute('for', 'tweets-column-switch-image' + this.id);
-
-  var newTweetColumnImageSwitchKnob = document.createElement('span');
-  newTweetColumnImageSwitchKnob.setAttribute('class', 'switch-knob');
-
-  newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchInput);
-  newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchLabel);
-  newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchKnob);
-
-  firstParameter.appendChild(firstParameterName);
-  firstParameter.appendChild(newTweetColumnImageSwitch);
-
-  panelList.appendChild(firstParameter);
-
-  /** SECOND PARAMETER **/
-
-  var secondParamter = document.createElement('li');
-  secondParamter.className = 'tweets-column-panel-list-second';
-
-  var secondParameterFirstChoice = document.createElement('p');
-  secondParameterFirstChoice.textContent = "Lists";
-
-  var secondParameterSecondChoice = document.createElement('p');
-  secondParameterSecondChoice.textContent = "Hashtags";
-
-  var listsOrTagsSwitch = document.createElement('span');
-  listsOrTagsSwitch.setAttribute('class', 'switch');
-
-  var listsOrTagsSwitchInput = document.createElement('input');
-  listsOrTagsSwitchInput.setAttribute('type', 'checkbox');
-  listsOrTagsSwitchInput.setAttribute('id', 'tweets-column-switch-listsOrTags' + this.id);
-  listsOrTagsSwitchInput.setAttribute('name', 'tweets-column-switch-listsOrTags' + this.id);
-
-  var listsOrTagsSwitchLabel = document.createElement('label');
-  listsOrTagsSwitchLabel.setAttribute('for', 'tweets-column-switch-listsOrTags' + this.id);
-
-  var listsOrTagsSwitchKnob = document.createElement('span');
-  listsOrTagsSwitchKnob.setAttribute('class', 'switch-knob');
-
-  listsOrTagsSwitch.appendChild(listsOrTagsSwitchInput);
-  listsOrTagsSwitch.appendChild(listsOrTagsSwitchLabel);
-  listsOrTagsSwitch.appendChild(listsOrTagsSwitchKnob);
-
-  secondParamter.appendChild(secondParameterFirstChoice);
-  secondParamter.appendChild(secondParameterSecondChoice);
-  secondParamter.appendChild(listsOrTagsSwitch);
-
-  panelList.appendChild(secondParamter);
-
-  /** LISTS **/
-
-
-  this.generateColumnTwitterLists();
-
-  var listChoiceButton = document.createElement('button');
-  listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button classic-button';
-  listChoiceButton.textContent = "Display";
-
-  this.twitterListsDOM.childNodes[1].appendChild(listChoiceButton);
-
-  panelList.appendChild(this.twitterListsDOM);
-
-  /** HASHTAGS */
+  /** HASHTAGS **/
 
   var hashtagsBlock = document.createElement('li');
   hashtagsBlock.className = 'tweets-column-panel-list-hashtagsBlock';
 
   this.hashtagsBlock = hashtagsBlock;
 
-  var hashtagsBlockTitle = document.createElement('h4');
-  hashtagsBlockTitle.textContent = "Add hashtag to track";
-
-  var hashtagTrackInput = document.createElement('input');
-  hashtagTrackInput.className = "tagInput";
-  hashtagTrackInput.setAttribute('placeholder','Track...');
-  hashtagTrackInput.setAttribute('type','text');
-
-  this.hashtagTrackInput = hashtagTrackInput;
-
   var hashtagsList = this.generateHashtagsList();
 
-  hashtagsBlock.appendChild(hashtagsBlockTitle);
-  hashtagsBlock.appendChild(hashtagTrackInput);
   hashtagsBlock.appendChild(hashtagsList);
 
   panelList.appendChild(hashtagsBlock);
 
-  if(this.type == 'tracking'){
-    this.isListsOpen = false;
-    listsOrTagsSwitchInput.setAttribute('checked', true);
-    this.hashtagsBlock.style.display = "block";
-    this.twitterListsDOM.style.display = "none";
+  /** FIRST PARAMETER **/
+  var changeType = function(target,column) {
+    for (var i = 0; i < choices.length; i++) {
+      column.choices[i].classList.remove('active');
+      if (column.choices[i].textContent == target.textContent) {
+        column.choices[i].classList.add('active');
+      }
+    }
+    if (target.textContent == 'Lists') {
+      column.hashtagTrack.style.display = "none";
+      column.panel.querySelector('li.tweets-column-panel-list-twitterLists').style.display = "block";
+    }
+    else {
+      column.hashtagTrack.style.display = "block";
+      column.panel.querySelector('li.tweets-column-panel-list-twitterLists').style.display = "none";
+    }
   }
+  var categoryToSearch = document.createElement('li');
+  categoryToSearch.className = 'tweets-column-panel-categories'
 
-  /** DELETE **/
+  var searchFor = document.createElement('p');
+  searchFor.textContent = 'Search for';
+  searchFor.className = 'title';
+  categoryToSearch.appendChild(searchFor);
+
+  var choices = ['Hashtags','Lists'];
+  this.choices = choices;
+  for (var i = 0; i < choices.length; i++) {
+    var text = choices[i].slice(0);
+    this.choices[i] = document.createElement('p');
+    this.choices[i].textContent = text;
+    this.choices[i].className = 'category';
+    if (i == 0) this.choices[i].classList.add('active');
+
+    categoryToSearch.appendChild(choices[i]);
+    var that = this;
+    this.choices[i].addEventListener('click', function(){changeType(this,that)});
+  };
+
+
+  panelList.appendChild(categoryToSearch);
+
+  /** LISTS **/
+
+  this.generateColumnTwitterLists();
+  twitterListsDOM = this.twitterListsDOM;
+
+  var listChoiceButton = document.createElement('button');
+  listChoiceButton.className = 'tweets-column-panel-list-twitterLists-button classic-button';
+  listChoiceButton.textContent = "Display";
+
+  this.twitterListsDOM.childNodes[0].appendChild(listChoiceButton);
+
+  panelList.appendChild(this.twitterListsDOM);
+
+  /** HASHTAGS TRACK INPUT **/
+
+  var hashtagTrack = document.createElement('li');
+  hashtagTrack.className = "tagInput fa fa-search";
+  this.hashtagTrack = hashtagTrack;
+  var hashtagTrackInput = document.createElement('input');
+  hashtagTrackInput.setAttribute('placeholder','Track...');
+  hashtagTrackInput.setAttribute('type','text');
+  this.hashtagTrackInput = hashtagTrackInput;
+
+  panelList.appendChild(this.hashtagTrack);
+  this.hashtagTrack.appendChild(this.hashtagTrackInput);
+
+  /** FiRST PARAMETER **/
+
+  var secondParameter = document.createElement('li');
+  secondParameter.className = 'tweets-column-panel-list-first';
+
+  var secondParameterName = document.createElement('p');
+  secondParameterName.textContent = "Display images";
+
+  var newTweetColumnImageSwitch = document.createElement('div');
+
+  var newTweetColumnImageSwitchInput = document.createElement('input');
+  newTweetColumnImageSwitchInput.setAttribute('type', 'checkbox');
+  newTweetColumnImageSwitchInput.setAttribute('id', 'tweets-column-switch-image' + this.id);
+  newTweetColumnImageSwitchInput.setAttribute('name', 'tweets-column-switch-image' + this.id);
+  newTweetColumnImageSwitchInput.setAttribute('checked', 'true');
+  newTweetColumnImageSwitchInput.setAttribute('class', 'switch');
+
+  this.imagesCheckbox = newTweetColumnImageSwitchInput;
+
+  var newTweetColumnImageSwitchLabel = document.createElement('label');
+  newTweetColumnImageSwitchLabel.setAttribute('for', 'tweets-column-switch-image' + this.id);
+  newTweetColumnImageSwitchLabel.textContent = 'Display';
+
+  newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchInput);
+  newTweetColumnImageSwitch.appendChild(newTweetColumnImageSwitchLabel);
+
+  secondParameter.appendChild(secondParameterName);
+  secondParameter.appendChild(newTweetColumnImageSwitch);
+
+  panelList.appendChild(secondParameter);
+
+  /** DELETE BUTTON **/
+  if(this.type != "home"){
+    var deleteParameter = document.createElement('li');
+
+    var deleteColumnButton = document.createElement('button');
+    deleteColumnButton.className = 'deleteColumnButton classic-button';
+    deleteColumnButton.innerHTML = '<i class="fa fa-times"></i>Delete column';
+
+    deleteParameter.appendChild(deleteColumnButton);
+    panelList.appendChild(deleteParameter);
+  }
 
   /** SPINNER **/
   var columnSpinner = document.createElement('div');
@@ -231,6 +227,10 @@ MessagesColumn.prototype.generateColumn = function(){
 
   this.columnSpinner = columnSpinner;
 
+  /** BLACK BACKGROUND **/
+
+  var blackBackground = document.createElement('div');
+  blackBackground.setAttribute('class', 'black-background');
 
   /** TWEETS **/
 
@@ -253,7 +253,6 @@ MessagesColumn.prototype.generateColumn = function(){
   var elementsToAddEventListener = {
     newTweetColumnParametersButton: newTweetColumnParametersButton,
     newTweetColumnImageSwitch: newTweetColumnImageSwitch,
-    listsOrTagsSwitch: listsOrTagsSwitch,
     listChoiceButton: listChoiceButton,
     hashtagTrackInput: hashtagTrackInput,
     deleteColumnButton: deleteColumnButton,
@@ -270,6 +269,7 @@ MessagesColumn.prototype.generateColumn = function(){
   newTweetColumn.appendChild(newTweetColumnHeader);
   newTweetColumn.appendChild(newTweetColumnPanel);
   newTweetColumn.appendChild(columnSpinner);
+  newTweetColumn.appendChild(blackBackground);
   newTweetColumn.appendChild(newTweetColumnTweets);
 
   console.log('Column ', this.id, ' generated');
@@ -290,10 +290,6 @@ MessagesColumn.prototype.generateColumnTwitterLists = function(){
     this.id + ' .tweets-column-panel-list-block');
   var twitterListsDOM = document.createElement('li');
   twitterListsDOM.className = 'tweets-column-panel-list-twitterLists';
-
-  var listsBlockTitle = document.createElement('h4');
-  listsBlockTitle.textContent = "Choose list to display";
-  twitterListsDOM.appendChild(listsBlockTitle);
 
   var listChoice = document.createElement('select');
   listChoice.className = 'tweets-column-panel-list-twitterLists-select';
@@ -344,26 +340,23 @@ MessagesColumn.prototype.generateHashtagsList = function(){
 
   for (var i = 0; i < this.hashtagsList.length; i++) {
     var hashtag = document.createElement('li');
-    var deleteButton = document.createElement('button');
     var cross = document.createElement('i');
-    cross.className = "fa fa-times";
+    cross.className = "fa fa-times hashtag-delete-icon";
 
-    deleteButton.className = "hashtag-delete-button";
     hashtag.className = 'hashtag';
-    hashtag.textContent = this.hashtagsList[i];
+    hashtag.textContent = '#'+this.hashtagsList[i];
     hashtagsList.appendChild(hashtag);
-    deleteButton.appendChild(cross);
-    hashtag.appendChild(deleteButton);
+    hashtag.appendChild(cross);
 
-    deleteButton.addEventListener('click', function(e){
+    cross.addEventListener('click', function(e){
       this.untrackTag(e);
     }.bind(this));
   };
 
-  if(previousList != undefined){
-    // console.log('previousList: ', previousList);
-    hashtagsBlock.replaceChild(hashtagsList, hashtagsBlock.lastChild);
-  }
+  // if(previousList != undefined){
+  //   // console.log('previousList: ', previousList);
+  //   hashtagsBlock.replaceChild(hashtagsList, hashtagsBlock.lastChild);
+  // }
 
   return hashtagsList;
 }
@@ -414,10 +407,6 @@ MessagesColumn.prototype.addEvent = function(elementsToAddEventListener){
 
   elementsToAddEventListener.newTweetColumnImageSwitch.addEventListener('change', function(){
     this.enableImages();
-  }.bind(this));
-
-  elementsToAddEventListener.listsOrTagsSwitch.addEventListener('change', function(){
-    this.switchListsOrHashtags();
   }.bind(this));
 
   elementsToAddEventListener.listChoiceButton.addEventListener('click', function(){
@@ -499,6 +488,7 @@ MessagesColumn.prototype.enableImages = function(){
   };
 
   if(this.areImagesEnabled){
+    document.querySelector('#tweets-column-panel-'+this.id+' .tweets-column-panel-list-first label').textContent = 'Display';
     var allImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-image-none');
     var allLinksImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-link-image');
     for (var i = 0; i < allImages.length; i++) {
@@ -509,6 +499,7 @@ MessagesColumn.prototype.enableImages = function(){
     };
   }
   else{
+    document.querySelector('#tweets-column-panel-'+this.id+' .tweets-column-panel-list-first label').textContent = 'Hide';
     var allImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-image');
     var allLinksImages = document.querySelectorAll('#tweets-' + this.id + ' .tweet-link-image-none');
     for (var i = 0; i < allImages.length; i++) {
@@ -517,24 +508,6 @@ MessagesColumn.prototype.enableImages = function(){
     for (var i = 0; i < allLinksImages.length; i++) {
       allLinksImages[i].className = "tweet-link-image";
     };
-  }
-}
-
-/**
- * Switchs display between hashtags and Twitter lists
- */
-MessagesColumn.prototype.switchListsOrHashtags = function(){
-  this.isListsOpen = !this.isListsOpen;
-
-  var hashtagsBlock = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-hashtagsBlock');
-  var twitterListsDOM = document.querySelector('#tweets-column-panel-' + this.id + ' .tweets-column-panel-list-twitterLists');
-  if(this.isListsOpen){
-    hashtagsBlock.style.display = "none";
-    twitterListsDOM.style.display = "block";
-  }
-  else{
-    hashtagsBlock.style.display = "block";
-    twitterListsDOM.style.display = "none";
   }
 }
 
@@ -658,7 +631,9 @@ MessagesColumn.prototype.trackTag = function(){
   else{
     this.MessagesDisplay.addHashtag(this.id, tagObject.tag);
   }
-  this.openPanel();
+  var hashtagsList = this.generateHashtagsList();
+  this.hashtagsBlock.innerHTML = '';
+  this.hashtagsBlock.appendChild(hashtagsList);
   this.openSpinner();
 }
 
@@ -676,6 +651,9 @@ MessagesColumn.prototype.untrackTag = function(e){
   }
   tagObject.userId = userId;
   this.MessagesDisplay.removeHashtag(this.id, tagObject.tag);
+  var hashtagsList = this.generateHashtagsList();
+  this.hashtagsBlock.innerHTML = '';
+  this.hashtagsBlock.appendChild(hashtagsList);
 }
 
 /**

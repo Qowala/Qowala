@@ -1,18 +1,29 @@
 @font-face {
-    font-family: 'open_sansregular';
-    src: url('./fonts/opensans-regular-webfont.eot');
-    src: url('./fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('./fonts/opensans-regular-webfont.woff2') format('woff2'),
-         url('./fonts/opensans-regular-webfont.woff') format('woff'),
-         url('./fonts/opensans-regular-webfont.ttf') format('truetype'),
-         url('./fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
+    font-family: 'droid_sansregular';
+    src: url('./fonts/DroidSans-webfont.eot');
+    src: url('./fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/DroidSans-webfont.woff') format('woff'),
+         url('./fonts/DroidSans-webfont.ttf') format('truetype'),
+         url('./fonts/DroidSans-webfont.svg#droid_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'droid_sansbold';
+    src: url('./fonts/DroidSans-Bold-webfont.eot');
+    src: url('./fonts/DroidSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/DroidSans-Bold-webfont.woff') format('woff'),
+         url('./fonts/DroidSans-Bold-webfont.ttf') format('truetype'),
+         url('./fonts/DroidSans-Bold-webfont.svg#droid_sansbold') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 html {
-    font-family: 'open_sansregular', sans-serif;
+    font-family: 'droid_sansregular', sans-serif;
     height: 100%;
+    line-height: 1.2;
 }
 
 body {
@@ -25,11 +36,7 @@ body {
     border-radius: 5px;
     color: white;
     padding: 5px 15px;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
@@ -43,7 +50,83 @@ body {
 
 }
 
-#loginPopup, #deprecatedBrowserPopup {
+#login-background {
+    background-image: url('../img/login-app-bg.jpg');
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+#loginPopup {
+    height: 480px;
+    left: 50%;
+    margin-left: -400px;
+    margin-top: -260px;
+    padding: 20px 0 40px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 800px;
+    z-index: 1;
+    border-radius: 20px;
+    color: white;
+}
+
+#loginPopup > h2 {
+    font-size: 3.5em;
+    font-weight: 300;
+    margin-bottom: 10px;
+    margin-top: 160px;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+#loginPopup > p {
+    margin-bottom: 50px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+#ribbon-overlay {
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    display: none;
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+}
+
+#sleep-ribbon {
+    background-color: rgb(231, 76, 60);
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    padding-left: 90px;
+    height: 52px;
+}
+
+#sleep-ribbon p {
+    margin: 8px auto;
+    color: white;
+    font-size: 0.9em;
+    width: 945px;
+}
+
+#sleep-ribbon span {
+    font-family: 'droid_sansbold';
+    font-size: 0.9em;
+}
+
+#wakey-button {
+    margin-left: 50px;
+    height: 35px;
+    color: rgb(231, 76, 60);
+    font-size: 0.9em;
+    font-family: 'droid_sansbold';
+}
+
+#deprecatedBrowserPopup {
     background-color: #595959;
     height: 230px;
     left: 50%;
@@ -61,10 +144,6 @@ body {
 
 #deprecatedBrowserPopup {
   display: none;
-}
-
-#loginPopup > p {
-    margin-bottom: 50px;
 }
 
 .fa.fa-firefox, .fa.fa-chrome, .fa.fa-opera {
@@ -85,65 +164,53 @@ body {
 }
 
 #welcome-button {
-    background-color: #007d92;
-    border-radius: 10px;
-    font-family: "open_sansregular",sans-serif;
+    background-color: #55ACEF;
+    border-radius: 3px;
+    font-family: 'droid_sansregular', sans-serif;
     text-decoration: none;
-    padding: 8px 30px;
+    padding: 15px 30px;
+    position: relative;
+    top: 0;
     color: white;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
+    box-shadow: 0px 3px 0px #327fa6;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+    -webkit-transition-property: box-shadow, top;
+    transition-property: box-shadow, top;
 }
 
 #welcome-button:hover{
-    background-color: #009DB8;
-    color: #FFFFFF;
+    box-shadow: 0px 1px 0px #327fa6;
+    top: 3px;
 }
 
-#welcome-logo {
-    max-width: 200px;
+#welcome-button > i {
+    margin-right: 10px;
+    font-size: 1.5em;
+    position: relative;
+    top: 2px;
 }
 
-#logo {
-    text-align: center;
-}
-
-#logo::after {
-    border-bottom: 1px solid #8d8e8d;
-    content: " ";
-    display: block;
-    margin: 0 auto;
-    padding-bottom: 30px;
-    width: 70px;
-}
-
-#logo a {
-  width: 100px;
+h1 {
+  margin: 0.5em 0;
 }
 
 #logo img{
-    max-width: 100px;
+  max-width: 34px;
+  margin-left: 2px;
 }
 
-#mainSidebar, #notificationPanel {
-    background-color: #1a1a1a;
-    bottom: 0;
-    color: white;
-    margin-top: -16px;
-    padding: 30px 10px 10px;
-    position: fixed;
-    top: 0;
-    width: 100px;
-    z-index: 2;
+#mainSidebar {
+  background-color: #21A768;
+  bottom: 0;
+  color: white;
+  /*margin-top: -40px;*/
+  padding: 0 15px 0;
+  position: relative;
+  top: 0;
+  z-index: 2;
+  height: 100%;
+  float: left;
 }
 
 #mainSidebar {
@@ -151,15 +218,18 @@ body {
 }
 
 #notificationPanel{
-  background-color: #333333;
-  left: -330px;
+  background-color: #F5F5F5;
+  left: -450px;
   width: 430px;
+  height: 100%;
+  padding: 0;
+  position: fixed;
   z-index: 1;
-  -moz-transition: left 1s;
-  -webkit-transition: left 1s;
-  -ms-transition: left 1s;
-  -o-transition: left 1s;
-  transition: left 1s;
+  -moz-transition: left 1s ease-in-out;
+  -webkit-transition: left 1s ease-in-out;
+  -ms-transition: left 1s ease-in-out;
+  -o-transition: left 1s ease-in-out;
+  transition: left 1s ease-in-out;
 }
 
 #notificationPanel h3 {
@@ -168,20 +238,22 @@ body {
 }
 
 #notificationPanel > ul {
-  padding: 0 20px 10px 10px;
-  margin-top: 30px;
+  padding: 0;
+  margin: 0;
   overflow-y: scroll;
-  height: calc(100% - 56px);
+  height: 100%;
 }
 
 .notification {
-  background-color: #545454;
-  border-radius: 5px;
   padding: 10px;
   list-style-type: none;
   margin: 0 0 20px;
   padding: 15px 10px 10px;
   position: relative;
+  height: 50px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .notification h4 {
@@ -192,135 +264,168 @@ body {
   width: 290px;
 }
 
-.notification > i {
-  font-size: 1.5em;
-  position: absolute;
-  right: 15px;
-  top: 15px;
+.notification > div {
+  font-size: 0.9em;
+  color: white;
+  background-color: #57ACEF;
+  border-radius: 18px;
+  padding: 7px 6px 7px 5px;
+  float: left;
+  margin: 10px 20px 0 10px;
 }
 
-.notification > .fa-twitter {
-  font-size: 1em;
-  position: absolute;
-  left: 15px;
-  top: 18px;
-  color: #3FA9F5;
-  width: 16px;
+.notification img {
+  float: left;
+  margin: 5px 30px 0 0;
+  width: 40px;
+  border-radius: 5px;
 }
 
-.fa-star {
-  color: #E0E01E;
+.notification > p {
+  font-size: 0.9em;
+  margin: 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  z-index: -1;
 }
 
-.fa-user-plus {
-  color: #19B8BF;
+.notification .fa-retweet, .notification .fa-reply {
+  padding: 0 2px;
 }
 
-.notification > .fa-retweet {
-  color: #41C463;
+.notification .fa-user-plus {
+  padding-left: 3px;
 }
 
-.notification > .mention {
-  font-style: normal;
+.notification .fa-list {
+  padding: 0px 2px 0px 3px;
+}
+
+.notification .fa-heart {
+  padding: 1px 2px 0px 3px
+}
+
+.notification .fa-at {
+  padding: 0px 2px 0px 4px;
+  font-weight: bold;
 }
 
 .notification-link {
   color: white;
   text-decoration: none;
   font-style: italic;
-  font-weight: 600;
+  font-family: 'droid_sansbold', sans-serif;
 }
 
 .notification-link:hover {
   text-decoration: underline;
 }
 
-#buttonOpenMessageEdition, #buttonAddColumn, #buttonOpenNotificationPanel {
-  background-color: #119955;
+.notification .subject {
+  font-family: 'droid_sansbold', sans-serif;
+}
+
+.notification .notification-date {
+  float: right;
+  color: #ccc;
+  font-size: 0.8em;
+  margin-top: 20px;
+}
+
+#mainSidebar > button, .button-sidebar {
+  background-color: #25BF77;
   border: medium none;
   color: white;
-  height: 50px;
-  margin-left: 25px;
-  padding: 5px 0 0 7px;
-  border-radius: 10px;
-  font-size: 2.2em;
-  width: 50px;
+  height: 40px;
+  padding: 2px 0 0 3px;
+  border-radius: 3px;
+  font-size: 1.1em;
+  width: 40px;
   display: block;
   position: relative;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  margin-bottom: 30px;
+  margin-left: 1px;
+  box-shadow: 0px 4px 1px -3px #1D905A;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
   -webkit-transition-property: background-color;
   transition-property: background-color;
 }
 
-#buttonOpenMessageEdition:hover, #buttonAddColumn:hover {
-    background-color:#16C46D;
+#mainSidebar > button:hover {
+  background-color: #35CF87;
 }
 
 #buttonOpenMessageEdition {
-  margin-top: 40px;
-}
-
-#buttonAddColumn {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 #buttonAddColumn .fa.fa-columns {
-    bottom: 8px;
-    font-size: 0.95em;
-    left: 10px;
-    position: absolute;
+  bottom: 12px;
+  font-size: 0.85em;
+  left: 14px;
+  position: absolute;
 }
 
-#buttonAddColumn .fa.fa-plus {
-    font-size: 0.3em;
-    position: absolute;
-    right: 13px;
-    top: 22px;
+#buttonAddColumn .fa.fa-plus-circle {
+  font-size: 0.7em;
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  background-color: #25BF77;
 }
 
-#buttonOpenNotificationPanel {
-  background-color: #676868;
-  color: #000000;
+#buttonAddColumn:hover .fa.fa-plus-circle {
+  background-color: #35CF87;
+}
+
+button#buttonOpenNotificationPanel {
   padding: 0;
-  font-size: 1.8em;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: color, background-color;
-  transition-property: color, background-color;
 }
 
-#buttonOpenNotificationPanel:hover {
-    background-color:#16C46D;
+#logoutLink {
+  color: white;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  padding: 0;
+  display: block;
 }
 
-#notificationsCounter{
-  background-color: #900C17;
-  width: 20px;
-  height: 20px;
+#logoutLink i {
+  margin-top: 11px;
+  margin-left: 5px;
+}
+
+#logoutLink:hover {
+  background-color: #35CF87;
+}
+
+#numberConnectedUsersPhrase {
+  bottom: 100px;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: .8em;
+}
+
+#notificationsCounter {
+  background-color: #E94C3D;
+  width: 12px;
+  height: 12px;
   display: none;
   position: absolute;
-  right: 24px;
+  right: 2px;
   margin-top: -7px;
   z-index: 1;
   padding: 5px;
   border-radius: 14px;
-  font-weight: 600;
+  font-family: 'droid_sansbold', sans-serif;
   text-align: center;
+  font-size: 0.6em;
 }
 
 #titleOpenMessageEdition {
@@ -341,56 +446,85 @@ body {
     text-align: center;
 }
 
-#messageEditionPanel{
+#messageEditionPanel {
     width: 10px;
-    background-color: #afacac;
     border-radius: 0 10px 10px 0;
     position: fixed;
-    top: 95px;
     z-index: 3;
     left: -100px;
-    -moz-transition: left 1s;
-    -webkit-transition: left 1s;
-    -ms-transition: left 1s;
-    -o-transition: left 1s;
-    transition: left 1s;
+    top: 0;
+    padding: 0 15px;
+    background: #fff;
+    box-sizing: border-box;
+    -moz-transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+#messageEditionPanel.open {
+    left: 70px;
+}
+
+#messageEditionPanel header {
+    background: #ccc;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#messageEditionPanel header h1 {
+    font-size: 0.75em;
+    line-height: 40px;
+    padding: 0 20px;
+    /*font-weight: bold;*/
+    text-transform: uppercase;
 }
 
 #messageEditionPanel p {
     color: black;
-    padding: 0 110px 0 0;
-    text-align: right;
+    text-align: left;
+    margin-top: -30px;
+    line-height: 0;
+    color: #ccc;
+    padding: 0 20px;
 }
 
 #messageTextarea {
-    background-color: #ededed;
-    border: medium none;
-    border-radius: 10px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
     display: block;
-    height: 200px;
+    height: 150px;
     margin: 14px auto;
-    padding: 10px;
-    width: 80%;
+    padding: 20px;
+    width: calc(100% - 42px);
 }
 
 .red{
     color: red;
 }
 
+#messageEditionPanel footer {
+    background-color: #f7f7f7;
+    text-align: right;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+}
+
 #sendTweetButton {
+    font-size: 0.75em;
+    font-weight: bold;
+    font-family: 'droid_sansregular', sans-serif;
     background-color: #119955;
     border: medium none;
     border-radius: 5px;
     bottom: 10px;
     color: white;
-    padding: 7px 20px;
-    position: absolute;
+    padding: 7px 12px;
     right: 10px;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
@@ -399,12 +533,12 @@ body {
     transition-property: color, background-color;
 }
 
-#sendTweetButton:disabled {
-    background-color: #4cc783;
-}
-
 #sendTweetButton:hover {
     background-color:#16C46D;
+}
+
+#sendTweetButton:disabled {
+    background-color: #4cc783;
 }
 
 #suggestionPanel {
@@ -441,51 +575,30 @@ body {
 
 #userSuggestionList .suggested-user-name {
   font-style: normal;
-  font-weight: bold;
+  font-family: 'droid_sansbold', sans-serif;
   color: black;
   margin: 0 10px;
 }
 
-#divider::before {
-    border-top: 1px solid #8d8e8d;
-    content: " ";
-    display: block;
-    margin-top:30px;
-    margin-left: 13px;
-    padding-top: 20px;
-    width: 70px;
+.tagInput.fa-search:before {
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 20px;
+    color: #999;
 }
 
-input[type="text"].tagInput {
+.tagInput input[type="text"] {
     display: block;
-    padding: 0 12px;
-    width: 110px;
-    height: 30px;
-    border-radius: 15px;
-    border: none;
-    color: white;
-    background-color: #8d8e8d;
+    width: 100%;
+    line-height: 34px;
+    height: 34px;
     margin: 0 auto;
-}
-
-input[type="text"].tagInput::-webkit-input-placeholder {
-   color: white;
-   text-align: center;
-}
-
-input[type="text"].tagInput:-moz-placeholder { /* Firefox 18- */
-   color: white;
-   text-align: center;
-}
-
-input[type="text"].tagInput::-moz-placeholder {  /* Firefox 19+ */
-   color: white;
-   text-align: center;
-}
-
-input[type="text"].tagInput:-ms-input-placeholder {
-   color: white;
-   text-align: center;
+    box-shadow: 0 0 4px -1px #999;
+    padding-left: 27px;
+    box-sizing: border-box;
 }
 
 #tagContainer{
@@ -494,7 +607,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets-column-panel-list-hashtagsList {
-    padding: 0;
+    padding: 10px 0;
+    overflow: hidden;
+    margin: 0;
+    text-align: left;
 }
 
 .tweets-column-panel-list h4 {
@@ -505,110 +621,131 @@ input[type="text"].tagInput:-ms-input-placeholder {
     width: 220px;
 }
 
-.tweets-column-panel-list-hashtagsList .hashtag {
-    background-color: #119955;
-    border-radius: 15px;
-    display: block;
-    list-style-type: none;
-    margin: 10px auto;
-    min-height: 20px;
-    padding: 4px 8px 5px;
-    text-align: center;
-    max-width: 60%;
-    word-wrap: break-word;
+.tweets-column-panel-list .tweets-column-panel-categories {
+  text-align: right;
 }
 
-.hashtag-delete-button {
-    background-color: transparent;
-    border: medium none;
-    color: white;
+.tweets-column-panel-categories p {
+    display: inline-block;
+    border-left: 1px solid #999;
+    color: #999;
+    padding: 0 8px;
+    font-size: 12px;
+    line-height: 13px;
+}
+
+.tweets-column-panel-categories p.title {
+    float: left;
+    border-left: none;
+    color: #000;
+    font-weight: bold;
+    padding: 0;
+}
+
+.tweets-column-panel-categories p:not(.title) {
+    cursor: pointer;
+}
+
+.tweets-column-panel-categories p:nth-child(2n) {
+    border-left: none;
+}
+
+.tweets-column-panel-categories p.active {
+    color: #21A768;
+    font-weight: bold;
+}
+
+.tweets-column-panel-list-hashtagsList .hashtag {
+    color: #999;
+    font-weight: bolder;
+    display: inline-block;
+    font-size: 12px;
+    margin-right: 9px;
+    position: relative;
+    padding-right: 9px;
+}
+
+.tweets-column-panel-list-hashtagsList .hashtag:after {
+    border-right: 2px solid #999;
     position: absolute;
-    right: -30px;
-    top: 5px;
+    width: 0;
+    content: '';
+    height: 10px;
+    top: 0;
+    bottom: 0;
+    right: -1px;
+    margin: auto;
+}
+
+.tweets-column-panel-list-hashtagsList .hashtag:last-child {
+    margin-right: 0;
+}
+
+.tweets-column-panel-list-hashtagsList .hashtag:last-child:after {
+    border-right: none;
+}
+
+.tweets-column-panel-list-hashtagsList .hashtag .hashtag-delete-icon {
+    background-color: #ccc;
+    border-radius: 8px;
+    color: white;
+    font-size: 9px;
+    cursor: pointer;
+    line-height: 12px;
+    width: 12px;
+    display: inline-block;
+    text-align: center;
+    margin-left: 5px;
 }
 
 #toggleButton {
     background-color: #dddddd;
     border: 1px solid #dddddd;
     color: #676767;
-    font-family: "open_sansregular",sans-serif;
+    font-family: 'droid_sansregular', sans-serif;
     padding: 4px 15px;
-}
-
-#logoutLink {
-    background-color: transparent;
-    border: none;
-    color: #d18933;
-    position: absolute;
-    left: 20px;
-    bottom: 80px;
-    width: 80px;
-    text-align: center;
-    text-decoration: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
-}
-
-#mainSidebar a:hover {
-  color:#FFA525;
-}
-
-
-#logoutLink p {
-    margin: 0;
-}
-
-#numberConnectedUsersPhrase {
-    bottom: 20px;
-    left: 0;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    font-size: .8em;
 }
 
 /** TWEETS **/
 
 #tweets-columns-list {
-    position: relative;
-    right: -120px;
-    width: calc(100% - 120px);
+    width: calc(100% - 71px);
     padding: 0;
-    display: inline-flex;
+    /*display: inline-flex;*/
+    display: flex;
     margin-top: 0;
-    min-height: 100%;
+    height: 100%;
+    left: 0;
     margin: 0;
-    background-color: #333333;
+    overflow-x: auto;
+    position: relative;
+    -moz-transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
 }
 
 .tweets-column, #plusColumn {
     list-style-type: none;
     width: 25%;
-    background-color: #333333;
-    max-height: 100%;
+    height: 100%;
     min-width: 24.75%;
     position: relative;
 }
 
-.tweets-column + .tweets-column {
-    border-left: 5px solid #1a1a1a;
-}
 
 .tweets-column-header {
-    background-color: #4d4d4d;
-    color: #e0e2e0;
-    margin: 0;
-    padding: 10px 20px;
+    background-color: #21A768;
+    color: white;
+    margin: 10px 15px;
+    padding: 13px 20px;
     position: relative;
+    border-radius: 5px;
+}
+
+#tweets-column-home .tweets-column-header {
+    background-color: #55ACEF;
 }
 
 .tweets-column-header h3 {
@@ -617,21 +754,21 @@ input[type="text"].tagInput:-ms-input-placeholder {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    font-family: 'droid_sansbold', sans-serif;
+    letter-spacing: -0.05em;
 }
 
 .tweets-column-header-button {
     background-color: transparent;
     border: medium none;
-    bottom: 6px;
-    color: #afacac;
-    font-size: 1.6em;
+    bottom: 10px;
+    color: white;
+    font-size: 1.0em;
     position: absolute;
     right: 10px;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
@@ -646,9 +783,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweets-column-panel {
     position: absolute;
-    top: 46px;
-    background-color: #202020;
-    width: 100%;
+    top: 50px;
+    width: calc(100% - 30px);
+    padding: 10px 15px 0;
     z-index: 1;
     overflow: hidden;
     transform: scaleY(0);
@@ -661,144 +798,154 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweets-column-panel-list {
-    padding: 0 40px 10px;
+    padding: 0 20px 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px 1px #999;
+}
+
+.tweets-column-panel-list > li:last-child {
+    border-top: 1px solid #ddd;
 }
 
 .deleteColumnButton{
-    background-color: #901216;
-    margin-top: 15px;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    background-color: #e84c3d;
+    margin-top: 20px;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
     -webkit-transition-property: color, background-color;
     transition-property: color, background-color;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'droid_sansregular', sans-serif;
 }
 
 .deleteColumnButton:hover{
     background-color: #BD181D;
 }
 
-.tweets-column-panel-list li{
+.deleteColumnButton i {
+    margin-right: 8px;
+}
+
+.tweets-column-panel-list > li {
     list-style-type: none;
     text-align: center;
-    min-height: 60px;
-    color: white;
     position: relative;
+    width: 100%;
 }
 
-.tweets-column-panel-list-first p{
-    float: left;
+.tweets-column-panel-list-first {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding: 10px 0;
 }
 
-.switch {
-    position: relative;
-    top: 18px;
-    left: 100px;
+.tweets-column-panel-list-first p, .tweets-column-panel-list-first div{
+    display: inline-block;
+    width: 50%;
+    margin-right: -4px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-.switch > [type="checkbox"]:checked, .switch > [type="checkbox"]:not(:checked) {
-    width: 0;
-    height: 0;
+.tweets-column-panel-list-first p {
+    text-transform: uppercase;
+}
+
+input.switch:empty
+{
     display: none;
-    opacity: 0;
 }
 
-.switch > [type="checkbox"]:checked + label, .switch > [type="checkbox"]:not(:checked) + label {
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 7px;
-    /*margin-top: 7px;*/
-    margin-bottom: 17px;
+input.switch ~ label {
+    display: block;
+    position: relative;
+    text-align: right;
+    line-height: 20px;
     padding-right: 60px;
-}
-
-.switch > [type="checkbox"]:checked + label:after, .switch > [type="checkbox"]:not(:checked) + label:after {
-    content: "";
-    right: 10px;
-    width: 40px;
-    height: 22px;
-    position: absolute;
-    border-radius: 10px;
-}
-
-.switch > [type="checkbox"]:checked + label + .switch-knob, .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
-    top: 0;
-    width: 22px;
-    height: 22px;
-    border-radius: 30px;
-    display: inline-block;
-    position: absolute;
+    margin: 0.2em 0;
     cursor: pointer;
-    pointer-events: none;
-    -webkit-transition: right .1s ease-in, background-color .1s ease-in;
-    -moz-transition: right .1s ease-in, background-color .1s ease-in;
-    -o-transition: right .1s ease-in, background-color .1s ease-in;
-    -ms-transition: right .1s ease-in, background-color .1s ease-in;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.switch > [type="checkbox"]:checked:focus + label:after, .switch > [type="checkbox"]:checked:focus + label + .switch-knob,
-.switch > [type="checkbox"]:not(:checked):focus + label:after,
-.switch > [type="checkbox"]:not(:checked):focus + label + .switch-knob {
-    box-shadow: 0 0 6px 0 #6fb5fb;
+input.switch:empty ~ label {
+    color: #c33;
 }
 
-.switch > [type="checkbox"]:checked[disabled] + label, .switch > [type="checkbox"]:checked[disabled] + label:after, .switch > [type="checkbox"]:checked[disabled] + label + .switch-knob,
-.switch > [type="checkbox"]:not(:checked)[disabled] + label,
-.switch > [type="checkbox"]:not(:checked)[disabled] + label:after,
-.switch > [type="checkbox"]:not(:checked)[disabled] + label + .switch-knob {
-    cursor: not-allowed;
-    opacity: 0.4;
+input.switch:checked ~ label {
+    color: #393;
 }
 
-.switch > [type="checkbox"]:checked + label:after {
-    background-color: #00955b;
-}
-
-.switch > [type="checkbox"]:not(:checked) + label:after {
-    background-color: #dddddd;
-}
-
-.switch > [type="checkbox"]:checked + label + .switch-knob {
-    right: 5px;
-    background-color: #cbcbcb;
-}
-
-.switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
-    right: 30px;
-    background-color: #898989;
-}
-
-/* Special switch for second parameter */
-
-.tweets-column-panel-list-second .switch > [type="checkbox"]:not(:checked) + label + .switch-knob {
-    background-color: #cbcbcb;
-}
-
-.tweets-column-panel-list-second .switch > [type="checkbox"]:not(:checked) + label:after {
-    background-color: #00955b;
-}
-
-.tweets-column-panel-list-second p {
-    float: left;
-}
-
-.tweets-column-panel-list-second p + p {
+input.switch ~ label:before,
+input.switch ~ label:after {
     position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
     right: 0;
+    content: '';
+    width: 44px;
+    border-radius: 0.3em;
+    -webkit-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+}
+input.switch ~ label:after {
+    width: 15px;
+    top: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    border-radius: 0.15em;
+    content: '|||';
+    font-size: 9px;
+    color: #999;
+    line-height: 15px;
+    text-align: center;
+    letter-spacing: -2px;
+    box-sizing: border-box;
+    text-indent: -1px;
 }
 
-.tweets-column-panel-list-second .switch {
-    left: -20px;
+input.switch:empty ~ label:before
+{
+    background-color: #c33;
+}
+
+input.switch:empty ~ label:after
+{
+    right: 26px;
+}
+
+input.switch:checked ~ label:before
+{
+    background-color: #393;
+}
+
+input.switch:checked ~ label:after
+{
+    right: 3px;
+}
+
+.tweets-column-panel-list-block select {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 0 4px -1px #999;
+    padding: 7px 12px;
+}
+
+.tweets-column-panel-list-message {
+    margin: 0;
+    line-height: 34px;
 }
 
 .tweets-column-panel-list-twitterLists-button {
-    margin-bottom: 17px;
     margin-left: 10px;
 }
 
@@ -807,17 +954,24 @@ input[type="text"].tagInput:-ms-input-placeholder {
     color: gray;
 }
 
-.tweets-column-panel-list-hashtagsBlock {
-    display: none;
-}
 
-#tweets-column-home .tweets-column-panel-list-second, #tweets-column-home .tweets-column-panel-list-twitterLists , #tweets-column-home .tweets-column-panel-list-hashtagsBlock {
+.tweets-column-panel-list-twitterLists , #tweets-column-home .tweets-column-panel-list-hashtagsBlock {
     display: none;
 }
 
 #lists-row {
     padding: 0;
     display: inline-flex;
+}
+
+.black-background {
+  background-color: black;
+  width: 100%;
+  opacity: 0.5;
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 /*********************/
@@ -829,6 +983,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     height:5px;
     overflow:hidden;
     position: absolute;
+    z-index: 1;
     background-color:rgb(17,153,85);
     margin:auto;
     border-radius:5px;
@@ -846,7 +1001,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .loadingProgress{
-    background-color:#333333;
+    background-color: #ffffff;
     margin-top:0;
     margin-left:-100%;
     animation-duration:1.8s;
@@ -926,7 +1081,6 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .column-tutorial {
     border: 2px solid #0D9955;
     border-radius: 20px;
-    color: white;
     margin: 50px auto;
     text-align: center;
     width: 80%;
@@ -938,37 +1092,53 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 .tweets {
     padding: 0;
-    margin-top: 0;
+    margin: 0;
+    height: calc(100% - 60px);
+    overflow-y: scroll;
 }
 
 .tweets li{
-    list-style-type: none;
-    /*background-color: #5072b2;*/
-    color: white;
-    min-height: 48px;
-    padding: 10px;
-    border-bottom: 1px solid #119955;
-    position: relative;
-    transform: scaleY(0);
-    transform-origin: 50% 0;
-    -moz-transition: transform ease-in 0.1s;
-    -webkit-transition: transform ease-in 0.1s;
-    -ms-transition: transform ease-in 0.1s;
-    -o-transition: transform ease-in 0.1s;
-    transition: transform ease-in 0.1s;
+  list-style-type: none;
+  min-height: 48px;
+  padding: 10px 10px 8px 10px;
+  border: 1px solid #C5EAD8;
+  position: relative;
+  margin: 10px 15px;
+  border-radius: 4px;
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  -moz-transition: transform ease-in 0.1s;
+  -webkit-transition: transform ease-in 0.1s;
+  -ms-transition: transform ease-in 0.1s;
+  -o-transition: transform ease-in 0.1s;
+  transition: transform ease-in 0.1s;
+}
+
+img.emoji {
+   height: 1em;
+   width: 1em;
+   margin: 0 .05em 0 .1em;
+   vertical-align: -0.1em;
+}
+
+#tweets-column-home .tweets li {
+  border: 1px solid #C8DBEA;
 }
 
 .tweet-date{
     font-size: 0.8em;
+    margin-left:6px;
+    color: #999;
 }
 
-.tweet-date:hover {
-    text-decoration: underline;
+.tweet-date::before {
+    content: "\2022";
+    margin-right: 6px;
 }
 
 .tweet-text{
     font-size: 0.9em;
-    margin: 8px 0 10px;
+    margin: 8px 0 10px 52px;
     word-wrap: break-word;
 }
 
@@ -976,10 +1146,9 @@ input[type="text"].tagInput:-ms-input-placeholder {
     float: left;
     height: 40px;
     margin-right: 10px;
-    margin-top: 6px;
     width: 40px;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     border: solid white 1px;
     cursor: pointer;
 }
@@ -990,26 +1159,25 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-authorname{
-    font-weight: 600;
+    font-family: 'droid_sansbold', sans-serif;
     text-decoration: none;
-    color: white;
+    color: #21A768;
+}
+
+#tweets-column-home .tweet-authorname {
+    color: #55ACEF;
 }
 
 .tweet-authorScreenName {
-    color: #119955;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    color: #999999;
+    font-family: 'droid_sansregular', sans-serif;
     margin-left: 10px;
 }
 
 .tweet-url, .tweet-link-image{
     color: #2aa3d6;
     text-decoration: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
@@ -1026,16 +1194,10 @@ input[type="text"].tagInput:-ms-input-placeholder {
 .tweet-retweet-button, .tweet-retweet-button-active, .tweet-reply-button {
     background-color: transparent;
     border: none;
-    color: #dddede;
-    position: absolute;
-    right: 20px;
-    bottom: 10px;
-    padding: 0;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    color: #ccc;
+    font-size: 0.7em;
+    margin-right: 15px;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
@@ -1045,8 +1207,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-reply-button {
-    position: absolute;
-    right: 65px;
+  margin-left: 46px;
 }
 
 .tweet-retweet-button:hover, .tweet-retweet-button-active,
@@ -1063,13 +1224,39 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tweet-retweeter {
-    font-size: 0.9em;
-    margin: 0 0 5px;
+  font-size: 0.9em;
+  margin: 0 0 5px;
+  margin: -10px -10px 8px;
+  color: rgb(153, 153, 153);
+  padding: 12px 12px 12px 32px;
+  background-color: #EDFAF3;
+}
+
+.tweet-retweeter span {
+  color: #21A866;
+}
+
+#tweets-column-home .tweet-retweeter {
+  background-color: rgb(237, 244, 250);
+}
+
+#tweets-column-home .tweet-retweeter span {
+  color: #55ACEF;
+}
+
+.tweet-retweeter img {
+  width: 20px;
+  border-radius: 5px;
 }
 
 .tweet-retweeter .fa-retweet {
-    color: #119955;
-    margin-right: 10px;
+  color: #21A866;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+#tweets-column-home .tweet-retweeter .fa-retweet {
+  color: #55ACEF;
 }
 
 .tweet-image, .tweet-image-extended{
@@ -1085,7 +1272,17 @@ input[type="text"].tagInput:-ms-input-placeholder {
     transition: all ease-in 0.35s;
 }
 
-.tweet-image-extended {
+.tweet-medias img, .tweet-medias video {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tweet-medias img + img {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.tweet-medias-extended {
     margin: 40px auto 20px;
 }
 
@@ -1099,9 +1296,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 
 #largeImagePopup, #tweetConfirmationPopup, #userProfilePanel{
     position: fixed;
-    background-color: #C2C2C2;
-    border-radius: 20px;
-    padding: 20px;
+    box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.3), 0 0 7px 0 rgba(0,0,0,0.35);
     z-index: 2;
     display: none;
     -moz-transition: all ease-in 0.35s;
@@ -1144,11 +1339,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
     background-color: #901216;
     margin-left: 290px;
     margin-top: 15px;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
     -webkit-transition-duration: 0.3s;
@@ -1235,7 +1426,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
 }
 
 .tag-name{
-    font-weight: bold;
+    font-family: 'droid_sansbold', sans-serif;
     font-size: 0.9em;
 }
 
@@ -1287,6 +1478,7 @@ input[type="text"].tagInput:-ms-input-placeholder {
   width: 100%;
   height: 200px;
   background-size: cover;
+  background-position: center center;
 }
 
 #userProfilePanel .datas {
