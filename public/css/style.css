@@ -497,6 +497,7 @@ button#buttonOpenNotificationPanel {
     padding: 0 20px;
     /*font-weight: bold;*/
     text-transform: uppercase;
+    margin: 1em 0;
 }
 
 #messageEditionPanel p {
