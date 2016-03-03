@@ -347,15 +347,25 @@ h1 {
   position: relative;
   margin-bottom: 30px;
   margin-left: 1px;
-  box-shadow: 0px 4px 1px -3px #1D905A;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: background-color;
-  transition-property: background-color;
+  box-shadow: 0px 2px 0px #1D905A;
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  -webkit-transition-property: background-color, top, color;
+  transition-property: background-color, top, color;
 }
 
 #mainSidebar > button:hover {
   background-color: #35CF87;
+}
+
+.button-sidebar:active, #mainSidebar > button.sidebar-button-active {
+  background-color: white;
+  color: rgb(37, 191, 119);
+  box-shadow: none;
+}
+
+#mainSidebar > button.sidebar-button-active {
+  top: 2px;
 }
 
 #buttonOpenMessageEdition {

@@ -80,12 +80,14 @@ MainSidebar.prototype.openMessageEdition = function(openForce){
   var width = calculateWidth();
   if(this.isMessageEditionPanelOpen || openForce){
     this.messageEditionPanel.className = "open";
+    this.buttonOpenMessageEdition.className = "sidebar-button-active";
     this.messageEditionPanel.style.width = width + 'px';
     document.getElementById('tweets-columns-list').style.left = width + 'px';
     document.getElementById('tweets-columns-list').style.width = 'calc(100% - '+ Math.ceil(width-71) +'px)';
   }
   else{
     this.messageEditionPanel.className = "";
+    this.buttonOpenMessageEdition.className = "";
     this.messageEditionPanel.style.width = '10px';
     document.getElementById('tweets-columns-list').style.left = 0 + 'px';
     document.getElementById('tweets-columns-list').style.width = 'calc(100% - 71px)';
@@ -351,6 +353,7 @@ MainSidebar.prototype.toggleNotificationPanel = function(forceOpen){
 function NotificationPanel(mapping){
   this.isNotificationPanelOpen = false;
   this.notificationPanel = mapping.notificationPanel;
+  this.buttonOpenNotificationPanel = mapping.buttonOpenNotificationPanel;
   this.notificationPanelList = mapping.notificationPanel.getElementsByTagName('ul')[0];
   this.notificationsList = [];
   this.notificationsCounter = mapping.notificationsCounter;
@@ -367,11 +370,13 @@ NotificationPanel.prototype.toggleNotificationPanel = function(forceOpen){
     }
     document.getElementById('tweets-columns-list').style.left = '430px';
     document.getElementById('tweets-columns-list').style.width = 'calc(100% - 501px)';
+    this.buttonOpenNotificationPanel.className = "sidebar-button-active";
   }
   else{
     this.notificationPanel.style.left = '-450px';
     document.getElementById('tweets-columns-list').style.left = '0';
     document.getElementById('tweets-columns-list').style.width = 'calc(100% - 71px)';
+    this.buttonOpenNotificationPanel.className = "";
   }
 }
 
