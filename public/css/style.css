@@ -127,40 +127,105 @@ body {
 }
 
 #deprecatedBrowserPopup {
-    background-color: #595959;
-    height: 230px;
+    background-color: #FFFFFF;
+    height: 410px;
     left: 50%;
-    margin-left: -300px;
-    margin-top: -145px;
-    padding: 20px 0 40px;
+    margin-left: -323px;
+    margin-top: -205px;
     position: absolute;
     text-align: center;
     top: 50%;
-    width: 600px;
+    width: 645px;
     z-index: 1;
-    border-radius: 20px;
-    color: white;
+    border-radius: 7px;
+    color: #333333;
+    border: 5px #E84C3D solid;
+    display: none;
 }
 
-#deprecatedBrowserPopup {
-  display: none;
+#deprecatedBrowserPopup img {
+    position: absolute;
+    top: -55px;
+    left: 280px;
+}
+
+#deprecatedBrowserPopup h2 {
+    color: #E84C3D;
+    font-size: 1em;
+    margin-bottom: 0;
+    margin-top: 40px;
+}
+
+#deprecatedBrowserPopup h2 + span {
+    color: #989898;
+    font-size: 0.7em;
+}
+
+#deprecatedBrowserPopup > p > span {
+    line-height: 1.5em;
+}
+
+#deprecatedBrowserPopup > p > span, #deprecatedBrowserPopup li > span {
+    font-family: 'droid_sansbold';
+    font-size: 0.9em;
+}
+
+#deprecatedBrowserPopup #browsers {
+    display: block;
+    padding: 0px;
+    background-color: rgb(230, 230, 230);
+    height: 100px;
+    margin-bottom: 0;
+}
+
+#deprecatedBrowserPopup .browser {
+    display: inline-block;
+    width: 70px;
+    margin-top: 10px;
+}
+
+#deprecatedBrowserPopup .browser + .browser {
+    margin-left: 30px;
+}
+
+#deprecatedBrowserPopup .browser a {
+    color: #999999;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+#deprecatedBrowserPopup .browser a i {
+    margin-bottom: 10px;
 }
 
 .fa.fa-firefox, .fa.fa-chrome, .fa.fa-opera {
-    font-size: 3em;
+    font-size: 2.5em;
     margin: 10px 10px 0;
+    color: #999999;
 }
 
-.fa.fa-opera {
-  color: #C61717;
+#deprecatedBrowserPopup #instructions {
+    height: 66px;
+    color: #999999;
+    background-color: #F7F7F7;
+    font-size: 0.8em;
+    padding-top: 4px;
 }
 
-.fa.fa-chrome {
-  color: #3FA9F5;
+#deprecatedBrowserPopup #instructions ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.fa.fa-firefox {
-  color: #F15A24;
+#deprecatedBrowserPopup #greeting {
+    height: 50px;
+    padding-top: 15px;
+}
+
+#deprecatedBrowserPopup #greeting span {
+    font-family: 'droid_sansbold';
+    font-size: 0.9em;
 }
 
 #welcome-button {
