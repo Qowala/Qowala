@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0 - xxxx/xx/xx
+
+  * Reskin all Qowala's interface but keep existing functions.
+
+  * Add emojis support (but only partial)
+
 ## 1.0.0.beta-4 - 2016/01/04
 
   * Add user profile modal with links to its tweets, mentions, lists, favorites, and buttons to tweet and follow/unfollow.
