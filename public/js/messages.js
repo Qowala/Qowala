@@ -122,6 +122,30 @@ Message.prototype.generateMessage = function(){
   var replyFont = document.createElement('i');
   replyFont.setAttribute('class', 'fa fa-reply');
 
+  var retweetConfirmationNotice = document.createElement('div');
+  retweetConfirmationNotice.className = 'retweet-confirmation-notice';
+
+  var retweetConfirmationText = document.createElement('p');
+  retweetConfirmationText.textContent = 'Are you sure you want to retweet?';
+
+  var retweetConfirmationApproveButton = document.createElement('button');
+  retweetConfirmationApproveButton.className = 'retweet-confirmation-approve-button';
+
+  var approveFont = document.createElement('i');
+  approveFont.setAttribute('class', 'fa fa-check');
+
+  var retweetConfirmationDenyButton = document.createElement('button');
+  retweetConfirmationDenyButton.className = 'retweet-confirmation-deny-button';
+
+  var denyFont = document.createElement('i');
+  denyFont.setAttribute('class', 'fa fa-times');
+
+  retweetConfirmationNotice.appendChild(retweetConfirmationText);
+  retweetConfirmationDenyButton.appendChild(denyFont);
+  retweetConfirmationNotice.appendChild(retweetConfirmationDenyButton);
+  retweetConfirmationApproveButton.appendChild(approveFont);
+  retweetConfirmationNotice.appendChild(retweetConfirmationApproveButton);
+
   // Put event listener on elements
   this.addEvent(newRetweetButton, replyButton);
 
@@ -143,6 +167,7 @@ Message.prototype.generateMessage = function(){
   newTweet.appendChild(newContent);
   newTweet.appendChild(replyButton);
   newTweet.appendChild(newRetweetButton);
+  newTweet.appendChild(retweetConfirmationNotice);
 
   return newTweet;
 }
@@ -282,7 +307,7 @@ Message.prototype.processDate = function(){
  */
 Message.prototype.addEvent = function(retweetButton, replyButton){
   retweetButton.addEventListener('click', function(e){
-      this.sendRetweet();
+      this.sendRetweet(e);
   }.bind(this));
   replyButton.addEventListener('click', function(e){
       this.prepareReply();
@@ -292,7 +317,7 @@ Message.prototype.addEvent = function(retweetButton, replyButton){
 /**
  * Send Retweet message
  */
-Message.prototype.sendRetweet = function(){
+Message.prototype.sendRetweet = function(e){
 
   if(this.retweeted){
     console.log('Gonna send delete tweet with id_str: ', this.id_str);
@@ -301,42 +326,23 @@ Message.prototype.sendRetweet = function(){
     this.applyTweetStatus();
   }
   else{
-    var tweetConfirmationPopup = document.getElementById('tweetConfirmationPopup');
-    var tweetView = document.getElementById('tweetView');
-    var retweetCancelButton = document.getElementById('retweetCancelButton');
-    var retweetButton = document.getElementById('retweetButton');
-    var tweet = document.getElementsByName('tweet-' + this.id_str);
-    var clone = tweet[0].cloneNode(true);
+    var tweet = e.target.parentElement;
+    var tweetConfirmationNotice = tweet.getElementsByClassName ('retweet-confirmation-notice')[0];
+    var retweetCancelButton = tweetConfirmationNotice.getElementsByClassName('retweet-confirmation-deny-button')[0];
+    var retweetButton = tweetConfirmationNotice.getElementsByClassName('retweet-confirmation-approve-button')[0];
 
-    tweetView.innerHTML = clone.innerHTML;
+    tweetConfirmationNotice.style.display = 'block';
 
-    tweetConfirmationPopup.style.display = 'block';
-
-    function removeAllListeners(){
-      columnsList.removeEventListener('click', closeRetweetPopup, true);
-      retweetCancelButton.removeEventListener('click', closeRetweetPopup, true);
-      retweetButton.removeEventListener('click', bindedFunction, true);
+    function closeRetweetNotice(e){
+      tweetConfirmationNotice.style.display = 'none';
     }
 
-    function closeRetweetPopup(e){
-      e.stopPropagation();
-      e.preventDefault();
-      removeAllListeners();
-      var popup = document.getElementById('tweetConfirmationPopup');
-      popup.style.display = 'none';
-    }
-
-    var columnsList = document.getElementById('tweets-columns-list');
-    columnsList.addEventListener('click', closeRetweetPopup, true);
-    retweetCancelButton.addEventListener('click', closeRetweetPopup, true);
+    retweetCancelButton.addEventListener('click', closeRetweetNotice, true);
 
     function sendRetweetCommand(e){
       socket.emit('retweet', this.id_str);
       this.retweeted = true;
-      removeAllListeners();
-      // console.log('Gonna send retweet with id_str: ', this.id_str);
-      var popup = document.getElementById('tweetConfirmationPopup');
-      popup.style.display = 'none';
+      tweetConfirmationNotice.style.display = 'none';
       this.applyTweetStatus();
     }
 

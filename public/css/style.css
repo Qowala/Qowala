@@ -1278,6 +1278,47 @@ img.emoji {
   color: #55ACEF;
 }
 
+.retweet-confirmation-notice {
+    background-color: #F2F2F2;
+    height: 50px;
+    margin: -8px -10px;
+    border-radius: 0 0 3px 3px;
+    display: none;
+}
+
+.retweet-confirmation-notice > p {
+    color: #666666;
+    font-family: 'droid_sansbold';
+    font-size: 0.8em;
+    display: block;
+    width: 215px;
+    position: relative;
+    top: 17px;
+    left: 20px;
+}
+
+.retweet-confirmation-notice > button {
+    height: 36px;
+    width: 36px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+}
+
+.retweet-confirmation-approve-button {
+    background-color: #21A868;
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+}
+
+.retweet-confirmation-deny-button {
+    background-color: #E74C3C;
+    position: absolute;
+    right: 54px;
+    bottom: 7px;
+}
+
 .tweet-image, .tweet-image-extended{
     border-radius: 10px;
     display: block;
