@@ -83,7 +83,7 @@ MainSidebar.prototype.openMessageEdition = function(openForce){
     this.buttonOpenMessageEdition.className = "sidebar-button-active";
     this.messageEditionPanel.style.width = width + 'px';
     document.getElementById('tweets-columns-list').style.left = width + 'px';
-    document.getElementById('tweets-columns-list').style.width = 'calc(100% - '+ Math.ceil(width-71) +'px)';
+    document.getElementById('tweets-columns-list').style.width = 'calc(100% - '+ Math.ceil(width+71) +'px)';
   }
   else{
     this.messageEditionPanel.className = "";
