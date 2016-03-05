@@ -118,23 +118,23 @@ MainSidebar.prototype.textareaListener = function(){
     updateNumberCharacters();
     _updateNameSuggestion();
   }.bind(this));
+}
 
-  function updateNumberCharacters(){
-    var numberCharacters = this.messageTextarea.value.length;
-    this.numberCharactersLeft.textContent = numberCharacters;
+var updateNumberCharacters = function updateNumberCharacters(){
+  var numberCharacters = this.messageTextarea.value.length;
+  this.numberCharactersLeft.textContent = numberCharacters;
 
-    // If number of characters negative, display in red
-    if(numberCharacters > 140){
-      this.numberCharactersLeft.className = "red";
-      this.sendTweetButton.disabled = true;
-    }
-    else if (numberCharacters == 0){
-      this.sendTweetButton.disabled = true;
-    }
-    else{
-      this.numberCharactersLeft.className = "";
-      this.sendTweetButton.disabled = false;
-    }
+  // If number of characters negative, display in red
+  if(numberCharacters > 140){
+    this.numberCharactersLeft.className = "red";
+    this.sendTweetButton.disabled = true;
+  }
+  else if (numberCharacters == 0){
+    this.sendTweetButton.disabled = true;
+  }
+  else{
+    this.numberCharactersLeft.className = "";
+    this.sendTweetButton.disabled = false;
   }
 }
 
@@ -240,6 +240,7 @@ var _chooseCompletion = function(e){
     var leftSplit = messageTextarea.value.substring(0, mentionIndex);
     var middle = usernames.substr(usernames.indexOf('@'));
     messageTextarea.value = leftSplit + middle + rightSplit;
+    updateNumberCharacters();
 
   } else if (e.keyCode === 40) {
     e.preventDefault();
@@ -339,6 +340,7 @@ MainSidebar.prototype.insertMessage = function(message){
   this.messageTextarea.value = message + ' ';
   this.messageTextarea.focus();
   _setCursor(this.messageTextarea, this.messageTextarea.value.length);
+  updateNumberCharacters();
 }
 
 MainSidebar.prototype.toggleNotificationPanel = function(forceOpen){

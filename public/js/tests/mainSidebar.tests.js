@@ -22,6 +22,17 @@ describe("mainSidebar", function(){
 
       document.body.appendChild(messageTextarea);
 
+      var numberCharactersLeft = document.createElement('span');
+      numberCharactersLeft.id = "numberCharactersLeft";
+      numberCharactersLeft.value = "0";
+
+      document.body.appendChild(numberCharactersLeft);
+
+      var sendTweetButton = document.createElement('button');
+      sendTweetButton.id = "sendTweetButton";
+
+      document.body.appendChild(sendTweetButton);
+
       socket = {emit: function(){}};
     });
 
@@ -78,6 +89,10 @@ describe("mainSidebar", function(){
       var suggestions = document.getElementById('suggestionPanel')
         .getElementsByTagName('li');
       var messageTextarea = document.getElementById('messageTextarea');
+
+      var numberCharactersLeft = document.getElementById('numberCharactersLeft');
+
+      var sendTweetButton = document.getElementById('sendTweetButton');
 
       suggestions[1].style.backgroundColor = 'rgb(245, 245, 220)';
 
