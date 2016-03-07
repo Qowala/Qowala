@@ -122,8 +122,19 @@ body {
     margin-left: 50px;
     height: 35px;
     color: rgb(231, 76, 60);
+    background-color: #fff;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0px 2px 0px #A20D07;
+    padding: 0 15px;
     font-size: 0.9em;
     font-family: 'droid_sansbold';
+}
+
+#wakey-button:hover {
+    position: relative;
+    top: 2px;
+    box-shadow: none;
 }
 
 #deprecatedBrowserPopup {
