@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": "true",
   "main": "server.js",
+  "engines" : {
+    "node" : ">=0.10.25 <0.12"
+  },
   "dependencies": {
     "body-parser": "^1.9.0",
     "connect": "^3.2.0",
