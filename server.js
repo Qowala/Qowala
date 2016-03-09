@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passportAuthentication = require('./lib/passport');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var port = process.env.PORT || 8080;
 
 // Add some logging
@@ -65,15 +67,13 @@ passportAuthentication(app);
 // Setup the routes
 routes(app);
 
-// Express listen at port 8080
-var server = app.listen(port);
-console.log('Listening at ' + port);
-
-// Socket.io listen at port 8080
-var io = require('socket.io').listen(server);
-
 // Give io to the socket
 require('./lib/socket')(io);
+
+// Launch server
+http.listen(port, function(){
+  console.log('Listening on *:' + port);
+});
 
 // Launch the twitter app
 require('./lib/twitter');
