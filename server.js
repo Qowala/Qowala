@@ -1,4 +1,4 @@
-process.title = 'qowalalive';
+process.title = 'qowala';
 
 var express = require('express');
 var routes = require('./routes');
@@ -10,6 +10,16 @@ var passportAuthentication = require('./lib/passport');
 var app = express();
 var port = process.env.PORT || 8080;
 
+// Add some logging
+["log", "warn", "error"].forEach(function(method) {
+    var oldMethod = console[method].bind(console);
+    console[method] = function() {
+        oldMethod.apply(
+            console,
+            [new Date().toISOString()].concat(arguments[0])
+        );
+    };
+});
 
 // Configuration file for the DB
 var dbconfig = require('./config/db');
