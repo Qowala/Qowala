@@ -1445,6 +1445,7 @@ img.emoji {
     -ms-transition: all ease-in 0.35s;
     -o-transition: all ease-in 0.35s;
     transition: all ease-in 0.35s;
+    background: #fff;
 }
 
 #largeImagePopup img {
