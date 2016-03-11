@@ -6,8 +6,8 @@ function MainSidebar(mapping, createBlankColumn){
   this.buttonAddColumn = mapping.buttonAddColumn;
   this.buttonOpenNotificationPanel = mapping.buttonOpenNotificationPanel;
   this.createBlankColumn = createBlankColumn;
-  this.isMessageEditionPanelOpen = false;
-  this.isNotificationPanelOpen = false;
+  window.isMessageEditionPanelOpen = false;
+  window.isNotificationPanelOpen = false;
   this.messageEditionPanel = mapping.messageEditionPanel;
   this.notificationPanel = mapping.notificationPanel;
   this.messageTextarea = mapping.messageTextarea;
@@ -76,14 +76,21 @@ MainSidebar.prototype.updateNumberConnectedUsers = function(numberConnectedUsers
  * Opens and closes the message edition panel
  */
 MainSidebar.prototype.openMessageEdition = function(openForce){
-  this.isMessageEditionPanelOpen = !this.isMessageEditionPanelOpen || openForce;
+  window.isMessageEditionPanelOpen = !window.isMessageEditionPanelOpen || openForce;
   var width = calculateWidth();
-  if(this.isMessageEditionPanelOpen || openForce){
+  if(window.isMessageEditionPanelOpen || openForce){
     this.messageEditionPanel.className = "open";
     this.buttonOpenMessageEdition.className = "sidebar-button-active";
     this.messageEditionPanel.style.width = width + 'px';
     document.getElementById('tweets-columns-list').style.left = width + 'px';
     document.getElementById('tweets-columns-list').style.width = 'calc(100% - '+ Math.ceil(width+71) +'px)';
+    document.querySelector('#notificationPanel').style.left = '-450px';
+    if(window.notificationCount !== 0){
+      window.notificationsCounter.style.display = 'none';
+      window.notificationCount = 0;
+    }
+    window.isNotificationPanelOpen = false;
+    this.buttonOpenNotificationPanel.className = "";
   }
   else{
     this.messageEditionPanel.className = "";
@@ -353,23 +360,27 @@ MainSidebar.prototype.toggleNotificationPanel = function(forceOpen){
  * Displays the notifications
  */
 function NotificationPanel(mapping){
-  this.isNotificationPanelOpen = false;
+  window.isNotificationPanelOpen = false;
   this.notificationPanel = mapping.notificationPanel;
   this.buttonOpenNotificationPanel = mapping.buttonOpenNotificationPanel;
   this.notificationPanelList = mapping.notificationPanel.getElementsByTagName('ul')[0];
   this.noNotificationNotice = mapping.notificationPanel.getElementsByTagName('p')[0];
   this.notificationsList = [];
-  this.notificationsCounter = mapping.notificationsCounter;
-  this.notificationCount = 0;
+  window.notificationsCounter = mapping.notificationsCounter;
+  window.notificationCount = 0;
 }
 
 NotificationPanel.prototype.toggleNotificationPanel = function(forceOpen){
-  this.isNotificationPanelOpen = !this.isNotificationPanelOpen;
-  if(this.isNotificationPanelOpen){
+  window.isNotificationPanelOpen = !window.isNotificationPanelOpen;
+  if(window.isNotificationPanelOpen){
+    document.querySelector("#messageEditionPanel").className = "";
+    document.querySelector("#buttonOpenMessageEdition").className = "";
+    document.querySelector("#messageEditionPanel").style.width = '10px';
+    window.isMessageEditionPanelOpen = false;
     this.notificationPanel.style.left = '71px';
-    if(this.notificationCount !== 0){
-      this.notificationsCounter.style.display = 'none';
-      this.notificationCount = 0;
+    if(window.notificationCount !== 0){
+      window.notificationsCounter.style.display = 'none';
+      window.notificationCount = 0;
     }
     document.getElementById('tweets-columns-list').style.left = '430px';
     document.getElementById('tweets-columns-list').style.width = 'calc(100% - 501px)';
@@ -453,8 +464,8 @@ NotificationPanel.prototype.createNotification = function(notification, noAlert)
   this.notificationPanelList.insertBefore(generatedNotification, this.notificationPanelList.childNodes[0]);
   this.noNotificationNotice.style.display = 'none';
   if(!noAlert){
-    this.notificationsCounter.textContent = this.notificationCount = this.notificationCount + 1;
-    this.notificationsCounter.style.display = 'block';
+    window.notificationsCounter.textContent = window.notificationCount = window.notificationCount + 1;
+    window.notificationsCounter.style.display = 'block';
   }
 }
 
