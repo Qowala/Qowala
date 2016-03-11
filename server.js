@@ -26,7 +26,8 @@ var port = process.env.PORT || 8080;
 // Configuration file for the DB
 var dbconfig = require('./config/db');
 
-var mongoUri = process.env.MONGOLAB_URI ||
+var mongoUri = process.env.MONGODB_ADDON_URI ||
+  process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
   dbconfig.url;
 
