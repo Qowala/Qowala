@@ -551,6 +551,7 @@ button#buttonOpenNotificationPanel {
     left: -100px;
     top: 0;
     padding: 0 15px;
+    padding-right: 0;
     background: #fff;
     box-sizing: border-box;
     -moz-transition: all 1s ease-in-out;
