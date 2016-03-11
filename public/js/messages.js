@@ -736,11 +736,15 @@ Message.prototype.processMedia = function(){
 Message.prototype.enlargeImage = function(e){
   var srcAttribute = e.target.src;
   var src = srcAttribute.substring(0, srcAttribute.lastIndexOf(':'));
-  var size = srcAttribute.substring(srcAttribute.lastIndexOf(':'), srcAttribute.length);
 
   var fullsize = e.target.attributes[1].value;
-  var height = fullsize.substring(0, fullsize.lastIndexOf('/'));
-  var width = fullsize.substring(fullsize.lastIndexOf('/') + 1, fullsize.length);
+  var height = parseInt(fullsize.substring(0, fullsize.lastIndexOf('/')));
+  var width = parseInt(fullsize.substring(fullsize.lastIndexOf('/') + 1, fullsize.length));
+  var differencial = Math.min(window.innerHeight*0.8 / height, window.innerWidth*0.8 / width);
+  if (differencial < 1) {
+    height = height*differencial;
+    width = width*differencial;
+  }
   var popup = document.getElementById('largeImagePopup');
   var popupImage = document.querySelector('#largeImagePopup img');
   popupImage.setAttribute('src', src + ':large');
@@ -750,10 +754,13 @@ Message.prototype.enlargeImage = function(e){
   // console.log('left: ', left);
   popup.style.left = left;
   var halfHeight = height / 2;
-  var height = 'calc(50% - ' + halfHeight + 'px)';
-  // console.log('height: ', height);
-  popup.style.top = height;
+  var top = 'calc(50% - ' + halfHeight + 'px)';
+  // console.log('top: ', top);
+  popup.style.top = top;
   popup.style.display = 'block';
+
+  popup.style.height = height + 'px';
+  popup.style.width = width + 'px';
 
   function closeImagePopup(e){
     columnsList.removeEventListener('click', closeImagePopup, true);

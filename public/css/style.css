@@ -1443,6 +1443,11 @@ img.emoji {
     transition: all ease-in 0.35s;
 }
 
+#largeImagePopup img {
+    width: 100%;
+    height: 100%;
+}
+
 #tweetConfirmationPopup{
     background-color: #595959;
     width: 500px;
