@@ -12,17 +12,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 8080;
 
-// Add some logging
-["log", "warn", "error"].forEach(function(method) {
-    var oldMethod = console[method].bind(console);
-    console[method] = function() {
-        oldMethod.apply(
-            console,
-            [new Date().toISOString()].concat(arguments[0])
-        );
-    };
-});
-
 // Configuration file for the DB
 var dbconfig = require('./config/db');
 
