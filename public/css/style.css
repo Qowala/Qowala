@@ -792,8 +792,10 @@ button#buttonOpenNotificationPanel {
     color: white;
     font-size: 9px;
     cursor: pointer;
-    line-height: 12px;
-    width: 12px;
+    line-height: 11px;
+    width: 11px;
+    padding-bottom: 1px;
+    padding-right: 0.5px;
     display: inline-block;
     text-align: center;
     margin-left: 5px;
