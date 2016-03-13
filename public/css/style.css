@@ -51,7 +51,11 @@ body {
 }
 
 #login-background {
-    background-image: url('../img/login-app-bg.jpg');
+    background: url('../img/login-app-bg.jpg'), #b7dac2; /* Old browsers */
+    background: url('../img/login-app-bg.jpg'), -moz-linear-gradient(top,  #b7dac2 0%, #e8ebce 100%); /* FF3.6-15 */
+    background: url('../img/login-app-bg.jpg'), -webkit-linear-gradient(top,  #b7dac2 0%,#e8ebce 100%); /* Chrome10-25,Safari5.1-6 */
+    background: url('../img/login-app-bg.jpg'), linear-gradient(to bottom,  #b7dac2 0%,#e8ebce 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
     background-position: center;
     height: 100%;
     width: 100%;
