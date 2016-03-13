@@ -240,9 +240,9 @@ Message.prototype.openUserPanel = function(e){
     userProfileCity.innerHTML = " " + this.user.location;
   }
 
-  var description = this.user.entities.description;
+  var description = document.createElement('p');
   description.textContent = this.user.description;
-  console.log(description);
+
   userProfileDescription.innerHTML = '';
   userProfileDescription.appendChild(processText(description).text);
 
