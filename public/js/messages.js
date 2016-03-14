@@ -634,7 +634,7 @@ Message.prototype.processText = function(){
           else {
             var image = document.createElement('img');
             image.setAttribute('src',
-              urls_indices[i].media_url + ':medium');
+              urls_indices[i].media_url + ':small');
             image.setAttribute('fullsize',
               urls_indices[i].largeSize.h +
               '/' +
@@ -699,7 +699,7 @@ Message.prototype.processMedia = function(){
     //link.className = "tweet-link-image";
   }
 
-  var imageSize = ':medium';
+  var imageSize = ':small';
 
   for (var i = 0; i < this.medias.length; i++) {
     if (this.medias[i].type == 'animated_gif') {
@@ -948,7 +948,7 @@ processText = function(text){
           else {
             var image = document.createElement('img');
             image.setAttribute('src',
-              urls_indices[i].media_url + ':medium');
+              urls_indices[i].media_url + ':small');
             image.setAttribute('fullsize',
               urls_indices[i].largeSize.h +
               '/' +
