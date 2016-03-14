@@ -746,32 +746,45 @@ Message.prototype.enlargeImage = function(e){
     width = width*differencial;
   }
   var popup = document.getElementById('largeImagePopup');
+  var popupBack = document.querySelector('#largeImagePopup .back');
   var popupImage = document.querySelector('#largeImagePopup img');
+  var popupCross = document.querySelector('#largeImagePopup .cross');
   popupImage.setAttribute('src', src + ':large');
 
   var halfWidth = width / 2;
   var left = 'calc(50% - ' + halfWidth + 'px)';
   // console.log('left: ', left);
-  popup.style.left = left;
+  popupImage.style.left = left;
   var halfHeight = height / 2;
   var top = 'calc(50% - ' + halfHeight + 'px)';
   // console.log('top: ', top);
-  popup.style.top = top;
-  popup.style.display = 'block';
+  popupImage.style.top = top;
 
-  popup.style.height = height + 'px';
-  popup.style.width = width + 'px';
+  popupImage.style.height = height + 'px';
+  popupImage.style.width = width + 'px';
+
+  popup.style.zIndex = 20000;
+  popup.style.opacity = 1;
+
+  popupCross.style.right = 'calc(50% - ' + (halfWidth-15) + 'px)';
+  popupCross.style.top = 'calc(50% - ' + (halfHeight-15) + 'px)';
 
   function closeImagePopup(e){
-    columnsList.removeEventListener('click', closeImagePopup, true);
+    // columnsList.removeEventListener('click', closeImagePopup, true);
+    document.querySelector('#largeImagePopup .cross').removeEventListener('click', closeImagePopup, true);
     e.stopPropagation();
     e.preventDefault();
     var popup = document.getElementById('largeImagePopup');
-    popup.style.display = 'none';
+    var popupBack = document.querySelector('#largeImagePopup .back');
+    popupBack.removeEventListener('click', closeImagePopup, true);
+    popup.style.zIndex = -1;
+    popup.style.opacity = 0;
   }
 
-  var columnsList = document.getElementById('tweets-columns-list');
-  columnsList.addEventListener('click', closeImagePopup, true);
+  // var columnsList = document.getElementById('tweets-columns-list');
+  // columnsList.addEventListener('click', closeImagePopup, true);
+  popupBack.addEventListener('click', closeImagePopup, true);
+  popupCross.addEventListener('click', closeImagePopup, true);
 }
 
 /**
