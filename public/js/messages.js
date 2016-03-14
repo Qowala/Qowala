@@ -736,6 +736,8 @@ Message.prototype.processMedia = function(){
 Message.prototype.enlargeImage = function(e){
   var srcAttribute = e.target.src;
   var src = srcAttribute.substring(0, srcAttribute.lastIndexOf(':'));
+  var popupImage = document.querySelector('#largeImagePopup img');
+  popupImage.setAttribute('src', srcAttribute);
 
   var fullsize = e.target.attributes[1].value;
   var height = parseInt(fullsize.substring(0, fullsize.lastIndexOf('/')));
@@ -747,9 +749,12 @@ Message.prototype.enlargeImage = function(e){
   }
   var popup = document.getElementById('largeImagePopup');
   var popupBack = document.querySelector('#largeImagePopup .back');
-  var popupImage = document.querySelector('#largeImagePopup img');
   var popupCross = document.querySelector('#largeImagePopup .cross');
-  popupImage.setAttribute('src', src + ':large');
+  var downloadingImage = new Image();
+  downloadingImage.onload = function(){
+    popupImage.setAttribute('src', this.src);
+  };
+  downloadingImage.src = src + ':large';
 
   var halfWidth = width / 2;
   var left = 'calc(50% - ' + halfWidth + 'px)';

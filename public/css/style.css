@@ -1458,11 +1458,11 @@ img.emoji {
 #largeImagePopup {
     position: fixed;
     z-index: -1;
-    -moz-transition: all ease-in 0.35s;
-    -webkit-transition: all ease-in 0.35s;
-    -ms-transition: all ease-in 0.35s;
-    -o-transition: all ease-in 0.35s;
-    transition: all ease-in 0.35s;
+    -moz-transition: all ease-in 0.2s;
+    -webkit-transition: all ease-in 0.2s;
+    -ms-transition: all ease-in 0.2s;
+    -o-transition: all ease-in 0.2s;
+    transition: all ease-in 0.2s;
     opacity: 0;
     top: 0;
     bottom: 0;
