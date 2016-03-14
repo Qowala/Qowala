@@ -9,7 +9,9 @@ exports.getDashboard = function(req, res) {
     users.getUserName(userId, function(username){
         res.render('home/dashboard', {
             userId : userId,
-            username: username
+            username: username,
+            piwikUrl: process.env.QOWALA_PIWIK_URL,
+            piwikId: process.env.QOWALA_PIWIK_ID
         });
     });
   }
