@@ -534,6 +534,11 @@ MessagesColumn.prototype.addListToDisplay = function(){
 
   previousHeaderName.textContent = this.columnHeaderName;
 
+  var hashtagsList = document.createElement('ul');
+  hashtagsList.className = 'tweets-column-panel-list-hashtagsList';
+  this.hashtagsBlock.innerHTML = '';
+  this.hashtagsBlock.appendChild(hashtagsList);
+
   this.openPanel();
   this.openSpinner();
 }
