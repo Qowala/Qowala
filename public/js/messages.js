@@ -346,7 +346,7 @@ Message.prototype.sendRetweet = function(e){
       this.applyTweetStatus();
     }
 
-    var bindedFunction = (sendRetweetCommand).bind(this)
+    var bindedFunction = (sendRetweetCommand).bind(this);
 
     retweetButton.addEventListener('click', bindedFunction, true);
 
@@ -373,7 +373,7 @@ Message.prototype.applyTweetStatus = function(){
     for (var i = 0; i < retweetButtons.length; i++) {
       retweetButtons[i].removeAttribute("class");
       retweetButtons[i].setAttribute('class', 'tweet-retweet-button-active');
-      // console.log('Updated concerning retweet');
+      console.log('Updated concerning retweet ', this.id_str);
     };
   }
   else{
@@ -381,7 +381,7 @@ Message.prototype.applyTweetStatus = function(){
     for (var i = 0; i < retweetButtons.length; i++) {
       retweetButtons[i].removeAttribute("class");
       retweetButtons[i].setAttribute('class', 'tweet-retweet-button');
-      // console.log('Updated concerning retweet');
+      console.log('Updated disabled concerning retweet');
     };
   }
 }
