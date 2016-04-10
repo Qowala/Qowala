@@ -23,10 +23,10 @@
 # THE SOFTWARE.
 
 ###############################
-# 
+#
 # This script was meant to be used with Ubuntu 14.04 Trusty
 # This script will install what is required for Qowala live then install the Twitter app
-# 
+#
 # The components installation process was being inspired by Digital Ocean tutorial accessible at : https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server
 #
 ################################
@@ -35,10 +35,10 @@
 ipadress=$(ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//' | head -n 1)
 
 echo "*******************************************************************************"
-echo "***                    Qowala live Installation Script                  ***"
+echo "***                       Qowala Installation Script                        ***"
 echo "*******************************************************************************"
 echo "This script will try to install MongoDB, NodeJS and its modules."
-echo "It will then download and install Qowala live so you will be able to access it at (you will set the domain name during the installation) : 
+echo "It will then download and install Qowala so you will be able to access it at (you will set the domain name during the installation) :
 
 "
 
@@ -70,7 +70,7 @@ if [ $ifInstall = "Y" ] || [ $ifInstall = 'y' ]
 		sudo npm install -g forever
 
 		echo "*******************************************************************************"
-		echo "***                    Qowala live Installation Script                  ***"
+		echo "***                       Qowala Installation Script                        ***"
 		echo "*******************************************************************************"
 		echo "We will now configure your Twitter app.
 		"
@@ -90,13 +90,13 @@ if [ $ifInstall = "Y" ] || [ $ifInstall = 'y' ]
 		sudo echo '{"consumerKey" : "'$consumerKey'",'' "consumerSecret" : "'$consumerSecret'", "callbackURL": "http://'$domainName':8080/auth/twitter/callback"}' >> config/twitter.json
 
 		# Launch the application
-		sudo forever -l forever.log -ao stdout.log -e stderr.log start app.js 
+		sudo forever -l forever.log -ao stdout.log -e stderr.log start app.js
 
 		# Display end message
-		message='Your Qowala live installation is ready to be used at : http://'
+		message='Your Qowala installation is ready to be used at : http://'
 
 		echo "*******************************************************************************"
-		echo "***                   Qowala live Installation Script                   ***"
+		echo "***                        Qowala Installation Script                       ***"
 		echo "*******************************************************************************"
 		echo ""
 		echo $message$domainName'/:8080'
