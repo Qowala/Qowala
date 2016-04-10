@@ -15,6 +15,8 @@ Created by Killian Kemps (Developer) and joined by Manuel Lemaire (Developer), A
 
 The official instance server is at : https://live.qowala.eu
 
+![Qowala Screenshot](screenshot.png)
+
 ### Git repositories:
 
 They are two mirrored git repositories of the project:
@@ -36,8 +38,6 @@ We are using the open source Taiga project management tool. You can access it at
 - Send tweets
 - Retweet tweets
 - Reply to tweets
-
-![Qowala Screenshot](http://www.killiankemps.fr/data/images/capture-d-ecran-2015-05-31-a-20.17.19.png)
 
 # Qowala's installation
 
