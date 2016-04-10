@@ -5,7 +5,6 @@
 Qowala
 ======
 
-
 Open source and growing! We’re aiming to become your favorite tool to survive in the social networks jungle. First is Twitter, with many more to come.
 
 Qowala is an open source Twitter client that wishes to give you control on your usage of social networks.
@@ -24,6 +23,7 @@ They are two mirrored git repositories of the project:
 - Github: https://github.com/KillianKemps/Qowala
 
 ### Project management:
+
 We are using the open source Taiga project management tool. You can access it at https://tree.taiga.io/project/qowala-live/backlog to follow the development process and interact with us for issues, requests for enhancement, etc.
 
 ### Qowala v1.0 functionalities:
