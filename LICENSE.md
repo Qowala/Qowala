@@ -1,9 +1,10 @@
 # Graphic elements and trademark
 
-"Qowala" and the Qowala logo are registered trademarks
-Copyright © 2016 Killian Kemps, all rights reserved
+"Qowala" and the Qowala logo are registered trademarks. Copyright © 2016 Killian Kemps, all rights reserved
 
 Every graphic elements making Qowala and its interface recognizable are all property of Antoine Beauvillain and should not be reproduced without his express consent.
+
+Get in touch with Killian by email at killian[at]qowala.org and with Antoine at antoine[at]qowala.org
 
 # Source code of Qowala released under CeCILL License
 
