@@ -13,7 +13,7 @@ Created by Killian Kemps (Developer) and joined by Manuel Lemaire (Developer), A
 
 ### Official instance:
 
-The official instance server is at : https://live.qowala.eu
+The official instance server is at : https://live.qowala.org
 
 ![Qowala Screenshot](screenshot.png)
 
