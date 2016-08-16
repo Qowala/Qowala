@@ -1,24 +1,17 @@
-FROM ubuntu
+FROM       node:0.12
 MAINTAINER Killian Kemps
 
-RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup | sudo bash -
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 || true
-RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+RUN        mkdir /var/app
+COPY       qowala_app/package.json var/app/package.json
 
-RUN apt-get update && apt-get install -y \
-	nodejs \
-	build-essential \
-	mongodb-org
+RUN        cd /var/app && npm install
+RUN        npm install -g forever
 
-ADD . /home
+COPY       qowala_app var/app/
 
-WORKDIR /home
+WORKDIR    /var/app
 
-RUN npm install
+EXPOSE     8080
 
-EXPOSE 8080
-
-CMD ["nodejs", "server.js"]
-
-VOLUME ["/home"]
+ADD        docker/service-start.sh /
+CMD        ["/service-start.sh"]

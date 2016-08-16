@@ -18,16 +18,17 @@ var dbconfig = require('./config/db');
 var mongoUri = process.env.MONGODB_ADDON_URI ||
   process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
+  'mongodb://' + process.env.MONGO_PORT_27017_TCP_ADDR + '/qowala:' + process.env.MONGO_PORT_27017_TCP_PORT ||
   dbconfig.url;
 
 mongoose.connect(mongoUri, function(err, dbconfig) {
   if(!err) {
     console.log("We are connected to mongoDB");
   }
+  else {
+    console.log('Error while connecting to mongo: ', err);
+  }
 }); // Connect to our mongoDB database (commented out after you enter in your own credentials)
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
 
 // Setup sessions
 app.use(session({
