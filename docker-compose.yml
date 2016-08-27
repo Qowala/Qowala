@@ -1,7 +1,7 @@
 qowala_app:
     build: .
     ports:
-        - "80:8080"
+        - "8080:8080"
     links:
         - mongo
 
