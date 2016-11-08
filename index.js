@@ -11,6 +11,7 @@ app.get('/', function(req, res){
 });
 
 var lastThreadID = '';
+var currentUserID = 0;
 var fbApi = {};
 
 function loginFacebook () {
@@ -38,10 +39,18 @@ function loginFacebook () {
 }
 
 io.on('connection', function(socket){
-  console.log('Listening for messages...');
   loginFacebook().then(
     function(api) {
+      currentUserID = fbApi.getCurrentUserID();
+      facebookMessengerService.getUserInfo(api, currentUserID).then(
+      function(data) {
+        console.log(data);
+        io.emit('chat message', 'Logged in as ' + data);
+      });
+    }).then(
+    function() {
       fbApi.listen(function callback(err, message) {
+        console.log('Listening for messages...');
         if (err) return console.error(err);
         console.log(message);
         lastThreadID = message.threadID;
