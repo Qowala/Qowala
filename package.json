@@ -1,0 +1,19 @@
+{
+  "name": "qowala",
+  "version": "0.1.0",
+  "description": "Messaging app for a better living",
+  "main": "index.js",
+  "dependencies": {
+    "facebook-chat-api": "^1.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.framasoft.org:KillianKemps/Qowala-live.git"
+  },
+  "author": "Killian Kemps",
+  "license": "ISC"
+}
