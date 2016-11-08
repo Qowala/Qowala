@@ -13,6 +13,7 @@ app.get('/', function(req, res){
 var lastThreadID = '';
 var currentUserID = 0;
 var fbApi = {};
+var chatHistory = {};
 
 function loginFacebook () {
   return new Promise(function (resolve, reject) {
@@ -40,13 +41,23 @@ function loginFacebook () {
 
 io.on('connection', function(socket){
   loginFacebook().then(
-    function(api) {
-      currentUserID = fbApi.getCurrentUserID();
-      facebookMessengerService.getUserInfo(api, currentUserID).then(
-      function(data) {
-        console.log(data);
-        io.emit('chat message', 'Logged in as ' + data);
+    function() {
+      return new Promise(function (resolve, reject) {
+        currentUserID = fbApi.getCurrentUserID();
+        facebookMessengerService.getUserInfo(fbApi, currentUserID).then(
+        function(data) {
+          console.log(data);
+          io.emit('chat message', 'Logged in as ' + data);
+        });
       });
+    }).then(
+    function() {
+      console.log('Restoring history');
+      if (Array.isArray(chatHistory[currentUserID])) {
+        for (var index in chatHistory[currentUserID]) {
+          io.emit('chat message', chatHistory[currentUserID][index]);
+        }
+      }
     }).then(
     function() {
       fbApi.listen(function callback(err, message) {
@@ -60,7 +71,15 @@ io.on('connection', function(socket){
         allInfos.push(facebookMessengerService.getThreadInfo(api, message.threadID));
         Promise.all(allInfos).then(function(data) {
           console.log(data);
-          io.emit('chat message', '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body);
+          messageToSend = '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body;
+          io.emit('chat message', messageToSend);
+          if (Array.isArray(chatHistory[currentUserID])) {
+            chatHistory[currentUserID].push(messageToSend);
+          }
+          else {
+            chatHistory[currentUserID] = [];
+            chatHistory[currentUserID].push(messageToSend);
+          }
         });
       });
     }
