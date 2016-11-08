@@ -13,41 +13,53 @@ app.get('/', function(req, res){
 var lastThreadID = '';
 var fbApi = {};
 
+function loginFacebook () {
+  return new Promise(function (resolve, reject) {
+    fs.exists('appstate.json', function(exists) {
+      if (exists) {
+        console.log('Login from saved appstate');
+        login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function callback (err, api) {
+          if(err) reject(err);
+          fbApi = api;
+          resolve(fbApi);
+        });
+      }
+      else {
+        console.log('Login from user credentials');
+        login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api) {
+          if(err) reject(err);
+          fs.writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
+          fbApi = api;
+          resolve(fbApi);
+        });
+      }
+    });
+  });
+}
+
 io.on('connection', function(socket){
-  fs.exists('appstate.json', function(exists) {
-    if (exists) {
-      console.log('Login from saved appstate');
-      login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function callback (err, api) {
-        if(err) return console.error(err);
-        console.log('Listening for messages...');
-        fbApi = api;
-        api.listen(function callback(err, message) {
-          lastThreadID = message.threadID;
-          console.log(message);
-          var allInfos = [];
-          console.log(Object.keys(facebookMessengerService));
-          allInfos.push(facebookMessengerService.getUserInfo(api, message.senderID));
-          allInfos.push(facebookMessengerService.getThreadInfo(api, message.threadID));
-          Promise.all(allInfos).then(function(data) {
-            console.log(data);
-            io.emit('chat message', data[0] + ' [thread: ' + data[1] + ']: ' + message.body);
-          });
-        // Here you can use the api
+  console.log('Listening for messages...');
+  loginFacebook().then(
+    function(api) {
+      fbApi.listen(function callback(err, message) {
+        if (err) return console.error(err);
+        console.log(message);
+        lastThreadID = message.threadID;
+        var allInfos = [];
+        console.log(Object.keys(facebookMessengerService));
+        allInfos.push(facebookMessengerService.getUserInfo(api, message.senderID));
+        allInfos.push(facebookMessengerService.getThreadInfo(api, message.threadID));
+        Promise.all(allInfos).then(function(data) {
+          console.log(data);
+          io.emit('chat message', '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body);
         });
       });
     }
-    else {
-      console.log('Login from user credentials');
-      login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api) {
-          if(err) return console.error(err);
-
-          fs.writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
-      });
-    }
-  });
+  );
 
   socket.on('chat message', function(msg){
     if (lastThreadID != '') {
+      console.log('Sending to FB: ', msg);
       fbApi.sendMessage(msg, lastThreadID);
     }
     io.emit('chat message', msg);
