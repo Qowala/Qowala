@@ -48,6 +48,7 @@ io.on('connection', function(socket){
         function(data) {
           console.log(data);
           io.emit('chat message', 'Logged in as ' + data);
+          resolve(data);
         });
       });
     }).then(
@@ -60,15 +61,15 @@ io.on('connection', function(socket){
       }
     }).then(
     function() {
+      console.log('Listening for messages...');
       fbApi.listen(function callback(err, message) {
-        console.log('Listening for messages...');
         if (err) return console.error(err);
         console.log(message);
         lastThreadID = message.threadID;
         var allInfos = [];
         console.log(Object.keys(facebookMessengerService));
-        allInfos.push(facebookMessengerService.getUserInfo(api, message.senderID));
-        allInfos.push(facebookMessengerService.getThreadInfo(api, message.threadID));
+        allInfos.push(facebookMessengerService.getUserInfo(fbApi, message.senderID));
+        allInfos.push(facebookMessengerService.getThreadInfo(fbApi, message.threadID));
         Promise.all(allInfos).then(function(data) {
           console.log(data);
           messageToSend = '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body;
