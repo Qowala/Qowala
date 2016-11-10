@@ -25,15 +25,20 @@ app.get('/', function(req, res){
         res.sendFile(__dirname + '/index.html');
       }
     ).catch(function(err) {
+      console.log('Error while login with appstate: ', err);
       // If no appstate has been saved before
       if (err === 'appstate_not_found') {
-        res.sendFile(__dirname + '/login.html');
+        res.redirect('/login');
       }
     });
   }
   else {
-    res.sendFile(__dirname + '/login.html');
+    res.redirect('/login');
   }
+});
+
+app.get('/login', function(req, res){
+  res.sendFile(__dirname + '/login.html');
 });
 
 app.post('/login', function(req, res){
@@ -41,9 +46,13 @@ app.post('/login', function(req, res){
     function(data) {
       console.log('Finished login in with credentials');
       req.userSession.username = req.body.username;
-      res.sendFile(__dirname + '/index.html')
+      res.redirect('/');
     }
-  );
+  ).catch(function(err) {
+    console.log('Error while login with credentials: ', err);
+    // If no appstate has been saved before
+    res.sendFile(__dirname + '/login.html');
+  });
 });
 
 var lastThreadID = '';
@@ -53,10 +62,10 @@ var chatHistory = {};
 
 function loginFacebookAppstate (email) {
   return new Promise(function (resolve, reject) {
-    console.log('Login from appstate');
-    fs.exists('appstate' + email +'.json', function(exists) {
+    console.log('Login from appstate ', email);
+    fs.exists(getAppstateName(email), function(exists) {
       if (exists) {
-        login({appState: JSON.parse(fs.readFileSync('appstate' + email + '.json', 'utf8'))}, function callback (err, api) {
+        login({appState: JSON.parse(fs.readFileSync(getAppstateName(email), 'utf8'))}, function callback (err, api) {
           if(err) return reject(err);
           fbApi = api;
           resolve(fbApi);
@@ -75,11 +84,19 @@ function loginFacebookCredentials (email, password) {
     console.log('Login from user credentials');
     login({email: email, password: password}, function callback (err, api) {
       if(err) return reject(err);
-      fs.writeFileSync('appstate-' + email + '.json', JSON.stringify(api.getAppState()));
+      fs.writeFileSync(getAppstateName(email), JSON.stringify(api.getAppState()));
       fbApi = api;
+      users[email] = {
+        fbID: 0,
+        lastThreadID: 0
+      };
       resolve(fbApi);
     });
   });
+}
+
+function getAppstateName(email) {
+  return 'appstate-' + email + '.json'
 }
 
 function displayCurrentUser () {
