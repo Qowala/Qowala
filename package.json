@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "client-sessions": "^0.7.0",
     "facebook-chat-api": "^1.2.0"
   },
   "devDependencies": {},

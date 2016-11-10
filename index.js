@@ -1,5 +1,6 @@
 var app = require('express')();
 var bodyParser = require('body-parser');
+var sessions = require("client-sessions");
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const fs = require('fs');
@@ -10,21 +11,36 @@ var facebookMessengerService = require('./facebookMessengerService');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+app.use(sessions({
+  cookieName: 'userSession', // cookie name dictates the key name added to the request object
+  secret: 'reaaaalsecretblargadeeblargblarg', // should be a large unguessable string
+  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
+  activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+}));
+
 app.get('/', function(req, res){
-  fs.exists('appstate.json', function(exists) {
-    if (exists) {
-      res.sendFile(__dirname + '/index.html');
-    }
-    else {
-      res.sendFile(__dirname + '/login.html');
-    }
-  });
+  if (req.userSession) {
+    loginFacebookAppstate(req.userSession.username).then(
+      function() {
+        res.sendFile(__dirname + '/index.html');
+      }
+    ).catch(function(err) {
+      // If no appstate has been saved before
+      if (err === 'appstate_not_found') {
+        res.sendFile(__dirname + '/login.html');
+      }
+    });
+  }
+  else {
+    res.sendFile(__dirname + '/login.html');
+  }
 });
 
 app.post('/login', function(req, res){
   loginFacebookCredentials(req.body.username, req.body.password).then(
     function(data) {
       console.log('Finished login in with credentials');
+      req.userSession.username = req.body.username;
       res.sendFile(__dirname + '/index.html')
     }
   );
@@ -35,11 +51,31 @@ var currentUserID = 0;
 var fbApi = {};
 var chatHistory = {};
 
+function loginFacebookAppstate (email) {
+  return new Promise(function (resolve, reject) {
+    console.log('Login from appstate');
+    fs.exists('appstate' + email +'.json', function(exists) {
+      if (exists) {
+        login({appState: JSON.parse(fs.readFileSync('appstate' + email + '.json', 'utf8'))}, function callback (err, api) {
+          if(err) return reject(err);
+          fbApi = api;
+          resolve(fbApi);
+        });
+      }
+      else {
+        console.log('User appstate not found');
+        reject('appstate_not_found');
+      }
+    });
+  });
+}
+
 function loginFacebookCredentials (email, password) {
   return new Promise(function (resolve, reject) {
     console.log('Login from user credentials');
     login({email: email, password: password}, function callback (err, api) {
       if(err) return reject(err);
+      fs.writeFileSync('appstate-' + email + '.json', JSON.stringify(api.getAppState()));
       fbApi = api;
       resolve(fbApi);
     });
