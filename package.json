@@ -4,6 +4,7 @@
   "description": "Messaging app for a better living",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "facebook-chat-api": "^1.2.0"
   },
   "devDependencies": {},

@@ -1,4 +1,5 @@
 var app = require('express')();
+var bodyParser = require('body-parser');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const fs = require('fs');
@@ -6,8 +7,27 @@ const fs = require('fs');
 var login = require("facebook-chat-api");
 var facebookMessengerService = require('./facebookMessengerService');
 
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  fs.exists('appstate.json', function(exists) {
+    if (exists) {
+      res.sendFile(__dirname + '/index.html');
+    }
+    else {
+      res.sendFile(__dirname + '/login.html');
+    }
+  });
+});
+
+app.post('/login', function(req, res){
+  loginFacebookCredentials(req.body.username, req.body.password).then(
+    function(data) {
+      console.log('Finished login in with credentials');
+      res.sendFile(__dirname + '/index.html')
+    }
+  );
 });
 
 var lastThreadID = '';
@@ -15,43 +35,31 @@ var currentUserID = 0;
 var fbApi = {};
 var chatHistory = {};
 
-function loginFacebook () {
+function loginFacebookCredentials (email, password) {
   return new Promise(function (resolve, reject) {
-    fs.exists('appstate.json', function(exists) {
-      if (exists) {
-        console.log('Login from saved appstate');
-        login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function callback (err, api) {
-          if(err) reject(err);
-          fbApi = api;
-          resolve(fbApi);
-        });
-      }
-      else {
-        console.log('Login from user credentials');
-        login({email: "FB_EMAIL", password: "FB_PASSWORD"}, function callback (err, api) {
-          if(err) reject(err);
-          fs.writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
-          fbApi = api;
-          resolve(fbApi);
-        });
-      }
+    console.log('Login from user credentials');
+    login({email: email, password: password}, function callback (err, api) {
+      if(err) return reject(err);
+      fbApi = api;
+      resolve(fbApi);
+    });
+  });
+}
+
+function displayCurrentUser () {
+  return new Promise(function (resolve, reject) {
+    currentUserID = fbApi.getCurrentUserID();
+    facebookMessengerService.getUserInfo(fbApi, currentUserID).then(
+    function(data) {
+      console.log(data);
+      io.emit('chat message', 'Logged in as ' + data);
+      resolve(data);
     });
   });
 }
 
 io.on('connection', function(socket){
-  loginFacebook().then(
-    function() {
-      return new Promise(function (resolve, reject) {
-        currentUserID = fbApi.getCurrentUserID();
-        facebookMessengerService.getUserInfo(fbApi, currentUserID).then(
-        function(data) {
-          console.log(data);
-          io.emit('chat message', 'Logged in as ' + data);
-          resolve(data);
-        });
-      });
-    }).then(
+  displayCurrentUser().then(
     function() {
       console.log('Restoring history');
       if (Array.isArray(chatHistory[currentUserID])) {
