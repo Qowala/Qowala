@@ -179,8 +179,19 @@ io.on('connection', function(socket){
 
   socket.on('chat message', function(msg){
     if (currentUser.lastThreadID != 0) {
-      console.log('Sending to FB: ', msg);
-      currentUser.fbApi.sendMessage(msg, currentUser.lastThreadID);
+      facebookMessengerService.getThreadInfo(
+          currentUser.fbApi,
+          currentUser.lastThreadID
+      ).then(function(data) {
+        info = 'You were going to send to ' + data;
+        console.log(info);
+        io.emit('chat message', info);
+      });
+    }
+    else {
+      info = 'No FB thread to send to';
+      console.log(info);
+      io.emit('chat message', info);
     }
     io.emit('chat message', msg);
   });
