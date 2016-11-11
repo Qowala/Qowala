@@ -105,22 +105,6 @@ function getAppstateName(email) {
   return 'appstate-' + email + '.json'
 }
 
-function displayCurrentUser() {
-  console.log('tutu');
-  return new Promise(function (resolve, reject) {
-    console.log('tata');
-    console.log('current user :', currentUser);
-    reject(currentUser);
-    currentUser.ID = currentUser.fbApi.getCurrentUserID();
-    facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
-    function(data) {
-      console.log(data);
-      io.emit('chat message', 'Logged in as ' + data);
-      resolve(data);
-    });
-  });
-}
-
 io.on('connection', function(socket){
   var cookieArray = socket.request.headers.cookie.split('=');
   var email = sessions.util.decode(cookieOptions, cookieArray[ cookieArray.length - 1 ]).content.email;
@@ -136,7 +120,7 @@ io.on('connection', function(socket){
       facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
       function(data) {
         console.log(data);
-        io.emit('chat message', 'Logged in as ' + data);
+        socket.emit('chat message', 'Logged in as ' + data);
         resolve(data);
       });
     });
@@ -145,7 +129,7 @@ io.on('connection', function(socket){
       console.log('Restoring history');
       if (Array.isArray(chatHistory[currentUser.ID])) {
         for (var index in chatHistory[currentUser.ID]) {
-          io.emit('chat message', chatHistory[currentUser.ID][index]);
+          socket.emit('chat message', chatHistory[currentUser.ID][index]);
         }
       }
     }).then(
@@ -162,7 +146,7 @@ io.on('connection', function(socket){
         Promise.all(allInfos).then(function(data) {
           console.log(data);
           messageToSend = '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body;
-          io.emit('chat message', messageToSend);
+          socket.emit('chat message', messageToSend);
           if (Array.isArray(chatHistory[currentUser.ID])) {
             chatHistory[currentUser.ID].push(messageToSend);
           }
@@ -185,15 +169,15 @@ io.on('connection', function(socket){
       ).then(function(data) {
         info = 'You were going to send to ' + data;
         console.log(info);
-        io.emit('chat message', info);
+        socket.emit('chat message', info);
       });
     }
     else {
       info = 'No FB thread to send to';
       console.log(info);
-      io.emit('chat message', info);
+      socket.emit('chat message', info);
     }
-    io.emit('chat message', msg);
+    socket.emit('chat message', msg);
   });
 
 });
