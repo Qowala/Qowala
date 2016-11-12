@@ -167,7 +167,7 @@ io.on('connection', function(socket){
           currentUser.fbApi,
           currentUser.lastThreadID
       ).then(function(data) {
-        info = 'You were going to send to ' + data;
+        info = 'You were going to send to ' + data + ' (' + currentUser.lastThreadID + ')';
         console.log(info);
         socket.emit('chat message', info);
       });
