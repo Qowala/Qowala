@@ -21,6 +21,33 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+      function notifyMe(msg) {
+        var msg = 'Qowala: ' + msg;
+        // Let's check if the browser supports notifications
+        if (!("Notification" in window)) {
+          alert("This browser does not support desktop notification");
+        }
+
+        // Let's check whether notification permissions have already been granted
+        else if (Notification.permission === "granted") {
+          // If it's okay let's create a notification
+          var notification = new Notification(msg);
+        }
+
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== 'denied') {
+          Notification.requestPermission(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+              var notification = new Notification(msg);
+            }
+          });
+        }
+
+        // At last, if the user has denied notifications, and you
+        // want to be respectful there is no need to bother them any more.
+      }
+
       var socket = io();
       $('form').submit(function(){
         socket.emit('chat message', $('#m').val());
@@ -29,6 +56,7 @@
       });
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
+        notifyMe(msg);
       });
     </script>
   </body>
