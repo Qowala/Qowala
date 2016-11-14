@@ -1,15 +1,20 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
 var sessions = require("client-sessions");
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const fs = require('fs');
+const path = require('path');
 
 var login = require("facebook-chat-api");
 var facebookMessengerService = require('./facebookMessengerService');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+// serve the static assets from the client/ directory
+app.use(express.static(path.join(__dirname, 'client/static/')));
 
 var cookieOptions = {
   cookieName: 'userSession', // cookie name dictates the key name added to the request object
@@ -20,11 +25,14 @@ var cookieOptions = {
 
 app.use(sessions(cookieOptions));
 
+// Set web client directory
+var client_dir = __dirname + '/client';
+
 app.get('/', function(req, res){
   if (req.userSession.email) {
     loginFacebookAppstate(req.userSession.email).then(
       function() {
-        res.sendFile(__dirname + '/index.html');
+        res.sendFile(client_dir + '/index.html');
       }
     ).catch(function(err) {
       console.log('Error while login with appstate: ', err);
@@ -40,7 +48,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/login', function(req, res){
-  res.sendFile(__dirname + '/login.html');
+  res.sendFile(client_dir + '/login.html');
 });
 
 app.post('/login', function(req, res){
@@ -53,7 +61,7 @@ app.post('/login', function(req, res){
   ).catch(function(err) {
     console.log('Error while login with credentials: ', err);
     // If no appstate has been saved before
-    res.sendFile(__dirname + '/login.html');
+    res.sendFile(client_dir + '/login.html');
   });
 });
 

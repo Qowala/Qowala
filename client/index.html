@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Qowala</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 80%; margin-right: .5%; }
+      form select { width: 9%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <ul id="messages">
+        <li v-for="message in messages">
+          {{ message }}
+        </li>
+      </ul>
+      <form action="" v-on:submit.prevent="sendMsg">
+        <input v-model="messageInput" autocomplete="off" />
+        <select id="availability" v-model="availability">
+          <option id="available">Available</option>
+          <option id="unavailable">Unavailable</option>
+        </select>
+        <button>Send</button>
+      </form>
+    </div>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <script>
+      var socket = io();
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          messageInput: '',
+          messages: [],
+          availability: 'Available',
+        },
+        methods: {
+          sendMsg: function() {
+            socket.emit('chat message', this.messageInput);
+            this.messageInput = '';
+          },
+          notifyMe: function(msg) {
+            var msg = 'Qowala: ' + msg;
+            // Let's check if the browser supports notifications
+            if (!("Notification" in window)) {
+              alert("This browser does not support desktop notification");
+            }
+
+            // Let's check whether notification permissions have already been granted
+            else if (Notification.permission === "granted") {
+              // If it's okay let's create a notification
+              var notification = new Notification(msg);
+            }
+
+            // Otherwise, we need to ask the user for permission
+            else if (Notification.permission !== 'denied') {
+              Notification.requestPermission(function (permission) {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                  var notification = new Notification(msg);
+                }
+              });
+            }
+
+            // At last, if the user has denied notifications, and you
+            // want to be respectful there is no need to bother them any more.
+          }
+        },
+        created: function() {
+          socket.on('reload page', function(){
+            document.location.reload(true);
+          }.bind(this));
+          socket.on('chat message', function(msg){
+            this.messages.push(msg);
+
+            // Send notification only if user available
+            if (this.availability === 'Available') {
+              this.notifyMe(msg);
+            }
+          }.bind(this));
+        }
+      })
+
+    </script>
+  </body>
+</html>
