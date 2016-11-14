@@ -1,0 +1,6 @@
+node_modules/
+.vagrant
+*.sublime-project
+*.sublime-workspace
+*.vim
+*.swp
