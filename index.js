@@ -107,7 +107,14 @@ function getAppstateName(email) {
 
 io.on('connection', function(socket){
   var cookieArray = socket.request.headers.cookie.split('=');
-  var email = sessions.util.decode(cookieOptions, cookieArray[ cookieArray.length - 1 ]).content.email;
+  var cookie = sessions.util.decode(cookieOptions, cookieArray[ cookieArray.length - 1 ]);
+
+  if (cookie === undefined) {
+    console.log('Sending reload event');
+    socket.emit('reload page');
+  }
+
+  var email = cookie.content.email;
   console.log('Socket email: ', email);
   var currentUser = users[email];
 
@@ -159,6 +166,10 @@ io.on('connection', function(socket){
     }
   ).catch(function(err) {
     console.log('An error occured: ', err);
+    if (err === 'currentUser is undefined') {
+      console.log('Sending reload event');
+      socket.emit('reload page');
+    }
   });
 
   socket.on('chat message', function(msg){
