@@ -6,15 +6,23 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const fs = require('fs');
 const path = require('path');
+var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+
+var config = require('./config-vars'); // get our config file
 
 var login = require("facebook-chat-api");
 var facebookMessengerService = require('./facebookMessengerService');
 
+app.set('superSecret', config.secret); // secret variable
+
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+// Set web client directory
+var client_dir = __dirname + '/dist';
+
 // serve the static assets from the client/ directory
-app.use(express.static(path.join(__dirname, 'client/static/')));
+app.use(express.static(path.join(client_dir)));
 
 var cookieOptions = {
   cookieName: 'userSession', // cookie name dictates the key name added to the request object
@@ -25,49 +33,14 @@ var cookieOptions = {
 
 app.use(sessions(cookieOptions));
 
-// Set web client directory
-var client_dir = __dirname + '/client';
-
 app.get('/', function(req, res){
-  if (req.userSession.email) {
-    loginFacebookAppstate(req.userSession.email).then(
-      function() {
-        res.sendFile(client_dir + '/index.html');
-      }
-    ).catch(function(err) {
-      console.log('Error while login with appstate: ', err);
-      // If no appstate has been saved before
-      if (err === 'appstate_not_found') {
-        res.redirect('/login');
-      }
-    });
-  }
-  else {
-    res.redirect('/login');
-  }
-});
-
-app.get('/login', function(req, res){
-  res.sendFile(client_dir + '/login.html');
-});
-
-app.post('/login', function(req, res){
-  loginFacebookCredentials(req.body.email, req.body.password).then(
-    function(data) {
-      console.log('Finished login in with credentials');
-      req.userSession.email = req.body.email;
-      res.redirect('/');
-    }
-  ).catch(function(err) {
-    console.log('Error while login with credentials: ', err);
-    // If no appstate has been saved before
-    res.sendFile(client_dir + '/login.html');
-  });
+	res.sendFile(client_dir + '/index.html');
 });
 
 var chatHistory = {};
 var users = {};
 
+// XXX Currently dead code
 function loginFacebookAppstate (email) {
   return new Promise(function (resolve, reject) {
     console.log('Login from appstate ', email);
@@ -113,90 +86,131 @@ function getAppstateName(email) {
   return 'appstate-' + email + '.json'
 }
 
+function startFacebook(decoded, users, socket) {
+	var currentUser = users[decoded.email];
+
+	if (currentUser) {
+		(function() {
+			return new Promise(function (resolve, reject) {
+				currentUser.ID = currentUser.fbApi.getCurrentUserID();
+				facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
+				function(data) {
+					console.log(data);
+					socket.emit('chat message', 'Logged in as ' + data);
+					resolve(data);
+				});
+			});
+		})().then(
+			function() {
+				console.log('Restoring history');
+				if (Array.isArray(chatHistory[currentUser.ID])) {
+					for (var index in chatHistory[currentUser.ID]) {
+						socket.emit('chat message', chatHistory[currentUser.ID][index]);
+					}
+				}
+			}).then(
+			function() {
+				console.log('Listening for messages...');
+				currentUser.fbApi.listen(function callback(err, message) {
+					if (err) return console.error(err);
+					console.log(message);
+					currentUser.lastThreadID = message.threadID;
+					var allInfos = [];
+					console.log(Object.keys(facebookMessengerService));
+					allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
+					allInfos.push(facebookMessengerService.getThreadInfo(currentUser.fbApi, message.threadID));
+					Promise.all(allInfos).then(function(data) {
+						console.log(data);
+						messageToSend = '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body;
+						socket.emit('chat message', messageToSend);
+						if (Array.isArray(chatHistory[currentUser.ID])) {
+							chatHistory[currentUser.ID].push(messageToSend);
+						}
+						else {
+							chatHistory[currentUser.ID] = [];
+							chatHistory[currentUser.ID].push(messageToSend);
+						}
+					});
+				});
+			}
+		).catch(function(err) {
+			console.log('An error occured: ', err);
+			socket.emit('err', err);
+		});
+	}
+	else {
+		socket.emit('need auth');
+	}
+}
+
 io.on('connection', function(socket){
-  var cookieArray = socket.request.headers.cookie.split('=');
-  var cookie = sessions.util.decode(cookieOptions, cookieArray[ cookieArray.length - 1 ]);
-
-  if (cookie === undefined) {
-    console.log('Sending reload event');
-    socket.emit('reload page');
-  }
-
-  var email = cookie.content.email;
-  console.log('Socket email: ', email);
-  var currentUser = users[email];
-
-  (function() {
-    return new Promise(function (resolve, reject) {
-      if (currentUser === undefined) {
-        reject('currentUser is undefined');
-      }
-      currentUser.ID = currentUser.fbApi.getCurrentUserID();
-      facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
+  socket.on('login', function(credentials){
+    loginFacebookCredentials(credentials.email, credentials.password).then(
       function(data) {
-        console.log(data);
-        socket.emit('chat message', 'Logged in as ' + data);
-        resolve(data);
-      });
-    });
-  })().then(
-    function() {
-      console.log('Restoring history');
-      if (Array.isArray(chatHistory[currentUser.ID])) {
-        for (var index in chatHistory[currentUser.ID]) {
-          socket.emit('chat message', chatHistory[currentUser.ID][index]);
-        }
-      }
-    }).then(
-    function() {
-      console.log('Listening for messages...');
-      currentUser.fbApi.listen(function callback(err, message) {
-        if (err) return console.error(err);
-        console.log(message);
-        currentUser.lastThreadID = message.threadID;
-        var allInfos = [];
-        console.log(Object.keys(facebookMessengerService));
-        allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
-        allInfos.push(facebookMessengerService.getThreadInfo(currentUser.fbApi, message.threadID));
-        Promise.all(allInfos).then(function(data) {
-          console.log(data);
-          messageToSend = '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body;
-          socket.emit('chat message', messageToSend);
-          if (Array.isArray(chatHistory[currentUser.ID])) {
-            chatHistory[currentUser.ID].push(messageToSend);
-          }
-          else {
-            chatHistory[currentUser.ID] = [];
-            chatHistory[currentUser.ID].push(messageToSend);
-          }
+        console.log('Finished login in with credentials');
+        var user = {
+          email: credentials.email
+        };
+        var token = jwt.sign(user, app.get('superSecret'), {
+					expiresIn: 86400 // expires in 24 hours
         });
-      });
-    }
-  ).catch(function(err) {
-    console.log('An error occured: ', err);
-    if (err === 'currentUser is undefined') {
-      console.log('Sending reload event');
-      socket.emit('reload page');
-    }
+				startFacebook(user, users, socket);
+        socket.emit('login ok', token);
+      }
+    ).catch(function(err) {
+      console.log('Error while login with credentials: ', err);
+      // If no appstate has been saved before
+      socket.emit('login failed', err);
+    });
   });
 
-  socket.on('chat message', function(msg){
-    if (currentUser.lastThreadID != 0) {
-      facebookMessengerService.getThreadInfo(
-          currentUser.fbApi,
-          currentUser.lastThreadID
-      ).then(function(data) {
-        info = 'You were going to send to ' + data + ' (' + currentUser.lastThreadID + ')';
-        console.log(info);
-        socket.emit('chat message', info);
-      });
-    }
-    else {
-      info = 'No FB thread to send to';
-      console.log(info);
-      socket.emit('chat message', info);
-    }
-    socket.emit('chat message', msg);
+  // XXX Currently dead code
+  socket.on('start facebook', function(payload){
+		jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+			if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+        console.log('auth failed', message);
+			} else {
+        console.log('Starting Facebook');
+				startFacebook(decoded, users, socket);
+			}
+		});
+  });
+
+  socket.on('chat message', function(payload){
+		const token = payload.token;
+		const msg = payload.msg;
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+      } else {
+				var currentUser = users[decoded.email];
+
+				if (currentUser) {
+					if (currentUser.lastThreadID != 0) {
+						facebookMessengerService.getThreadInfo(
+								currentUser.fbApi,
+								currentUser.lastThreadID
+						).then(function(data) {
+							info = 'You were going to send to ' + data + ' (' + currentUser.lastThreadID + ')';
+							console.log(info);
+							socket.emit('chat message', info);
+						});
+					}
+					else {
+						info = 'No FB thread to send to';
+						console.log(info);
+						socket.emit('chat message', info);
+					}
+					socket.emit('chat message', msg);
+				}
+				else {
+					socket.emit('need auth');
+				}
+      }
+    });
   });
 
 });

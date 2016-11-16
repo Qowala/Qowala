@@ -1,6 +1,7 @@
+.DS_Store
 node_modules/
-.vagrant
-*.sublime-project
-*.sublime-workspace
-*.vim
-*.swp
+dist/
+npm-debug.log
+test/unit/coverage
+test/e2e/reports
+selenium-debug.log
