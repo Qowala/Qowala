@@ -96,7 +96,7 @@ function startFacebook(decoded, users, socket) {
 				facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
 				function(data) {
 					console.log(data);
-					socket.emit('chat message', 'Logged in as ' + data);
+					socket.emit('chat message', 'Logged in as ' + data.name);
 					resolve(data);
 				});
 			});
@@ -121,7 +121,7 @@ function startFacebook(decoded, users, socket) {
 					allInfos.push(facebookMessengerService.getThreadInfo(currentUser.fbApi, message.threadID));
 					Promise.all(allInfos).then(function(data) {
 						console.log(data);
-						messageToSend = '[thread: ' + data[1] + '] ' + data[0] + ': ' +  message.body;
+						messageToSend = '[thread: ' + data[1] + '] ' + data[0].name + ': ' +  message.body;
 						socket.emit('chat message', messageToSend);
 						if (Array.isArray(chatHistory[currentUser.ID])) {
 							chatHistory[currentUser.ID].push(messageToSend);
@@ -134,6 +134,29 @@ function startFacebook(decoded, users, socket) {
 				});
 			}
 		).catch(function(err) {
+			console.log('An error occured: ', err);
+			socket.emit('err', err);
+		});
+	}
+	else {
+		socket.emit('need auth');
+	}
+}
+
+function getFBThreadList(decoded, users, socket) {
+	var currentUser = users[decoded.email];
+
+	if (currentUser) {
+		(function() {
+			return new Promise(function (resolve, reject) {
+				currentUser.ID = currentUser.fbApi.getCurrentUserID();
+				facebookMessengerService.getThreadList(currentUser.ID, currentUser.fbApi, 5).then(
+				function(data) {
+					socket.emit('return/threadlist', data);
+					resolve(data);
+				});
+			});
+		})().catch(function(err) {
 			console.log('An error occured: ', err);
 			socket.emit('err', err);
 		});
@@ -174,6 +197,19 @@ io.on('connection', function(socket){
 			} else {
         console.log('Starting Facebook');
 				startFacebook(decoded, users, socket);
+			}
+		});
+  });
+
+  socket.on('get/conversations', function(payload){
+		jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+			if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+        console.log('auth failed', message);
+			} else {
+        console.log('Getting last conversations..');
+				getFBThreadList(decoded, users, socket);
 			}
 		});
   });

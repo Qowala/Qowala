@@ -38,8 +38,8 @@ export default {
     'login ok': function (token) {
       this.loading = false;
 			localStorage.setItem('qowala-token', token);
-      console.log('redirecting to conversation');
-      this.$router.push('/conversation');
+      console.log('redirecting to conversations list');
+      this.$router.push('/');
     },
     'login failed': function () {
       this.loading = false;

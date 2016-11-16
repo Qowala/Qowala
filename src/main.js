@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 
 import Login from './components/Login';
 import Conversation from './components/Conversation';
+import ConversationsList from './components/ConversationsList';
 
 Vue.use(VueRouter)
 
@@ -14,8 +15,9 @@ Vue.use(VueSocketio, '//:3000'); // Automatically socket connect from url string
 
 const routes = [
   {
-    path: '/',
-    redirect: '/conversation'
+    path: '',
+    component: ConversationsList,
+    meta: { requiresAuth: true }
   },
   {
     path: '/login',
