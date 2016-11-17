@@ -2,7 +2,15 @@
   <div>
     <ul id="messages">
       <li v-for="message in messages">
-        {{ message.senderName }}: {{ message.body }}
+        [{{ message.timestampDatetime }}] {{ message.senderName }}: {{ message.body }}
+        <template v-for="attachment in message.attachments">
+          <template v-if="attachment.type === 'sticker'">
+            <img v-bind:src="attachment.url"  v-bind:width="attachment.width"/>
+          </template>
+          <template v-else>
+            <img v-bind:src="attachment.image" v-bind:alt="attachment.title" width="150px"/>
+          </template>
+        </template>
       </li>
     </ul>
     <form action="" v-on:submit.prevent="sendMsg">

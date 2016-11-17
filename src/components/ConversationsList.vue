@@ -6,6 +6,10 @@
           {{ conversation.name }}
           <img v-bind:src="conversation.imageSrc" width="30px"/>
           {{ conversation.snippet }}
+          <!-- Display image in snippet if there is one -->
+          <template v-if="conversation.snippetAttachments.length > 0">
+            <img v-bind:src="conversation.snippetAttachments[0].url"/>
+          </template>
         </router-link>
       </li>
     </ul>
