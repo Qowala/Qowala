@@ -66,13 +66,19 @@ exports.getThreadList = function(currentUserID, api, nbThreads) {
     api.getThreadList('0', nbThreads, function(err, arr) {
       if(err) return console.error(err);
       var userInfoPromises = [];
+      var addedUsers = [];
       // Populate threads with no name and no image
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].isCanonicalUser || arr[i].name === '') {
+        if (arr[i].name === '') {
           for (var z = 0; z < arr[i].participantIDs.length; z++) {
             // Don't put current user in thread's names and images
             if (arr[i].participantIDs[z] !== currentUserID){
-              userInfoPromises.push(getUserInfo(api, arr[i].participantIDs[z]));
+              // Avoid duplicates
+              if (addedUsers.indexOf(arr[i].participantIDs[z]) === -1){
+                userInfoPromises.push(getUserInfo(api, arr[i].participantIDs[z]));
+                addedUsers.push(arr[i].participantIDs[z]);
+              }
+
             }
           }
         }
