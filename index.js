@@ -118,14 +118,17 @@ function startFacebook(decoded, users, socket) {
 					allInfos.push(facebookMessengerService.getThreadInfo(currentUser.ID, currentUser.fbApi, message.threadID));
 					Promise.all(allInfos).then(function(data) {
 						console.log(data);
-						messageToSend = '[thread: ' + data[1].name + '] ' + data[0].name + ': ' +  message.body;
-						socket.emit('chat message', messageToSend);
+						msgToSend = {
+              body: message.body,
+              conversationID: message.threadID,
+            }
+						socket.emit('chat message', msgToSend);
 						if (Array.isArray(chatHistory[currentUser.ID])) {
-							chatHistory[currentUser.ID].push(messageToSend);
+							chatHistory[currentUser.ID].push(msgToSend);
 						}
 						else {
 							chatHistory[currentUser.ID] = [];
-							chatHistory[currentUser.ID].push(messageToSend);
+							chatHistory[currentUser.ID].push(msgToSend);
 						}
 					});
 				});
@@ -147,11 +150,33 @@ function getFBThreadList(decoded, users, socket) {
 		(function() {
 			return new Promise(function (resolve, reject) {
 				currentUser.ID = currentUser.fbApi.getCurrentUserID();
-				facebookMessengerService.getThreadList(currentUser.ID, currentUser.fbApi, 5).then(
+				facebookMessengerService.getThreadList(currentUser.ID, currentUser.fbApi, 10).then(
 				function(data) {
 					socket.emit('return/threadlist', data);
 					resolve(data);
 				});
+			});
+		})().catch(function(err) {
+			console.log('An error occured: ', err);
+			socket.emit('err', err);
+		});
+	}
+	else {
+		socket.emit('need auth');
+	}
+}
+
+function getFBThreadHistory(decoded, users, socket, threadID) {
+	var currentUser = users[decoded.email];
+
+	if (currentUser) {
+		(function() {
+			return new Promise(function (resolve, reject) {
+        currentUser.fbApi.getThreadHistory(threadID, 0, 10, '', function (err, data) {
+          if(err) return console.error(err);
+					socket.emit('return/threadHistory', data);
+					resolve(data);
+        });
 			});
 		})().catch(function(err) {
 			console.log('An error occured: ', err);
@@ -211,6 +236,19 @@ io.on('connection', function(socket){
 		});
   });
 
+  socket.on('get/conversationHistory', function(payload){
+		jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+			if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+        console.log('auth failed', message);
+			} else {
+        console.log('Getting conversation history..');
+        getFBThreadHistory(decoded, users, socket, payload.conversationID);
+			}
+		});
+  });
+
   socket.on('chat message', function(payload){
 		const token = payload.token;
 		const msg = payload.msg;
@@ -223,16 +261,13 @@ io.on('connection', function(socket){
 				var currentUser = users[decoded.email];
 
 				if (currentUser) {
-						facebookMessengerService.getThreadInfo(
-                currentUser.ID,
-								currentUser.fbApi,
-								threadID
-						).then(function(data) {
-							info = 'You were going to send to ' + data.name + ' (' + threadID + ')';
-							console.log(info);
-							socket.emit('chat message', info);
-						});
-					socket.emit('chat message', msg);
+          currentUser.fbApi.sendMessage(msg, threadID, function(messageInfo){
+						msgToSend = {
+              body: msg,
+              conversationID: threadID
+            }
+            socket.emit('chat message', msgToSend);
+          });
 				}
 				else {
 					socket.emit('need auth');

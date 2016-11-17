@@ -2,7 +2,7 @@
   <div>
     <ul id="messages">
       <li v-for="message in messages">
-        {{ message }}
+        {{ message.senderName }}: {{ message.body }}
       </li>
     </ul>
     <form action="" v-on:submit.prevent="sendMsg">
@@ -27,7 +27,15 @@ export default {
     };
   },
   created: function () {
-    const msg = 'You are speaking in ' + this.$route.params.conversationName;
+    const payload = {
+      token: localStorage.getItem('qowala-token'),
+      conversationID: this.$route.params.conversationID
+    };
+    this.$socket.emit('get/conversationHistory', payload);
+
+    const msg = {
+      body: 'You are speaking to ' + this.$route.params.conversationName
+    };
     this.messages.push(msg);
   },
   methods: {
@@ -63,8 +71,13 @@ export default {
     }
   },
 	sockets: {
+		'return/threadHistory': function (threadHistory) {
+      this.messages = this.messages.concat(threadHistory);
+		},
 		'chat message': function (msg) {
-			this.messages.push(msg);
+      if (msg.conversationID === this.$route.params.conversationID){
+        this.messages.push(msg);
+      }
 
 			// Send notification only if user available
 			if (this.availability === 'Available') {
