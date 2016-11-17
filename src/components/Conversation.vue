@@ -26,11 +26,16 @@ export default {
       availability: 'Available',
     };
   },
+  created: function () {
+    const msg = 'You are speaking in ' + this.$route.params.conversationName;
+    this.messages.push(msg);
+  },
   methods: {
     sendMsg: function sendMsg() {
 			const payload = {
 				token: localStorage.getItem('qowala-token'),
-				msg: this.messageInput
+				msg: this.messageInput,
+        conversationID: this.$route.params.conversationID
 			};
       this.$socket.emit('chat message', payload);
       this.messageInput = '';

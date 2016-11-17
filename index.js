@@ -51,8 +51,7 @@ function loginFacebookAppstate (email) {
           users[email] = {
             ID: 0,
             fbID: 0,
-            fbApi: api,
-            lastThreadID: 0
+            fbApi: api
           };
           resolve(users[email]);
         });
@@ -74,8 +73,7 @@ function loginFacebookCredentials (email, password) {
       users[email] = {
         ID:0,
         fbID: 0,
-        fbApi: api,
-        lastThreadID: 0
+        fbApi: api
       };
       resolve(users[email]);
     });
@@ -114,14 +112,13 @@ function startFacebook(decoded, users, socket) {
 				currentUser.fbApi.listen(function callback(err, message) {
 					if (err) return console.error(err);
 					console.log(message);
-					currentUser.lastThreadID = message.threadID;
 					var allInfos = [];
 					console.log(Object.keys(facebookMessengerService));
 					allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
-					allInfos.push(facebookMessengerService.getThreadInfo(currentUser.fbApi, message.threadID));
+					allInfos.push(facebookMessengerService.getThreadInfo(currentUser.ID, currentUser.fbApi, message.threadID));
 					Promise.all(allInfos).then(function(data) {
 						console.log(data);
-						messageToSend = '[thread: ' + data[1] + '] ' + data[0].name + ': ' +  message.body;
+						messageToSend = '[thread: ' + data[1].name + '] ' + data[0].name + ': ' +  message.body;
 						socket.emit('chat message', messageToSend);
 						if (Array.isArray(chatHistory[currentUser.ID])) {
 							chatHistory[currentUser.ID].push(messageToSend);
@@ -217,6 +214,7 @@ io.on('connection', function(socket){
   socket.on('chat message', function(payload){
 		const token = payload.token;
 		const msg = payload.msg;
+		const threadID = payload.conversationID;
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if (err) {
         const message = 'Failed to authenticate token.';
@@ -225,21 +223,15 @@ io.on('connection', function(socket){
 				var currentUser = users[decoded.email];
 
 				if (currentUser) {
-					if (currentUser.lastThreadID != 0) {
 						facebookMessengerService.getThreadInfo(
+                currentUser.ID,
 								currentUser.fbApi,
-								currentUser.lastThreadID
+								threadID
 						).then(function(data) {
-							info = 'You were going to send to ' + data + ' (' + currentUser.lastThreadID + ')';
+							info = 'You were going to send to ' + data.name + ' (' + threadID + ')';
 							console.log(info);
 							socket.emit('chat message', info);
 						});
-					}
-					else {
-						info = 'No FB thread to send to';
-						console.log(info);
-						socket.emit('chat message', info);
-					}
 					socket.emit('chat message', msg);
 				}
 				else {

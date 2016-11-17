@@ -2,7 +2,7 @@
   <div>
     <ul id="conversations">
       <li v-for="conversation in conversations">
-        <router-link to="/conversation">
+        <router-link :to="{ name: 'conversation', params: { conversationID: conversation.threadID , conversationName: conversation.name}}">
           {{ conversation.name }}
           <img v-bind:src="conversation.imageSrc" width="30px"/>
           {{ conversation.snippet }}
