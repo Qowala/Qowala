@@ -15,6 +15,9 @@
               <img v-bind:src="attachment.thumbnailUrl" v-bind:alt="attachment.name"/>
             </a>
           </template>
+          <template v-if="attachment.type === 'video'">
+            <video v-bind:src="attachment.url" width="150px" controls/></video>
+          </template>
           <template v-else>
             <img v-bind:src="attachment.image" v-bind:alt="attachment.title" width="150px"/>
           </template>
