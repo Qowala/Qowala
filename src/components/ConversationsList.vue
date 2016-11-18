@@ -4,11 +4,22 @@
       <li v-for="conversation in conversations">
         <router-link :to="{ name: 'conversation', params: { conversationID: conversation.threadID , conversationName: conversation.name}}">
           {{ conversation.name }}
-          <img v-bind:src="conversation.imageSrc" width="30px"/>
+          <template v-if="conversation.imageSrc">
+            <img v-bind:src="conversation.imageSrc" width="30px"/>
+          </template>
+          <!-- Temporary placeholder if conversation has no image -->
+          <template v-else>
+            <div style="width: 30px; height: 30px; display: inline-block; background-color: gray;"></div>
+          </template>
           {{ conversation.snippet }}
-          <!-- Display image in snippet if there is one -->
-          <template v-if="conversation.snippetAttachments.length > 0">
-            <img v-bind:src="conversation.snippetAttachments[0].url"/>
+          <!-- Display images in snippet if there are some -->
+          <template v-for="attachment in conversation.snippetAttachments">
+            <template v-if="attachment.attach_type === 'photo'">
+              <img v-bind:src="attachment.thumbnail_url"/>
+            </template>
+            <template v-else>
+              <img v-bind:src="attachment.url"/>
+            </template>
           </template>
         </router-link>
       </li>

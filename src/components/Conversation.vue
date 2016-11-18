@@ -7,6 +7,11 @@
           <template v-if="attachment.type === 'sticker'">
             <img v-bind:src="attachment.url"  v-bind:width="attachment.width"/>
           </template>
+          <template v-if="attachment.type === 'photo'">
+            <a v-bind:href="attachment.previewUrl">
+              <img v-bind:src="attachment.thumbnailUrl" v-bind:alt="attachment.name"/>
+            </a>
+          </template>
           <template v-else>
             <img v-bind:src="attachment.image" v-bind:alt="attachment.title" width="150px"/>
           </template>
