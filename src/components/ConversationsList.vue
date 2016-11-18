@@ -14,7 +14,7 @@
           {{ conversation.snippet }}
           <!-- Display images in snippet if there are some -->
           <template v-for="attachment in conversation.snippetAttachments">
-            <template v-if="attachment.attach_type === 'photo'">
+            <template v-if="attachment.attach_type === 'photo' || attachment.attach_type === 'animated_image'">
               <img v-bind:src="attachment.thumbnail_url"/>
             </template>
             <template v-else>
@@ -76,6 +76,13 @@ export default {
 		'return/threadlist': function (threadList) {
       console.log('received thread list: ', threadList);
       this.conversations = threadList;
+		},
+		'chat message': function (msg) {
+      // Reload thread list when new message
+      const payload = {
+        token: localStorage.getItem('qowala-token'),
+      };
+      this.$socket.emit('get/conversations', payload);
 		},
     'need auth': function () {
       console.log('redirecting to login');

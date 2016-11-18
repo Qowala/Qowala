@@ -10,7 +10,7 @@
           <template v-if="attachment.type === 'sticker'">
             <img v-bind:src="attachment.url"  v-bind:width="attachment.width"/>
           </template>
-          <template v-if="attachment.type === 'photo'">
+          <template v-if="attachment.type === 'photo' || attachment.type === 'animated_image'">
             <a v-bind:href="attachment.previewUrl">
               <img v-bind:src="attachment.thumbnailUrl" v-bind:alt="attachment.name"/>
             </a>
@@ -102,7 +102,7 @@ export default {
 
 			// Send notification only if user available
 			if (this.availability === 'Available') {
-				this.notifyMe(msg);
+				this.notifyMe(msg.body);
 			}
 		},
     'need auth': function () {

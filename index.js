@@ -121,6 +121,8 @@ function startFacebook(decoded, users, socket) {
 						msgToSend = {
               body: message.body,
               conversationID: message.threadID,
+              timestampDatetime: tsToTsDatetime(data.timestamp),
+              attachments: data.attachments
             }
 						socket.emit('chat message', msgToSend);
 						if (Array.isArray(chatHistory[currentUser.ID])) {
@@ -187,6 +189,21 @@ function getFBThreadHistory(decoded, users, socket, threadID) {
 		socket.emit('need auth');
 	}
 }
+
+// Util function to convert timestamp to timestampDatetime
+function tsToTsDatetime (timestamp) {
+  var date = new Date(timestamp);
+  function toDoubleDigit(time) {
+    if (time < 10) {
+      return '0' + time;
+    }
+    else {
+      return time;
+    }
+  }
+  return toDoubleDigit(date.getHours()) + toDoubleDigit(date.getMinutes());
+}
+
 
 io.on('connection', function(socket){
   socket.on('login', function(credentials){
@@ -261,10 +278,13 @@ io.on('connection', function(socket){
 				var currentUser = users[decoded.email];
 
 				if (currentUser) {
-          currentUser.fbApi.sendMessage(msg, threadID, function(messageInfo){
+          currentUser.fbApi.sendMessage(msg, threadID, function(err, messageInfo){
+            if (err) return console.error(err);
+
 						msgToSend = {
               body: msg,
-              conversationID: threadID
+              conversationID: threadID,
+              timestampDatetime: tsToTsDatetime(messageInfo.timestamp)
             }
             socket.emit('chat message', msgToSend);
           });
