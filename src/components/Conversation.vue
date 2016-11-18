@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div style="height: 30px; background-color: green; color: white; padding: 5px;">
+      {{ this.$route.params.conversationName }}
+    </div>
     <ul id="messages">
       <li v-for="message in messages">
         [{{ message.timestampDatetime }}] {{ message.senderName }}: {{ message.body }}
@@ -40,16 +43,17 @@ export default {
     };
   },
   created: function () {
+    // Set messages from cache
+    const history = JSON.parse(localStorage.getItem('conversations-history'));
+    if (history && history[this.$route.params.conversationID]) {
+      this.messages = history[this.$route.params.conversationID];
+    }
+
     const payload = {
       token: localStorage.getItem('qowala-token'),
       conversationID: this.$route.params.conversationID
     };
     this.$socket.emit('get/conversationHistory', payload);
-
-    const msg = {
-      body: 'You are speaking to ' + this.$route.params.conversationName
-    };
-    this.messages.push(msg);
   },
   methods: {
     sendMsg: function sendMsg() {
@@ -85,7 +89,11 @@ export default {
   },
 	sockets: {
 		'return/threadHistory': function (threadHistory) {
-      this.messages = this.messages.concat(threadHistory);
+      this.messages = threadHistory;
+      // Set history in localStorage as cache
+      var history = JSON.parse(localStorage.getItem('conversations-history')) || {};
+      history[this.$route.params.conversationID] = this.messages;
+      localStorage.setItem('conversations-history', JSON.stringify(history));
 		},
 		'chat message': function (msg) {
       if (msg.conversationID === this.$route.params.conversationID){
