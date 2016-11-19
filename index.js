@@ -176,8 +176,13 @@ function getFBThreadHistory(decoded, users, socket, threadID) {
 			return new Promise(function (resolve, reject) {
         currentUser.fbApi.getThreadHistory(threadID, 0, 10, '', function (err, data) {
           if(err) return console.error(err);
-					socket.emit('return/threadHistory', data);
-					resolve(data);
+          // XXX Temporary fix to remove events from messages
+          // Permament fix is related to this issue: https://github.com/Schmavery/facebook-chat-api/issues/313
+          const filtered_data = data.filter(function(msg) {
+            return msg.body || msg.attachments.length > 0;
+          });
+					socket.emit('return/threadHistory', filtered_data);
+					resolve(filtered_data);
         });
 			});
 		})().catch(function(err) {
