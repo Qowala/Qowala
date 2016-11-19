@@ -4,6 +4,7 @@ var fbThreads = {};
 function getUserInfo(api, userID) {
   return new Promise(function (resolve, reject) {
     if (fbUsers[userID]) return resolve(fbUsers[userID])
+
     api.getUserInfo(userID, function(err, ret) {
       if(err) return console.error(err);
       // Browse the ret array
@@ -24,6 +25,7 @@ exports.getUserInfo = getUserInfo;
 exports.getThreadInfo = function(currentUserID, api, threadID) {
   return new Promise(function (resolve, reject) {
     if (fbThreads[threadID]) resolve(fbThreads[threadID])
+
     api.getThreadInfo(threadID, function(err, ret) {
       if(err) return console.error(err);
 
@@ -56,7 +58,6 @@ exports.getThreadInfo = function(currentUserID, api, threadID) {
         }
         resolve(fbThreads[threadID]);
       });
-
     });
   });
 }
@@ -65,6 +66,7 @@ exports.getThreadList = function(currentUserID, api, nbThreads) {
   return new Promise(function (resolve, reject) {
     api.getThreadList('0', nbThreads, function(err, arr) {
       if(err) return console.error(err);
+
       var userInfoPromises = [];
       var addedUsers = [];
       // Populate threads with no name and no image

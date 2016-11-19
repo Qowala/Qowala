@@ -34,7 +34,7 @@ var cookieOptions = {
 app.use(sessions(cookieOptions));
 
 app.get('/', function(req, res){
-	res.sendFile(client_dir + '/index.html');
+  res.sendFile(client_dir + '/index.html');
 });
 
 var chatHistory = {};
@@ -85,95 +85,95 @@ function getAppstateName(email) {
 }
 
 function startFacebook(decoded, users, socket) {
-	var currentUser = users[decoded.email];
+  var currentUser = users[decoded.email];
 
-	if (currentUser) {
-		(function() {
-			return new Promise(function (resolve, reject) {
-				currentUser.ID = currentUser.fbApi.getCurrentUserID();
-				facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
-				function(data) {
-					console.log(data);
-					socket.emit('chat message', 'Logged in as ' + data.name);
-					resolve(data);
-				});
-			});
-		})().then(
-			function() {
-				console.log('Restoring history');
-				if (Array.isArray(chatHistory[currentUser.ID])) {
-					for (var index in chatHistory[currentUser.ID]) {
-						socket.emit('chat message', chatHistory[currentUser.ID][index]);
-					}
-				}
-			}).then(
-			function() {
-				console.log('Listening for messages...');
-				currentUser.fbApi.listen(function callback(err, message) {
-					if (err) return console.error(err);
-					console.log(message);
-					var allInfos = [];
-					console.log(Object.keys(facebookMessengerService));
-					allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
-					allInfos.push(facebookMessengerService.getThreadInfo(currentUser.ID, currentUser.fbApi, message.threadID));
-					Promise.all(allInfos).then(function(data) {
-						console.log(data);
-						msgToSend = {
-              body: message.body,
-              conversationID: message.threadID,
-              timestampDatetime: tsToTsDatetime(data.timestamp),
-              attachments: data.attachments
-            }
-						socket.emit('chat message', msgToSend);
-						if (Array.isArray(chatHistory[currentUser.ID])) {
-							chatHistory[currentUser.ID].push(msgToSend);
-						}
-						else {
-							chatHistory[currentUser.ID] = [];
-							chatHistory[currentUser.ID].push(msgToSend);
-						}
-					});
-				});
-			}
-		).catch(function(err) {
-			console.log('An error occured: ', err);
-			socket.emit('err', err);
-		});
-	}
-	else {
-		socket.emit('need auth');
-	}
+  if (currentUser) {
+    (function() {
+      return new Promise(function (resolve, reject) {
+        currentUser.ID = currentUser.fbApi.getCurrentUserID();
+        facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
+          function(data) {
+            console.log(data);
+            socket.emit('chat message', 'Logged in as ' + data.name);
+            resolve(data);
+          });
+      });
+    })().then(
+    function() {
+      console.log('Restoring history');
+      if (Array.isArray(chatHistory[currentUser.ID])) {
+        for (var index in chatHistory[currentUser.ID]) {
+          socket.emit('chat message', chatHistory[currentUser.ID][index]);
+        }
+      }
+    }).then(
+    function() {
+      console.log('Listening for messages...');
+      currentUser.fbApi.listen(function callback(err, message) {
+        if (err) return console.error(err);
+        console.log(message);
+        var allInfos = [];
+        console.log(Object.keys(facebookMessengerService));
+        allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
+        allInfos.push(facebookMessengerService.getThreadInfo(currentUser.ID, currentUser.fbApi, message.threadID));
+        Promise.all(allInfos).then(function(data) {
+          console.log(data);
+          msgToSend = {
+            body: message.body,
+            conversationID: message.threadID,
+            timestampDatetime: tsToTsDatetime(data.timestamp),
+            attachments: data.attachments
+          }
+          socket.emit('chat message', msgToSend);
+          if (Array.isArray(chatHistory[currentUser.ID])) {
+            chatHistory[currentUser.ID].push(msgToSend);
+          }
+          else {
+            chatHistory[currentUser.ID] = [];
+            chatHistory[currentUser.ID].push(msgToSend);
+          }
+        });
+      });
+    }
+    ).catch(function(err) {
+      console.log('An error occured: ', err);
+      socket.emit('err', err);
+    });
+  }
+  else {
+    socket.emit('need auth');
+  }
 }
 
 function getFBThreadList(decoded, users, socket) {
-	var currentUser = users[decoded.email];
+  var currentUser = users[decoded.email];
 
-	if (currentUser) {
-		(function() {
-			return new Promise(function (resolve, reject) {
-				currentUser.ID = currentUser.fbApi.getCurrentUserID();
-				facebookMessengerService.getThreadList(currentUser.ID, currentUser.fbApi, 10).then(
-				function(data) {
-					socket.emit('return/threadlist', data);
-					resolve(data);
-				});
-			});
-		})().catch(function(err) {
-			console.log('An error occured: ', err);
-			socket.emit('err', err);
-		});
-	}
-	else {
-		socket.emit('need auth');
-	}
+  if (currentUser) {
+    (function() {
+      return new Promise(function (resolve, reject) {
+        currentUser.ID = currentUser.fbApi.getCurrentUserID();
+        facebookMessengerService.getThreadList(currentUser.ID, currentUser.fbApi, 10).then(
+          function(data) {
+            socket.emit('return/threadlist', data);
+            resolve(data);
+          });
+      });
+    })().catch(function(err) {
+      console.log('An error occured: ', err);
+      socket.emit('err', err);
+    });
+  }
+  else {
+    socket.emit('need auth');
+  }
 }
 
 function getFBThreadHistory(decoded, users, socket, threadID) {
-	var currentUser = users[decoded.email];
+  var currentUser = users[decoded.email];
 
-	if (currentUser) {
-		(function() {
-			return new Promise(function (resolve, reject) {
+  if (currentUser) {
+    (function() {
+      return new Promise(function (resolve, reject) {
         currentUser.fbApi.getThreadHistory(threadID, 0, 10, '', function (err, data) {
           if(err) return console.error(err);
           // XXX Temporary fix to remove events from messages
@@ -181,18 +181,18 @@ function getFBThreadHistory(decoded, users, socket, threadID) {
           const filtered_data = data.filter(function(msg) {
             return msg.body || msg.attachments.length > 0;
           });
-					socket.emit('return/threadHistory', filtered_data);
-					resolve(filtered_data);
+          socket.emit('return/threadHistory', filtered_data);
+          resolve(filtered_data);
         });
-			});
-		})().catch(function(err) {
-			console.log('An error occured: ', err);
-			socket.emit('err', err);
-		});
-	}
-	else {
-		socket.emit('need auth');
-	}
+      });
+    })().catch(function(err) {
+      console.log('An error occured: ', err);
+      socket.emit('err', err);
+    });
+  }
+  else {
+    socket.emit('need auth');
+  }
 }
 
 // Util function to convert timestamp to timestampDatetime
@@ -219,9 +219,9 @@ io.on('connection', function(socket){
           email: credentials.email
         };
         var token = jwt.sign(user, app.get('superSecret'), {
-					expiresIn: 86400 // expires in 24 hours
+          expiresIn: 86400 // expires in 24 hours
         });
-				startFacebook(user, users, socket);
+        startFacebook(user, users, socket);
         socket.emit('login ok', token);
       }
     ).catch(function(err) {
@@ -233,70 +233,70 @@ io.on('connection', function(socket){
 
   // XXX Currently dead code
   socket.on('start facebook', function(payload){
-		jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
-			if (err) {
+    jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
         const message = 'Failed to authenticate token.';
         socket.emit('auth failed', message);
         console.log('auth failed', message);
-			} else {
+      } else {
         console.log('Starting Facebook');
-				startFacebook(decoded, users, socket);
-			}
-		});
+        startFacebook(decoded, users, socket);
+      }
+    });
   });
 
   socket.on('get/conversations', function(payload){
-		jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
-			if (err) {
+    jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
         const message = 'Failed to authenticate token.';
         socket.emit('auth failed', message);
         console.log('auth failed', message);
-			} else {
+      } else {
         console.log('Getting last conversations..');
-				getFBThreadList(decoded, users, socket);
-			}
-		});
+        getFBThreadList(decoded, users, socket);
+      }
+    });
   });
 
   socket.on('get/conversationHistory', function(payload){
-		jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
-			if (err) {
+    jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
         const message = 'Failed to authenticate token.';
         socket.emit('auth failed', message);
         console.log('auth failed', message);
-			} else {
+      } else {
         console.log('Getting conversation history..');
         getFBThreadHistory(decoded, users, socket, payload.conversationID);
-			}
-		});
+      }
+    });
   });
 
   socket.on('chat message', function(payload){
-		const token = payload.token;
-		const msg = payload.msg;
-		const threadID = payload.conversationID;
+    const token = payload.token;
+    const msg = payload.msg;
+    const threadID = payload.conversationID;
     jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if (err) {
         const message = 'Failed to authenticate token.';
         socket.emit('auth failed', message);
       } else {
-				var currentUser = users[decoded.email];
+        var currentUser = users[decoded.email];
 
-				if (currentUser) {
+        if (currentUser) {
           currentUser.fbApi.sendMessage(msg, threadID, function(err, messageInfo){
             if (err) return console.error(err);
 
-						msgToSend = {
+            msgToSend = {
               body: msg,
               conversationID: threadID,
               timestampDatetime: tsToTsDatetime(messageInfo.timestamp)
             }
             socket.emit('chat message', msgToSend);
           });
-				}
-				else {
-					socket.emit('need auth');
-				}
+        }
+        else {
+          socket.emit('need auth');
+        }
       }
     });
   });
