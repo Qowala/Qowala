@@ -1,27 +1,19 @@
-# qowala
+![](img/logo-icn+name-green.png)
 
-> Open source chat client
+# Qowala
 
-## Build Setup
+> An open source chat client for your 2.0 well-being
 
-``` bash
-# install dependencies
-npm install
+With Qowala you can use your preferred social networks on desktop and on mobile
+without having to care about the app you have.
 
-# serve with hot reload at localhost:8080
-npm run dev
+Control your 2.0 life and enjoy human relations!
 
-# build for production with minification
-npm run build
+Created by Killian Kemps (Developer) and joined by Adrien Touminet (Designer) and Antoine Beauvillain (Designer).
 
-# run unit tests
-npm run unit
+### Git repositories:
 
-# run e2e tests
-npm run e2e
+They are two mirrored git repositories of the project:
 
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+- Framasoft: https://git.framasoft.org/KillianKemps/Qowala
+- Github: https://github.com/Qowala/Qowala
