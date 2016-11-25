@@ -122,7 +122,8 @@ function startFacebook(decoded, users, socket) {
             body: message.body,
             conversationID: message.threadID,
             timestampDatetime: tsToTsDatetime(data.timestamp),
-            attachments: data.attachments
+            attachments: data.attachments,
+            isSenderUser: data.senderID === 'fbid:' + currentUser.ID
           }
           socket.emit('chat message', msgToSend);
           if (Array.isArray(chatHistory[currentUser.ID])) {
@@ -181,8 +182,13 @@ function getFBThreadHistory(decoded, users, socket, threadID) {
           const filtered_data = data.filter(function(msg) {
             return msg.body || msg.attachments.length > 0;
           });
-          socket.emit('return/threadHistory', filtered_data);
-          resolve(filtered_data);
+          // Add custom property
+          const enhanced_data = filtered_data.map(function(msg) {
+            msg.isSenderUser = msg.senderID === 'fbid:' + currentUser.ID;
+            return msg;
+          });
+          socket.emit('return/threadHistory', enhanced_data);
+          resolve(enhanced_data);
         });
       });
     })().catch(function(err) {
