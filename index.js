@@ -48,6 +48,7 @@ function loginFacebookAppstate (email) {
       if (exists) {
         login({appState: JSON.parse(fs.readFileSync(getAppstateName(email), 'utf8'))}, function callback (err, api) {
           if(err) return reject(err);
+          api.setOptions({selfListen: true});
           users[email] = {
             ID: 0,
             fbID: 0,
@@ -70,6 +71,7 @@ function loginFacebookCredentials (email, password) {
     login({email: email, password: password}, function callback (err, api) {
       if(err) return reject(err);
       fs.writeFileSync(getAppstateName(email), JSON.stringify(api.getAppState()));
+      api.setOptions({selfListen: true});
       users[email] = {
         ID:0,
         fbID: 0,
@@ -291,13 +293,6 @@ io.on('connection', function(socket){
         if (currentUser) {
           currentUser.fbApi.sendMessage(msg, threadID, function(err, messageInfo){
             if (err) return console.error(err);
-
-            msgToSend = {
-              body: msg,
-              conversationID: threadID,
-              timestampDatetime: tsToTsDatetime(messageInfo.timestamp)
-            }
-            socket.emit('chat message', msgToSend);
           });
         }
         else {
