@@ -48,6 +48,7 @@ function loginFacebookAppstate (email) {
       if (exists) {
         login({appState: JSON.parse(fs.readFileSync(getAppstateName(email), 'utf8'))}, function callback (err, api) {
           if(err) return reject(err);
+          api.setOptions({selfListen: true});
           users[email] = {
             ID: 0,
             fbID: 0,
@@ -70,6 +71,7 @@ function loginFacebookCredentials (email, password) {
     login({email: email, password: password}, function callback (err, api) {
       if(err) return reject(err);
       fs.writeFileSync(getAppstateName(email), JSON.stringify(api.getAppState()));
+      api.setOptions({selfListen: true});
       users[email] = {
         ID:0,
         fbID: 0,
@@ -94,6 +96,7 @@ function startFacebook(decoded, users, socket) {
         facebookMessengerService.getUserInfo(currentUser.fbApi, currentUser.ID).then(
           function(data) {
             console.log(data);
+            currentUser.name = data.name;
             socket.emit('chat message', 'Logged in as ' + data.name);
             resolve(data);
           });
@@ -121,9 +124,11 @@ function startFacebook(decoded, users, socket) {
           msgToSend = {
             body: message.body,
             conversationID: message.threadID,
-            timestampDatetime: tsToTsDatetime(data.timestamp),
-            attachments: data.attachments,
-            isSenderUser: data.senderID === 'fbid:' + currentUser.ID
+            timestampDatetime: tsToTsDatetime(message.timestamp),
+            attachments: message.attachments,
+            senderID: message.senderID,
+            senderName: data[0].name,
+            isSenderUser: message.senderID === currentUser.ID.toString()
           }
           socket.emit('chat message', msgToSend);
           if (Array.isArray(chatHistory[currentUser.ID])) {
@@ -203,16 +208,18 @@ function getFBThreadHistory(decoded, users, socket, threadID) {
 
 // Util function to convert timestamp to timestampDatetime
 function tsToTsDatetime (timestamp) {
-  var date = new Date(timestamp);
+  console.log('timestamp: ', timestamp);
+  var date = new Date(parseInt(timestamp));
   function toDoubleDigit(time) {
+    console.log('time: ', time);
     if (time < 10) {
-      return '0' + time;
+      return '0' + time.toString();
     }
     else {
-      return time;
+      return time.toString();
     }
   }
-  return toDoubleDigit(date.getHours()) + toDoubleDigit(date.getMinutes());
+  return toDoubleDigit(date.getHours()) + ':' + toDoubleDigit(date.getMinutes());
 }
 
 
@@ -291,13 +298,6 @@ io.on('connection', function(socket){
         if (currentUser) {
           currentUser.fbApi.sendMessage(msg, threadID, function(err, messageInfo){
             if (err) return console.error(err);
-
-            msgToSend = {
-              body: msg,
-              conversationID: threadID,
-              timestampDatetime: tsToTsDatetime(messageInfo.timestamp)
-            }
-            socket.emit('chat message', msgToSend);
           });
         }
         else {
