@@ -137,7 +137,7 @@ exports.getThreadHistory = function(api, userID, threadID) {
           for (var i = 0; i < filtered_data.length; i++) {
             const msg = filtered_data[i];
             const userData = userInfoArr[i];
-            msg.isSenderUser = senderID === userID;
+            msg.isSenderUser = msg.senderID === 'fbid:' + userID;
             msg.senderImage = userData.img;
             enhanced_data.push(msg);
           }
