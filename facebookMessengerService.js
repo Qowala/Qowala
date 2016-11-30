@@ -107,3 +107,47 @@ exports.getThreadList = function(currentUserID, api, nbThreads) {
     });
   });
 }
+
+exports.getThreadHistory = function(api, userID, threadID) {
+  return new Promise(function (resolve, reject) {
+    api.getThreadHistory(threadID, 0, 10, '', function (err, data) {
+      if(err) return console.error(err);
+
+      // XXX Temporary fix to remove events from messages
+      // Permament fix is related to this issue: https://github.com/Schmavery/facebook-chat-api/issues/313
+      const filtered_data = data.filter(function(msg) {
+        return msg.body || msg.attachments.length > 0;
+      });
+
+      var userInfoPromises = [];
+
+      // Add custom properties
+      for (var i = 0; i < filtered_data.length; i++) {
+        const msg = filtered_data[i];
+        // Change user's id fbid:12356 to 123456
+        senderID = msg.senderID.slice(5);
+        userInfoPromises.push(getUserInfo(api, senderID));
+      }
+
+      // Get all user infos and then update the thread list
+      Promise.all(userInfoPromises).then(function (userInfoArr) {
+        var enhanced_data = [];
+        // Check that both array have same length
+        if (userInfoArr.length === filtered_data.length) {
+          for (var i = 0; i < filtered_data.length; i++) {
+            const msg = filtered_data[i];
+            const userData = userInfoArr[i];
+            msg.isSenderUser = senderID === userID;
+            msg.senderImage = userData.img;
+            enhanced_data.push(msg);
+          }
+          resolve(enhanced_data);
+        }
+        else {
+          console.error('userInfoArr and filtered_data have different length');
+          reject(enhanced_data);
+        }
+      });
+    });
+  });
+}

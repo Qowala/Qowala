@@ -128,6 +128,7 @@ function startFacebook(decoded, users, socket) {
             attachments: message.attachments,
             senderID: message.senderID,
             senderName: data[0].name,
+            senderImage: data[0].img,
             isSenderUser: message.senderID === currentUser.ID.toString()
           }
           socket.emit('chat message', msgToSend);
@@ -180,18 +181,8 @@ function getFBThreadHistory(decoded, users, socket, threadID) {
   if (currentUser) {
     (function() {
       return new Promise(function (resolve, reject) {
-        currentUser.fbApi.getThreadHistory(threadID, 0, 10, '', function (err, data) {
-          if(err) return console.error(err);
-          // XXX Temporary fix to remove events from messages
-          // Permament fix is related to this issue: https://github.com/Schmavery/facebook-chat-api/issues/313
-          const filtered_data = data.filter(function(msg) {
-            return msg.body || msg.attachments.length > 0;
-          });
-          // Add custom property
-          const enhanced_data = filtered_data.map(function(msg) {
-            msg.isSenderUser = msg.senderID === 'fbid:' + currentUser.ID;
-            return msg;
-          });
+        facebookMessengerService.getThreadHistory(currentUser.fbApi, currentUser.ID, threadID)
+        .then(function(enhanced_data) {
           socket.emit('return/threadHistory', enhanced_data);
           resolve(enhanced_data);
         });
