@@ -7,6 +7,7 @@ var io = require('socket.io')(http);
 const fs = require('fs');
 const path = require('path');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var webpush = require('web-push');
 
 var config = require('./config-vars'); // get our config file
 
@@ -17,6 +18,15 @@ app.set('superSecret', config.secret); // secret variable
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+// VAPID keys should only be generated only once.
+//const vapidKeys = webpush.generateVAPIDKeys();
+
+webpush.setVapidDetails(
+  'mailto:admin@qowala.org',
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
 
 // Set web client directory
 var client_dir = __dirname + '/dist';
@@ -52,7 +62,8 @@ function loginFacebookAppstate (email) {
           users[email] = {
             ID: 0,
             fbID: 0,
-            fbApi: api
+            fbApi: api,
+            swSubscription: {}
           };
           resolve(users[email]);
         });
@@ -75,7 +86,8 @@ function loginFacebookCredentials (email, password) {
       users[email] = {
         ID:0,
         fbID: 0,
-        fbApi: api
+        fbApi: api,
+        swSubscription: {}
       };
       resolve(users[email]);
     });
@@ -132,6 +144,19 @@ function startFacebook(decoded, users, socket) {
             isSenderUser: message.senderID === currentUser.ID.toString()
           }
           socket.emit('chat message', msgToSend);
+
+          msgNotification = {
+            title: msgToSend.senderName,
+            body: msgToSend.body,
+            icon: '/static/img/favicon.png'
+          };
+
+          webpush.sendNotification(
+            currentUser.swSubscription,
+            JSON.stringify(msgNotification))
+          .catch(function(err) {
+            console.error('error: ', err);
+          });
           if (Array.isArray(chatHistory[currentUser.ID])) {
             chatHistory[currentUser.ID].push(msgToSend);
           }
@@ -297,7 +322,6 @@ io.on('connection', function(socket){
       }
     });
   });
-
 });
 
 http.listen(3000, function(){
