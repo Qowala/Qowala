@@ -19,8 +19,10 @@ app.set('superSecret', config.secret); // secret variable
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// VAPID keys should only be generated only once.
-//const vapidKeys = webpush.generateVAPIDKeys();
+const vapidKeys = {
+    publicKey: 'BP5DsTGZtwA4cqV1vgTggxDdy-6fBY5I--_3fPCHAir9kUS5rR_vAzHKc0htxxGx_sFz-02liGu8PgoZr9DEr3Y',
+    privateKey: process.env.QOWALA_VAPID_PRIVATE
+  };
 
 webpush.setVapidDetails(
   'mailto:admin@qowala.org',
