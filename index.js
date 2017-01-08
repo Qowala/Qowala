@@ -65,7 +65,8 @@ function loginFacebookAppstate (email) {
             ID: 0,
             fbID: 0,
             fbApi: api,
-            swSubscription: {}
+            swSubscription: {},
+            availability: 'available'
           };
           resolve(users[email]);
         });
@@ -89,7 +90,8 @@ function loginFacebookCredentials (email, password) {
         ID:0,
         fbID: 0,
         fbApi: api,
-        swSubscription: {}
+        swSubscription: {},
+        availability: 'available'
       };
       resolve(users[email]);
     });
@@ -153,12 +155,15 @@ function startFacebook(decoded, users, socket) {
             icon: '/static/img/favicon.png'
           };
 
-          webpush.sendNotification(
-            currentUser.swSubscription,
-            JSON.stringify(msgNotification))
-          .catch(function(err) {
-            console.error('error: ', err);
-          });
+          if (currentUser.availability === 'available') {
+            webpush.sendNotification(
+              currentUser.swSubscription,
+              JSON.stringify(msgNotification))
+            .catch(function(err) {
+              console.error('error: ', err);
+            });
+          }
+
           if (Array.isArray(chatHistory[currentUser.ID])) {
             chatHistory[currentUser.ID].push(msgToSend);
           }
@@ -249,11 +254,14 @@ io.on('connection', function(socket){
         var user = {
           email: credentials.email
         };
-        var token = jwt.sign(user, app.get('superSecret'), {
-          expiresIn: 86400 // expires in 24 hours
-        });
+        const payload = {
+          token: jwt.sign(user, app.get('superSecret'), {
+            expiresIn: 86400 // expires in 24 hours
+          }),
+          availability: users[credentials.email].availability
+        };
         startFacebook(user, users, socket);
-        socket.emit('login ok', token);
+        socket.emit('login ok', payload);
       }
     ).catch(function(err) {
       console.log('Error while login with credentials: ', err);
@@ -298,6 +306,25 @@ io.on('connection', function(socket){
       } else {
         console.log('Getting conversation history..');
         getFBThreadHistory(decoded, users, socket, payload.conversationID);
+      }
+    });
+  });
+
+  socket.on('put/availability', function(payload){
+    jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+        console.log('auth failed', message);
+      } else {
+        var currentUser = users[decoded.email];
+        if (currentUser) {
+          console.log('availability updated to: ', payload.availability);
+          currentUser.availability = payload.availability;
+        }
+        else {
+          socket.emit('need auth');
+        }
       }
     });
   });
