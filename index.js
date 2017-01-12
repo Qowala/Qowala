@@ -352,6 +352,37 @@ io.on('connection', function(socket){
       }
     });
   });
+
+  socket.on('swSendNotification', function(payload) {
+    console.log('Received SW Event');
+    const token = payload.token;
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+      } else {
+        var currentUser = users[decoded.email];
+        // Store user subscription
+        currentUser.swSubscription = payload.subscription;
+
+        if (currentUser) {
+					if (process.env.NODE_ENV === 'development') {
+            console.log('Sending service worker notification...');
+						// Send test notification
+						webpush.sendNotification(
+							currentUser.swSubscription,
+							JSON.stringify(payload.notification))
+						.catch(function(err) {
+							console.error('error: ', err);
+						});
+					}
+        }
+        else {
+          socket.emit('need auth');
+        }
+      }
+    });
+  });
 });
 
 http.listen(3000, function(){

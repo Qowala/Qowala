@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "setup": "node setup.js",
-    "start": "node -r dotenv/config index.js"
+    "start": "node index.js",
+    "dev": "NODE_ENV=development node -r dotenv/config index.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
