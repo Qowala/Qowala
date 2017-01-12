@@ -20,7 +20,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 const vapidKeys = {
-    publicKey: 'BP5DsTGZtwA4cqV1vgTggxDdy-6fBY5I--_3fPCHAir9kUS5rR_vAzHKc0htxxGx_sFz-02liGu8PgoZr9DEr3Y',
+    publicKey: process.env.QOWALA_VAPID_PUBLIC,
     privateKey: process.env.QOWALA_VAPID_PRIVATE
   };
 
@@ -258,6 +258,7 @@ io.on('connection', function(socket){
           token: jwt.sign(user, app.get('superSecret'), {
             expiresIn: 86400 // expires in 24 hours
           }),
+          applicationServerPublicKey: process.env.QOWALA_VAPID_PUBLIC,
           availability: users[credentials.email].availability
         };
         startFacebook(user, users, socket);
