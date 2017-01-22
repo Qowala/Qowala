@@ -7,6 +7,7 @@ var io = require('socket.io')(http);
 const fs = require('fs');
 const path = require('path');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var webpush = require('web-push');
 
 var config = require('./config-vars'); // get our config file
 
@@ -17,6 +18,17 @@ app.set('superSecret', config.secret); // secret variable
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+const vapidKeys = {
+    publicKey: process.env.QOWALA_VAPID_PUBLIC,
+    privateKey: process.env.QOWALA_VAPID_PRIVATE
+  };
+
+webpush.setVapidDetails(
+  'mailto:admin@qowala.org',
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
 
 // Set web client directory
 var client_dir = __dirname + '/dist';
@@ -52,7 +64,9 @@ function loginFacebookAppstate (email) {
           users[email] = {
             ID: 0,
             fbID: 0,
-            fbApi: api
+            fbApi: api,
+            swSubscription: {},
+            availability: 'available'
           };
           resolve(users[email]);
         });
@@ -75,7 +89,9 @@ function loginFacebookCredentials (email, password) {
       users[email] = {
         ID:0,
         fbID: 0,
-        fbApi: api
+        fbApi: api,
+        swSubscription: {},
+        availability: 'available'
       };
       resolve(users[email]);
     });
@@ -132,6 +148,22 @@ function startFacebook(decoded, users, socket) {
             isSenderUser: message.senderID === currentUser.ID.toString()
           }
           socket.emit('chat message', msgToSend);
+
+          msgNotification = {
+            title: msgToSend.senderName,
+            body: msgToSend.body,
+            icon: '/static/img/favicon.png'
+          };
+
+          if (currentUser.availability === 'available') {
+            webpush.sendNotification(
+              currentUser.swSubscription,
+              JSON.stringify(msgNotification))
+            .catch(function(err) {
+              console.error('error: ', err);
+            });
+          }
+
           if (Array.isArray(chatHistory[currentUser.ID])) {
             chatHistory[currentUser.ID].push(msgToSend);
           }
@@ -222,11 +254,15 @@ io.on('connection', function(socket){
         var user = {
           email: credentials.email
         };
-        var token = jwt.sign(user, app.get('superSecret'), {
-          expiresIn: 86400 // expires in 24 hours
-        });
+        const payload = {
+          token: jwt.sign(user, app.get('superSecret'), {
+            expiresIn: 86400 // expires in 24 hours
+          }),
+          applicationServerPublicKey: process.env.QOWALA_VAPID_PUBLIC,
+          availability: users[credentials.email].availability
+        };
         startFacebook(user, users, socket);
-        socket.emit('login ok', token);
+        socket.emit('login ok', payload);
       }
     ).catch(function(err) {
       console.log('Error while login with credentials: ', err);
@@ -275,6 +311,25 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on('put/availability', function(payload){
+    jwt.verify(payload.token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+        console.log('auth failed', message);
+      } else {
+        var currentUser = users[decoded.email];
+        if (currentUser) {
+          console.log('availability updated to: ', payload.availability);
+          currentUser.availability = payload.availability;
+        }
+        else {
+          socket.emit('need auth');
+        }
+      }
+    });
+  });
+
   socket.on('chat message', function(payload){
     const token = payload.token;
     const msg = payload.msg;
@@ -298,6 +353,36 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on('swSendNotification', function(payload) {
+    console.log('Received SW Event');
+    const token = payload.token;
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        const message = 'Failed to authenticate token.';
+        socket.emit('auth failed', message);
+      } else {
+        var currentUser = users[decoded.email];
+        // Store user subscription
+        currentUser.swSubscription = payload.subscription;
+
+        if (currentUser) {
+					if (process.env.NODE_ENV === 'development') {
+            console.log('Sending service worker notification...');
+						// Send test notification
+						webpush.sendNotification(
+							currentUser.swSubscription,
+							JSON.stringify(payload.notification))
+						.catch(function(err) {
+							console.error('error: ', err);
+						});
+					}
+        }
+        else {
+          socket.emit('need auth');
+        }
+      }
+    });
+  });
 });
 
 http.listen(3000, function(){
