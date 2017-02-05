@@ -155,7 +155,7 @@ function startFacebook(decoded, users, socket) {
               senderImage: data[0].img,
               isSenderUser: message.senderID === currentUser.ID.toString()
             }
-            socket.emit('chat message', msgToSend);
+            io.to(decoded.email).emit('chat message', msgToSend);
 
             msgNotification = {
               title: msgToSend.senderName,
@@ -271,6 +271,7 @@ io.on('connection', function(socket){
           availability: users[credentials.email].availability
         };
         startFacebook(user, users, socket);
+        socket.join(user.email);
         socket.emit('login ok', payload);
       }
     ).catch(function(err) {
