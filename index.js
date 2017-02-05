@@ -160,7 +160,7 @@ function startFacebook(decoded, users, socket) {
             msgNotification = {
               title: msgToSend.senderName,
               body: msgToSend.body,
-              icon: '/static/img/favicon.png'
+              icon: '/img/favicon.png'
             };
 
             if (currentUser.availability === 'available') {
