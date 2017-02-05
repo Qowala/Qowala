@@ -61,13 +61,16 @@ function loginFacebookAppstate (email) {
         login({appState: JSON.parse(fs.readFileSync(getAppstateName(email), 'utf8'))}, function callback (err, api) {
           if(err) return reject(err);
           api.setOptions({selfListen: true});
-          users[email] = {
-            ID: 0,
-            fbID: 0,
-            fbApi: api,
-            swSubscription: {},
-            availability: 'available'
-          };
+          if(!users[email]){
+            users[email] = {
+              ID:0,
+              fbID: 0,
+              fbApi: api,
+              fbStopListening: null,
+              swSubscription: {},
+              availability: 'available'
+            };
+          }
           resolve(users[email]);
         });
       }
@@ -86,13 +89,16 @@ function loginFacebookCredentials (email, password) {
       if(err) return reject(err);
       fs.writeFileSync(getAppstateName(email), JSON.stringify(api.getAppState()));
       api.setOptions({selfListen: true});
-      users[email] = {
-        ID:0,
-        fbID: 0,
-        fbApi: api,
-        swSubscription: {},
-        availability: 'available'
-      };
+      if(!users[email]){
+        users[email] = {
+          ID:0,
+          fbID: 0,
+          fbApi: api,
+          fbStopListening: null,
+          swSubscription: {},
+          availability: 'available'
+        };
+      }
       resolve(users[email]);
     });
   });
@@ -128,51 +134,54 @@ function startFacebook(decoded, users, socket) {
     }).then(
     function() {
       console.log('Listening for messages...');
-      currentUser.fbApi.listen(function callback(err, message) {
-        if (err) return console.error(err);
-        console.log(message);
-        var allInfos = [];
-        console.log(Object.keys(facebookMessengerService));
-        allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
-        allInfos.push(facebookMessengerService.getThreadInfo(currentUser.ID, currentUser.fbApi, message.threadID));
-        Promise.all(allInfos).then(function(data) {
-          console.log(data);
-          msgToSend = {
-            body: message.body,
-            conversationID: message.threadID,
-            timestampDatetime: tsToTsDatetime(message.timestamp),
-            attachments: message.attachments,
-            senderID: message.senderID,
-            senderName: data[0].name,
-            senderImage: data[0].img,
-            isSenderUser: message.senderID === currentUser.ID.toString()
-          }
-          socket.emit('chat message', msgToSend);
+      if (!currentUser.fbStopListening) {
+        console.log('Nothing is listening yet, so creating new listener');
+        currentUser.fbStopListening = currentUser.fbApi.listen(function callback(err, message) {
+          if (err) return console.error(err);
+          console.log(message);
+          var allInfos = [];
+          console.log(Object.keys(facebookMessengerService));
+          allInfos.push(facebookMessengerService.getUserInfo(currentUser.fbApi, message.senderID));
+          allInfos.push(facebookMessengerService.getThreadInfo(currentUser.ID, currentUser.fbApi, message.threadID));
+          Promise.all(allInfos).then(function(data) {
+            console.log(data);
+            msgToSend = {
+              body: message.body,
+              conversationID: message.threadID,
+              timestampDatetime: tsToTsDatetime(message.timestamp),
+              attachments: message.attachments,
+              senderID: message.senderID,
+              senderName: data[0].name,
+              senderImage: data[0].img,
+              isSenderUser: message.senderID === currentUser.ID.toString()
+            }
+            socket.emit('chat message', msgToSend);
 
-          msgNotification = {
-            title: msgToSend.senderName,
-            body: msgToSend.body,
-            icon: '/static/img/favicon.png'
-          };
+            msgNotification = {
+              title: msgToSend.senderName,
+              body: msgToSend.body,
+              icon: '/static/img/favicon.png'
+            };
 
-          if (currentUser.availability === 'available') {
-            webpush.sendNotification(
-              currentUser.swSubscription,
-              JSON.stringify(msgNotification))
-            .catch(function(err) {
-              console.error('error: ', err);
-            });
-          }
+            if (currentUser.availability === 'available') {
+              webpush.sendNotification(
+                currentUser.swSubscription,
+                JSON.stringify(msgNotification))
+              .catch(function(err) {
+                console.error('error: ', err);
+              });
+            }
 
-          if (Array.isArray(chatHistory[currentUser.ID])) {
-            chatHistory[currentUser.ID].push(msgToSend);
-          }
-          else {
-            chatHistory[currentUser.ID] = [];
-            chatHistory[currentUser.ID].push(msgToSend);
-          }
+            if (Array.isArray(chatHistory[currentUser.ID])) {
+              chatHistory[currentUser.ID].push(msgToSend);
+            }
+            else {
+              chatHistory[currentUser.ID] = [];
+              chatHistory[currentUser.ID].push(msgToSend);
+            }
+          });
         });
-      });
+      }
     }
     ).catch(function(err) {
       console.log('An error occured: ', err);
