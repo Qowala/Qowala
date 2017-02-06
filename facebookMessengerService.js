@@ -74,7 +74,14 @@ exports.getThreadList = function(currentUserID, api, nbThreads) {
         if (arr[i].name === '') {
           // If user is speaking at itself, populate thread
           if (arr[i].threadID === currentUserID){
-            arr[i].name = 'Me';
+            const currentUserArr = arr[i];
+            getUserInfo(api, currentUserID).then(function(currentUserInfo) {
+              currentUserArr.name = currentUserInfo.name;
+              currentUserArr.imageSrc = currentUserInfo.img;
+            })
+            .catch(function(err) {
+              console.log('An error occured: ', err);
+            });;
           }
 
           for (var z = 0; z < arr[i].participantIDs.length; z++) {
