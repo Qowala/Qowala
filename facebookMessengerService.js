@@ -72,6 +72,18 @@ exports.getThreadList = function(currentUserID, api, nbThreads) {
       // Populate threads with no name and no image
       for (var i = 0; i < arr.length; i++) {
         if (arr[i].name === '') {
+          // If user is speaking at itself, populate thread
+          if (arr[i].threadID === currentUserID){
+            const currentUserArr = arr[i];
+            getUserInfo(api, currentUserID).then(function(currentUserInfo) {
+              currentUserArr.name = currentUserInfo.name;
+              currentUserArr.imageSrc = currentUserInfo.img;
+            })
+            .catch(function(err) {
+              console.log('An error occured: ', err);
+            });;
+          }
+
           for (var z = 0; z < arr[i].participantIDs.length; z++) {
             // Don't put current user in thread's names and images
             if (arr[i].participantIDs[z] !== currentUserID){
