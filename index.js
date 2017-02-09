@@ -332,6 +332,8 @@ io.on('connection', function(socket){
         if (currentUser) {
           console.log('availability updated to: ', payload.availability);
           currentUser.availability = payload.availability;
+          // Broadcast to other devices of same user
+          io.to(decoded.email).emit('return/availability', currentUser.availability);
         }
         else {
           socket.emit('need auth');
